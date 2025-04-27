@@ -3,63 +3,94 @@ package org.gianlucaveschi.fiestaglobal.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.tooling.preview.Preview
-import org.gianlucaveschi.fiestaglobal.data.model.ArtistItemResponse
-import org.gianlucaveschi.fiestaglobal.ui.compose.ArtistsScreen
-
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import org.gianlucaveschi.fiestaglobal.ui.artists.ArtistsScreen
+import org.gianlucaveschi.fiestaglobal.ui.artists.ArtistsViewModel
+import org.gianlucaveschi.fiestaglobal.ui.maps.MapsScreen
+import org.gianlucaveschi.fiestaglobal.ui.maps.MapsViewModel
 
 class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    val viewModel = ArtistsViewModel() // Initialize ViewModel outside of Composable scope
 
     setContent {
-      // Collect the UI state from the ViewModel
-      val uiState by viewModel.uiState.collectAsState()
-
-      // Pass the UI model and retry action to the ArtistsScreen
-      ArtistsScreen(
-        uiModel = ArtistsUiState(
-          artists = uiState.artists,
-          isLoading = uiState.isLoading,
-          error = uiState.error
-        ),
-        onRetry = { viewModel.loadArtists() }
-      )
+      MainScreen()
     }
   }
 }
 
-@Preview
 @Composable
-fun AppAndroidPreview() {
-  ArtistsScreen(
-    uiModel = ArtistsUiState(
-      artists = listOf(
-        ArtistItemResponse(
-          name = "Laboratori artistici e creativi per bambini a cura di TEATRO DELLE ISOLE",
-          time = "18:00"
-        ),
-        ArtistItemResponse(
-          name = "Apertura Mostra Foto e Video “Fiesta Global - 20 anni!”",
-          time = "18:00"
-        ),
-        ArtistItemResponse(
-          name = "Giochi di una volta e Laboratori a tema con la Capretta Cleopatra a cura di IL GIARDINO DEI COLORI",
-          time = "19:00"
-        ),
-        ArtistItemResponse(
-          name = "RAFFAELE DI PLACIDO presenta “L’uomo che uccise Mussolini” (Piemme, 2024)",
-          time = "19:00"
-        ),
-      ),
-      isLoading = false,
-      error = null
-    ),
-    onRetry = {}
-  )
+fun MainScreen() {
+  var selectedScreen by remember { mutableStateOf(ARTIST_SCREEN) }
+  val artistsViewModel = ArtistsViewModel()
+  val viewModelB = MapsViewModel()
+  val uiState by artistsViewModel.uiState.collectAsState()
+
+  Scaffold(
+    bottomBar = {
+      BottomNavigation(
+        backgroundColor = MaterialTheme.colors.surface,
+        contentColor = MaterialTheme.colors.onSurface,
+        modifier = Modifier.navigationBarsPadding()
+      ) {
+        BottomNavigationItem(
+          icon = { Icon(Icons.Default.Home, contentDescription = ARTIST_SCREEN) },
+          label = { Text(ARTIST_SCREEN) },
+          selected = selectedScreen == ARTIST_SCREEN,
+          onClick = { selectedScreen = ARTIST_SCREEN }
+        )
+        BottomNavigationItem(
+          icon = { Icon(Icons.Default.Person, contentDescription = MAPS_SCREEN) },
+          label = { Text(MAPS_SCREEN) },
+          selected = selectedScreen == MAPS_SCREEN,
+          onClick = { selectedScreen = MAPS_SCREEN }
+        )
+      }
+    }
+  ) { innerPadding ->
+    Box(
+      modifier = Modifier
+        .fillMaxSize()
+        .padding(innerPadding)
+    ) {
+      when (selectedScreen) {
+        ARTIST_SCREEN ->
+          ArtistsScreen(
+            uiModel = ArtistsUiState(
+              artists = uiState.artists,
+              isLoading = uiState.isLoading,
+              error = uiState.error
+            ),
+            onRetry = { artistsViewModel.loadArtists() },
+          )
+
+        MAPS_SCREEN -> MapsScreen(
+          viewModel = viewModelB
+        )
+      }
+    }
+  }
 }
+
+const val ARTIST_SCREEN = "ArtistScreen"
+const val MAPS_SCREEN = "MapsScreen"

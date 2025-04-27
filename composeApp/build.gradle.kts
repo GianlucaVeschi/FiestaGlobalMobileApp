@@ -49,9 +49,9 @@ kotlin {
       implementation(libs.ktor.client.core)
       implementation(libs.ktor.client.content.negotiation)
       implementation(libs.ktor.client.json)
-      implementation(libs.ktor.client.logging) // Add Ktor logging feature for common logic
-      implementation(libs.kotlinx.serialization.json) // JSON serialization
-      implementation(libs.ktor.serialization.kotlinx.json) // Add Kotlinx Serialization for JSON handling
+      implementation(libs.ktor.client.logging)
+      implementation(libs.kotlinx.serialization.json)
+      implementation(libs.ktor.serialization.kotlinx.json)
     }
     iosMain.dependencies {
       implementation(libs.ktor.client.ios)

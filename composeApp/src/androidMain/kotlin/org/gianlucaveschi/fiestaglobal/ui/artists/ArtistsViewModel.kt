@@ -1,4 +1,4 @@
-package org.gianlucaveschi.fiestaglobal.ui
+package org.gianlucaveschi.fiestaglobal.ui.artists
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.gianlucaveschi.fiestaglobal.data.fetchArtists
+import org.gianlucaveschi.fiestaglobal.ui.ArtistsUiState
 
 
 class ArtistsViewModel {

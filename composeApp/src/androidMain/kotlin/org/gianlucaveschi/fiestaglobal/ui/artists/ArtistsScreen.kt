@@ -1,6 +1,7 @@
 package org.gianlucaveschi.fiestaglobal.ui.artists
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -38,7 +39,11 @@ fun ArtistsScreen(
   ) {
     TabRow(
       selectedTabIndex = pagerState.currentPage,
-      modifier = Modifier.fillMaxWidth()
+      modifier = Modifier
+        .fillMaxWidth()
+        .background(Color.White),
+      backgroundColor = Color.White,
+      contentColor = Color.Black
     ) {
       tabTitles.forEachIndexed { index, title ->
         Tab(
@@ -48,14 +53,18 @@ fun ArtistsScreen(
               pagerState.animateScrollToPage(index)
             }
           },
-          text = { Text(text = title) }
+          text = { Text(text = title) },
+          selectedContentColor = Color.Black,
+          unselectedContentColor = Color.Gray
         )
       }
     }
 
     HorizontalPager(
       state = pagerState,
-      modifier = Modifier.weight(1f)
+      modifier = Modifier
+        .weight(1f)
+        .systemBarsPadding()
     ) { page ->
       when (page) {
         0 -> ArtistsContent(uiModel, onRetry)

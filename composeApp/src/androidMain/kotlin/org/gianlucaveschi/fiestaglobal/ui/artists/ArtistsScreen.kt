@@ -1,6 +1,5 @@
 package org.gianlucaveschi.fiestaglobal.ui.artists
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -31,13 +30,12 @@ import kotlinx.coroutines.launch
 import org.gianlucaveschi.fiestaglobal.data.model.ArtistItemResponse
 import org.gianlucaveschi.fiestaglobal.ui.ArtistsUiState
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ArtistsScreen(
   uiModel: ArtistsUiState,
   onRetry: () -> Unit,
 ) {
-  val tabTitles = listOf("Gio 17", "Veb 18", "Sab 19", "Dom 20")
+  val tabTitles = listOf(THURSDAY_TAB, FRIDAY_TAB, SATURDAY_TAB, SUNDAY_TAB)
   val pagerState = rememberPagerState { tabTitles.size }
   val coroutineScope = rememberCoroutineScope()
 
@@ -68,24 +66,23 @@ fun ArtistsScreen(
       modifier = Modifier.weight(1f)
     ) { page ->
       when (page) {
-        0 -> ThursdayArtists(uiModel, onRetry)
-        1 -> FridayArtists()
-        2 -> SaturdayArtists()
-        3 -> SundayArtists()
+        0 -> ArtistsContent(uiModel, onRetry)
+        1 -> ArtistsContent(uiModel, onRetry) // TODO : Pass subset of data
+        2 -> ArtistsContent(uiModel, onRetry) // TODO : Pass subset of data
+        3 -> ArtistsContent(uiModel, onRetry) // TODO : Pass subset of data
       }
     }
   }
 }
 
 @Composable
-fun ThursdayArtists(
+fun ArtistsContent(
   uiModel: ArtistsUiState,
   onRetry: () -> Unit,
 ) {
   Box(
     modifier = Modifier
       .fillMaxSize()
-      .systemBarsPadding()
   ) {
     when {
       uiModel.isLoading -> {
@@ -119,51 +116,6 @@ fun ThursdayArtists(
         }
       }
     }
-  }
-}
-
-@Composable
-fun FridayArtists() {
-  Box(
-    modifier = Modifier
-      .fillMaxSize()
-      .systemBarsPadding(),
-    contentAlignment = Alignment.Center
-  ) {
-    Text(
-      text = "Artisti della venerdì",
-      style = MaterialTheme.typography.h4
-    )
-  }
-}
-
-@Composable
-fun SaturdayArtists() {
-  Box(
-    modifier = Modifier
-      .fillMaxSize()
-      .systemBarsPadding(),
-    contentAlignment = Alignment.Center
-  ) {
-    Text(
-      text = "Artisti del sabato",
-      style = MaterialTheme.typography.h4
-    )
-  }
-}
-
-@Composable
-fun SundayArtists() {
-  Box(
-    modifier = Modifier
-      .fillMaxSize()
-      .systemBarsPadding(),
-    contentAlignment = Alignment.Center
-  ) {
-    Text(
-      text = "Artisti della domenica",
-      style = MaterialTheme.typography.h4
-    )
   }
 }
 
@@ -214,3 +166,8 @@ fun AppAndroidPreview() {
     onRetry = {},
   )
 }
+
+private const val THURSDAY_TAB = "GIO 17"
+private const val FRIDAY_TAB = "VEN 18"
+private const val SATURDAY_TAB = "SAB 19"
+private const val SUNDAY_TAB = "DOM 20"

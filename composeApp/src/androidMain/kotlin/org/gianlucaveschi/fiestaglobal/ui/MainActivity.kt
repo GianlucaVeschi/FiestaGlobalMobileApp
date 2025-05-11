@@ -23,6 +23,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.ui.platform.LocalContext
+import android.view.Window
+import android.view.WindowManager
+import android.app.Activity
+import android.view.View
+import androidx.compose.ui.unit.dp
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import org.gianlucaveschi.fiestaglobal.ui.artists.ArtistsScreen
 import org.gianlucaveschi.fiestaglobal.ui.artists.ArtistsViewModel
 import org.gianlucaveschi.fiestaglobal.ui.maps.MapsScreen
@@ -32,6 +43,12 @@ class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
+    // Make system bars (status and navigation) transparent
+    WindowCompat.setDecorFitsSystemWindows(window, false)
+    window.setFlags(
+      WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+      WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+    )
 
     setContent {
       MainScreen()
@@ -46,12 +63,31 @@ fun MainScreen() {
   val viewModelB = MapsViewModel()
   val uiState by artistsViewModel.uiState.collectAsState()
 
+  val context = LocalContext.current
+  DisposableEffect(Unit) {
+    val window = (context as? Activity)?.window
+    window?.apply {
+      navigationBarColor = android.graphics.Color.WHITE
+    }
+
+    val windowInsetsController = window?.let { WindowCompat.getInsetsController(it, it.decorView) }
+    windowInsetsController?.apply {
+      // Show navigation bar and make it white
+      show(WindowInsetsCompat.Type.navigationBars())
+      isAppearanceLightNavigationBars =
+        true  // This makes navigation bar icons dark when on light background
+    }
+
+    onDispose {}
+  }
+
   Scaffold(
     bottomBar = {
       BottomNavigation(
-        backgroundColor = MaterialTheme.colors.surface,
+        backgroundColor = Color.White,
         contentColor = MaterialTheme.colors.onSurface,
-        modifier = Modifier.navigationBarsPadding()
+        modifier = Modifier.navigationBarsPadding(),
+        elevation = 0.dp
       ) {
         BottomNavigationItem(
           icon = { Icon(Icons.Default.Home, contentDescription = ARTIST_SCREEN) },

@@ -1,6 +1,6 @@
 package org.gianlucaveschi.fiestaglobal.ui.artists
 
-import androidx.compose.foundation.gestures.detectHorizontalDragGestures
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
@@ -20,26 +22,24 @@ import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 import org.gianlucaveschi.fiestaglobal.data.model.ArtistItemResponse
 import org.gianlucaveschi.fiestaglobal.ui.ArtistsUiState
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ArtistsScreen(
   uiModel: ArtistsUiState,
   onRetry: () -> Unit,
 ) {
-  var selectedTabIndex by remember { mutableIntStateOf(0) }
   val tabTitles = listOf("Gio 17", "Veb 18", "Sab 19", "Dom 20")
+  val pagerState = rememberPagerState { tabTitles.size }
+  val coroutineScope = rememberCoroutineScope()
 
   Column(
     modifier = Modifier
@@ -47,41 +47,27 @@ fun ArtistsScreen(
       .systemBarsPadding()
   ) {
     TabRow(
-      selectedTabIndex = selectedTabIndex,
+      selectedTabIndex = pagerState.currentPage,
       modifier = Modifier.fillMaxWidth()
     ) {
       tabTitles.forEachIndexed { index, title ->
         Tab(
-          selected = selectedTabIndex == index,
-          onClick = { selectedTabIndex = index },
+          selected = pagerState.currentPage == index,
+          onClick = {
+            coroutineScope.launch {
+              pagerState.animateScrollToPage(index)
+            }
+          },
           text = { Text(text = title) }
         )
       }
     }
 
-    Box(
-      modifier = Modifier
-        .weight(1f)
-        .fillMaxWidth()
-        .pointerInput(Unit) {
-          detectHorizontalDragGestures { _, dragAmount ->
-            when {
-              dragAmount < -15 -> { // Swiping from right to left (next tab)
-                if (selectedTabIndex < tabTitles.size - 1) {
-                  selectedTabIndex++
-                }
-              }
-
-              dragAmount > 15 -> { // Swiping from left to right (previous tab)
-                if (selectedTabIndex > 0) {
-                  selectedTabIndex--
-                }
-              }
-            }
-          }
-        }
-    ) {
-      when (selectedTabIndex) {
+    HorizontalPager(
+      state = pagerState,
+      modifier = Modifier.weight(1f)
+    ) { page ->
+      when (page) {
         0 -> ThursdayArtists(uiModel, onRetry)
         1 -> FridayArtists()
         2 -> SaturdayArtists()

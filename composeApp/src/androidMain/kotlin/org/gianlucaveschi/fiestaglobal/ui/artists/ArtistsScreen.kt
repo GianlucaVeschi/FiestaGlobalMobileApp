@@ -2,6 +2,7 @@ package org.gianlucaveschi.fiestaglobal.ui.artists
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -27,6 +28,7 @@ import org.gianlucaveschi.fiestaglobal.ui.ArtistsUiState
 fun ArtistsScreen(
   uiModel: ArtistsUiState,
   onRetry: () -> Unit,
+  onArtistClick: (ArtistItemResponse) -> Unit = {}
 ) {
   val tabTitles = listOf(THURSDAY_TAB, FRIDAY_TAB, SATURDAY_TAB, SUNDAY_TAB)
   val pagerState = rememberPagerState { tabTitles.size }
@@ -67,10 +69,10 @@ fun ArtistsScreen(
         .systemBarsPadding()
     ) { page ->
       when (page) {
-        0 -> ArtistsContent(uiModel, onRetry)
-        1 -> ArtistsContent(uiModel, onRetry) // TODO : Pass subset of data
-        2 -> ArtistsContent(uiModel, onRetry) // TODO : Pass subset of data
-        3 -> ArtistsContent(uiModel, onRetry) // TODO : Pass subset of data
+        0 -> ArtistsContent(uiModel, onRetry, onArtistClick)
+        1 -> ArtistsContent(uiModel, onRetry, onArtistClick) // TODO : Pass subset of data
+        2 -> ArtistsContent(uiModel, onRetry, onArtistClick) // TODO : Pass subset of data
+        3 -> ArtistsContent(uiModel, onRetry, onArtistClick) // TODO : Pass subset of data
       }
     }
   }
@@ -80,6 +82,7 @@ fun ArtistsScreen(
 fun ArtistsContent(
   uiModel: ArtistsUiState,
   onRetry: () -> Unit,
+  onArtistClick: (ArtistItemResponse) -> Unit
 ) {
   Box(
     modifier = Modifier
@@ -111,8 +114,10 @@ fun ArtistsContent(
           contentPadding = PaddingValues(16.dp)
         ) {
           items(uiModel.artists) { artist ->
-            ArtistItem(artist)
-            Divider()
+            ArtistItem(
+              artist = artist,
+              onClick = { onArtistClick(artist) }
+            )
           }
         }
       }
@@ -120,13 +125,16 @@ fun ArtistsContent(
   }
 }
 
-
 @Composable
-fun ArtistItem(artist: ArtistItemResponse) {
+fun ArtistItem(
+  artist: ArtistItemResponse,
+  onClick: () -> Unit = {}
+) {
   Card(
     modifier = Modifier
       .fillMaxWidth()
-      .padding(8.dp),
+      .padding(8.dp)
+      .clickable(onClick = onClick),
     shape = RoundedCornerShape(16.dp),
     elevation = 4.dp
   ) {
@@ -201,6 +209,7 @@ fun AppAndroidPreview() {
       error = null
     ),
     onRetry = {},
+    onArtistClick = {}
   )
 }
 

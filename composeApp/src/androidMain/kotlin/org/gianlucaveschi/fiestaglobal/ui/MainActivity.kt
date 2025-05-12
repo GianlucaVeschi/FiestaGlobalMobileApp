@@ -1,5 +1,6 @@
 package org.gianlucaveschi.fiestaglobal.ui
 
+import ArtistDetailScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -33,11 +34,12 @@ import android.view.View
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
+
 import org.gianlucaveschi.fiestaglobal.ui.artists.ArtistsScreen
 import org.gianlucaveschi.fiestaglobal.ui.artists.ArtistsViewModel
 import org.gianlucaveschi.fiestaglobal.ui.maps.MapsScreen
 import org.gianlucaveschi.fiestaglobal.ui.maps.MapsViewModel
+import org.gianlucaveschi.fiestaglobal.data.model.ArtistItemResponse
 
 class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,6 +64,9 @@ fun MainScreen() {
   val artistsViewModel = ArtistsViewModel()
   val viewModelB = MapsViewModel()
   val uiState by artistsViewModel.uiState.collectAsState()
+  
+  // For navigating to artist details
+  var selectedArtist by remember { mutableStateOf<ArtistItemResponse?>(null) }
 
   val context = LocalContext.current
   DisposableEffect(Unit) {
@@ -111,14 +116,22 @@ fun MainScreen() {
     ) {
       when (selectedScreen) {
         ARTIST_SCREEN ->
-          ArtistsScreen(
-            uiModel = ArtistsUiState(
-              artists = uiState.artists,
-              isLoading = uiState.isLoading,
-              error = uiState.error
-            ),
-            onRetry = { artistsViewModel.loadArtists() },
-          )
+          if (selectedArtist != null) {
+            ArtistDetailScreen(
+              artist = selectedArtist!!,
+              onBackClick = { selectedArtist = null }
+            )
+          } else {
+            ArtistsScreen(
+              uiModel = ArtistsUiState(
+                artists = uiState.artists,
+                isLoading = uiState.isLoading,
+                error = uiState.error
+              ),
+              onRetry = { artistsViewModel.loadArtists() },
+              onArtistClick = { artist -> selectedArtist = artist }
+            )
+          }
 
         MAPS_SCREEN -> MapsScreen(
           viewModel = viewModelB

@@ -16,6 +16,7 @@ junit = "4.13.2"
 kotlin = "2.1.20"
 ktor = "3.1.0"
 kotlinx-serialization = "1.8.1"
+navigation = "2.9.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -38,6 +39,7 @@ ktor-client-ios = { module = "io.ktor:ktor-client-ios", version.ref = "ktor" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

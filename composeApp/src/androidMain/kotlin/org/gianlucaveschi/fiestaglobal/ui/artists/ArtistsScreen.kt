@@ -9,7 +9,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material3.*
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -44,8 +45,14 @@ fun ArtistsScreen(
       modifier = Modifier
         .fillMaxWidth()
         .background(Color.White),
-      backgroundColor = Color.White,
-      contentColor = Color.Black
+      containerColor = Color.White,
+      contentColor = Color.Black,
+      indicator = { tabPositions ->
+        TabRowDefaults.Indicator(
+          Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
+          color = Color.Black
+        )
+      }
     ) {
       tabTitles.forEachIndexed { index, title ->
         Tab(
@@ -136,7 +143,7 @@ fun ArtistItem(
       .padding(8.dp)
       .clickable(onClick = onClick),
     shape = RoundedCornerShape(16.dp),
-    elevation = 4.dp
+    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
   ) {
     Column {
       Image(
@@ -156,11 +163,11 @@ fun ArtistItem(
         Column(modifier = Modifier.weight(1f)) {
           Text(
             text = artist.name,
-            style = MaterialTheme.typography.h6
+            style = MaterialTheme.typography.titleLarge
           )
           Text(
             text = "Subtitle or description",
-            style = MaterialTheme.typography.body2,
+            style = MaterialTheme.typography.bodyMedium,
             color = Color.Gray
           )
         }
@@ -169,11 +176,11 @@ fun ArtistItem(
         ) {
           Text(
             text = "Day",
-            style = MaterialTheme.typography.body2
+            style = MaterialTheme.typography.bodyMedium
           )
           Text(
             text = artist.time,
-            style = MaterialTheme.typography.body2
+            style = MaterialTheme.typography.bodyMedium
           )
         }
       }

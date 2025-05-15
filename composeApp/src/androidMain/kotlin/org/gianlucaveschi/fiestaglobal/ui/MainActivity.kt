@@ -8,15 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -27,19 +18,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.platform.LocalContext
-import android.view.Window
 import android.view.WindowManager
 import android.app.Activity
-import android.view.View
-import androidx.compose.ui.unit.dp
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
-
 import org.gianlucaveschi.fiestaglobal.ui.artists.ArtistsScreen
 import org.gianlucaveschi.fiestaglobal.ui.artists.ArtistsViewModel
-import org.gianlucaveschi.fiestaglobal.ui.maps.MapsScreen
-import org.gianlucaveschi.fiestaglobal.ui.maps.MapsViewModel
+import org.gianlucaveschi.fiestaglobal.ui.maps.ProfileScreen
 import org.gianlucaveschi.fiestaglobal.data.model.ArtistItemResponse
+import androidx.compose.material.icons.Icons
+import org.gianlucaveschi.fiestaglobal.ui.theme.FiestaGlobalTheme
 
 class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +49,9 @@ class MainActivity : ComponentActivity() {
     )
 
     setContent {
-      MainScreen()
+      FiestaGlobalTheme {
+        MainScreen()
+      }
     }
   }
 }
@@ -62,9 +60,8 @@ class MainActivity : ComponentActivity() {
 fun MainScreen() {
   var selectedScreen by remember { mutableStateOf(ARTIST_SCREEN) }
   val artistsViewModel = ArtistsViewModel()
-  val viewModelB = MapsViewModel()
   val uiState by artistsViewModel.uiState.collectAsState()
-  
+
   // For navigating to artist details
   var selectedArtist by remember { mutableStateOf<ArtistItemResponse?>(null) }
 
@@ -88,23 +85,36 @@ fun MainScreen() {
 
   Scaffold(
     bottomBar = {
-      BottomNavigation(
-        backgroundColor = Color.White,
-        contentColor = MaterialTheme.colors.onSurface,
+      NavigationBar(
         modifier = Modifier.navigationBarsPadding(),
-        elevation = 0.dp
+        containerColor = Color.White,
+        contentColor = Color.Black
       ) {
-        BottomNavigationItem(
-          icon = { Icon(Icons.Default.Home, contentDescription = ARTIST_SCREEN) },
+        NavigationBarItem(
+          icon = { Icon(Icons.Filled.Home, contentDescription = ARTIST_SCREEN) },
           label = { Text(ARTIST_SCREEN) },
           selected = selectedScreen == ARTIST_SCREEN,
+          colors = NavigationBarItemDefaults.colors(
+            selectedIconColor = Color.Black,
+            selectedTextColor = Color.Black,
+            indicatorColor = Color.White,
+            unselectedIconColor = Color.Gray,
+            unselectedTextColor = Color.Gray
+          ),
           onClick = { selectedScreen = ARTIST_SCREEN }
         )
-        BottomNavigationItem(
-          icon = { Icon(Icons.Default.Person, contentDescription = MAPS_SCREEN) },
-          label = { Text(MAPS_SCREEN) },
-          selected = selectedScreen == MAPS_SCREEN,
-          onClick = { selectedScreen = MAPS_SCREEN }
+        NavigationBarItem(
+          icon = { Icon(Icons.Filled.Person, contentDescription = PROFILE_SCREEN) },
+          label = { Text(PROFILE_SCREEN) },
+          selected = selectedScreen == PROFILE_SCREEN,
+          colors = NavigationBarItemDefaults.colors(
+            selectedIconColor = Color.Black,
+            selectedTextColor = Color.Black,
+            indicatorColor = Color.White,
+            unselectedIconColor = Color.Gray,
+            unselectedTextColor = Color.Gray
+          ),
+          onClick = { selectedScreen = PROFILE_SCREEN }
         )
       }
     }
@@ -133,13 +143,11 @@ fun MainScreen() {
             )
           }
 
-        MAPS_SCREEN -> MapsScreen(
-          viewModel = viewModelB
-        )
+        PROFILE_SCREEN -> ProfileScreen()
       }
     }
   }
 }
 
-const val ARTIST_SCREEN = "ArtistScreen"
-const val MAPS_SCREEN = "MapsScreen"
+const val ARTIST_SCREEN = "Artists"
+const val PROFILE_SCREEN = "Profile"

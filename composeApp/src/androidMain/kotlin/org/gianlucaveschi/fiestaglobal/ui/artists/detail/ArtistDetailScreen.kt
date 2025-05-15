@@ -9,16 +9,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -27,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import org.gianlucaveschi.fiestaglobal.R
 import org.gianlucaveschi.fiestaglobal.data.model.ArtistItemResponse
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ArtistDetailScreen(
   artist: ArtistItemResponse,
@@ -46,8 +50,11 @@ fun ArtistDetailScreen(
               Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
             }
           },
-          backgroundColor = MaterialTheme.colors.surface,
-          contentColor = MaterialTheme.colors.onSurface
+          colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = Color.White,
+            titleContentColor = Color.Black,
+            navigationIconContentColor = Color.Black
+          )
         )
       }
     ) { innerPadding ->
@@ -64,13 +71,13 @@ fun ArtistDetailScreen(
           modifier = Modifier
             .fillMaxWidth()
             .height(250.dp),
-          contentScale = ContentScale.Crop
+          contentScale = ContentScale.FillBounds
         )
 
         // Artist Name
         Text(
           text = artist.name,
-          style = MaterialTheme.typography.h5,
+          style = MaterialTheme.typography.headlineMedium,
           fontWeight = FontWeight.Bold,
           modifier = Modifier.padding(16.dp)
         )
@@ -78,7 +85,7 @@ fun ArtistDetailScreen(
         // Artist Time
         Text(
           text = "Time: ${artist.time}",
-          style = MaterialTheme.typography.body1,
+          style = MaterialTheme.typography.bodyLarge,
           modifier = Modifier.padding(horizontal = 16.dp)
         )
 
@@ -95,7 +102,7 @@ fun ArtistDetailScreen(
               "in tempus ut, vehicula eu diam. Pellentesque rhoncus aliquam mattis. " +
               "Ut vulputate eros sed felis sodales nec vulputate justo hendrerit. " +
               "Vivamus varius pretium ligula, a aliquam odio euismod sit amet.",
-          style = MaterialTheme.typography.body1,
+          style = MaterialTheme.typography.bodyLarge,
           textAlign = TextAlign.Justify,
           modifier = Modifier.padding(horizontal = 16.dp)
         )

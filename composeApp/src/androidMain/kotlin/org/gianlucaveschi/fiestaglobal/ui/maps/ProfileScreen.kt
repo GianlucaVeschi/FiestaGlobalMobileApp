@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,10 +20,12 @@ import org.gianlucaveschi.fiestaglobal.R
 fun ProfileScreen(
 ) {
   Column(
-    modifier = Modifier.fillMaxSize(),
+    modifier = Modifier
+      .fillMaxSize()
+      .systemBarsPadding(),
   ) {
     Image(
-      painter = painterResource(id = R.drawable.fiesta_global_placeholder), // Replace with your actual drawable resource
+      painter = painterResource(id = R.drawable.montefabbri_landscape), // Replace with your actual drawable resource
       contentDescription = "Montefabbri landscape", // Provide a meaningful content description
       modifier = Modifier
         .fillMaxWidth()

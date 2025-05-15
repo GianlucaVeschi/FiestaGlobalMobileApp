@@ -32,7 +32,7 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import org.gianlucaveschi.fiestaglobal.ui.artists.ArtistsScreen
 import org.gianlucaveschi.fiestaglobal.ui.artists.ArtistsViewModel
-import org.gianlucaveschi.fiestaglobal.ui.maps.ProfileScreen
+import org.gianlucaveschi.fiestaglobal.ui.profile.ProfileScreen
 import org.gianlucaveschi.fiestaglobal.data.model.ArtistItemResponse
 import androidx.compose.material.icons.Icons
 import org.gianlucaveschi.fiestaglobal.ui.theme.FiestaGlobalTheme

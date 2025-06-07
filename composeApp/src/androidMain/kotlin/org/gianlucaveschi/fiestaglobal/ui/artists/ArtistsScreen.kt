@@ -11,29 +11,39 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults
-import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
@@ -50,6 +60,7 @@ fun ArtistsScreen(
   val tabTitles = uiModel.daySchedules.map { it.day }
   val pagerState = rememberPagerState { tabTitles.size }
   val coroutineScope = rememberCoroutineScope()
+  var searchQuery by remember { mutableStateOf("") }
 
   if (uiModel.daySchedules.isEmpty()) {
     Box(
@@ -90,7 +101,7 @@ fun ArtistsScreen(
       contentColor = Color.Black,
       indicator = { tabPositions ->
         if (tabPositions.isNotEmpty() && pagerState.currentPage < tabPositions.size) {
-          SecondaryIndicator(
+          TabRowDefaults.Indicator(
             Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
             color = Color.Black
           )
@@ -112,6 +123,31 @@ fun ArtistsScreen(
       }
     }
 
+    OutlinedTextField(
+      value = searchQuery,
+      onValueChange = { searchQuery = it },
+      label = { Text("Cerca artisti e performance") },
+      modifier = Modifier
+        .fillMaxWidth()
+        .padding(16.dp),
+      colors = OutlinedTextFieldDefaults.colors(
+        focusedBorderColor = Color.Black,
+        unfocusedBorderColor = Color.Black,
+        focusedLabelColor = Color.Black,
+        unfocusedLabelColor = Color.Gray
+      ),
+      shape = RoundedCornerShape(8.dp),
+      trailingIcon = {
+        if (searchQuery.isNotBlank()) {
+          IconButton(onClick = { searchQuery = "" }) {
+            Icon(imageVector = Icons.Default.Clear, contentDescription = "Clear search")
+          }
+        } else {
+          Icon(imageVector = Icons.Default.Search, contentDescription = "Search")
+        }
+      }
+    )
+
     HorizontalPager(
       state = pagerState,
       modifier = Modifier
@@ -121,7 +157,8 @@ fun ArtistsScreen(
         ArtistsContent(
           artists = uiModel.daySchedules[page].artists,
           onRetry = onRetry,
-          onArtistClick = onArtistClick
+          onArtistClick = onArtistClick,
+          searchQuery = searchQuery
         )
       }
     }
@@ -132,27 +169,49 @@ fun ArtistsScreen(
 fun ArtistsContent(
   artists: List<ArtistItemResponse>,
   onRetry: () -> Unit,
-  onArtistClick: (ArtistItemResponse) -> Unit
+  onArtistClick: (ArtistItemResponse) -> Unit,
+  searchQuery: String
 ) {
-  val artistsByTime = artists.groupBy { it.time }
+  val filteredArtists = remember(artists, searchQuery) {
+    if (searchQuery.isBlank()) {
+      artists
+    } else {
+      artists.filter {
+        it.name.contains(searchQuery, ignoreCase = true) ||
+            it.location.contains(searchQuery, ignoreCase = true)
+      }
+    }
+  }
+
+  val artistsByTime = filteredArtists.groupBy { it.time }
 
   Box(
     modifier = Modifier
       .fillMaxSize()
   ) {
-    LazyColumn(
-      modifier = Modifier.fillMaxSize(),
-      contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
-    ) {
-      artistsByTime.forEach { (time, artistsAtTime) ->
-        item {
-          TimeHeader(time = time)
-        }
-        items(artistsAtTime) { artist ->
-          ArtistItem(
-            artist = artist,
-            onClick = { onArtistClick(artist) }
-          )
+    if (filteredArtists.isEmpty()) {
+      Text(
+        text = "No artists found matching your search",
+        modifier = Modifier
+          .fillMaxSize()
+          .padding(16.dp),
+        style = MaterialTheme.typography.bodyMedium
+      )
+    } else {
+      LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+      ) {
+        artistsByTime.forEach { (time, artistsAtTime) ->
+          item {
+            TimeHeader(time = time)
+          }
+          items(artistsAtTime) { artist ->
+            ArtistItem(
+              artist = artist,
+              onClick = { onArtistClick(artist) }
+            )
+          }
         }
       }
     }
@@ -214,7 +273,6 @@ fun ArtistItem(
     }
   }
 }
-
 
 @Preview
 @Composable

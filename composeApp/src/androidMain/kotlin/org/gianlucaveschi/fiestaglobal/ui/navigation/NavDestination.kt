@@ -45,7 +45,8 @@ fun AppNavHost(
                 onRetry = onRetry,
                 onArtistClick = { artist ->
                     navController.navigate(NavDestination.artistDetailRoute(artist))
-                }
+                },
+                searchQuery = ""
             )
         }
 

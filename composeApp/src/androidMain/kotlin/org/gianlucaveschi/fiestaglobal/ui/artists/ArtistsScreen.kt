@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -117,6 +118,8 @@ fun ArtistsContent(
   onRetry: () -> Unit,
   onArtistClick: (ArtistItemResponse) -> Unit
 ) {
+  val artistsByTime = artists.groupBy { it.time }
+
   Box(
     modifier = Modifier
       .fillMaxSize()
@@ -125,14 +128,31 @@ fun ArtistsContent(
       modifier = Modifier.fillMaxSize(),
       contentPadding = PaddingValues(16.dp)
     ) {
-      items(artists) { artist ->
-        ArtistItem(
-          artist = artist,
-          onClick = { onArtistClick(artist) }
-        )
+      artistsByTime.forEach { (time, artistsAtTime) ->
+        item {
+          TimeHeader(time = time)
+        }
+        items(artistsAtTime) { artist ->
+          ArtistItem(
+            artist = artist,
+            onClick = { onArtistClick(artist) }
+          )
+        }
       }
     }
   }
+}
+
+@Composable
+fun TimeHeader(time: String) {
+  Text(
+    text = time,
+    style = MaterialTheme.typography.headlineLarge,
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(vertical = 16.dp, horizontal = 8.dp),
+    color = Color.Black
+  )
 }
 
 @Composable
@@ -149,14 +169,14 @@ fun ArtistItem(
     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
   ) {
     Column {
-      Image(
-        painter = painterResource(id = R.drawable.fiesta_global_placeholder),
-        contentDescription = null,
-        modifier = Modifier
-          .fillMaxWidth()
-          .height(150.dp),
-        contentScale = ContentScale.Crop
-      )
+//      Image(
+//        painter = painterResource(id = R.drawable.fiesta_global_placeholder),
+//        contentDescription = null,
+//        modifier = Modifier
+//          .fillMaxWidth()
+//          .height(150.dp),
+//        contentScale = ContentScale.Crop
+//      )
       Row(
         modifier = Modifier
           .fillMaxWidth()
@@ -174,18 +194,6 @@ fun ArtistItem(
             color = Color.Gray
           )
         }
-        Column(
-          horizontalAlignment = Alignment.End
-        ) {
-          Text(
-            text = "Orario",
-            style = MaterialTheme.typography.bodyMedium
-          )
-          Text(
-            text = artist.time,
-            style = MaterialTheme.typography.bodyMedium
-          )
-        }
       }
     }
   }
@@ -199,32 +207,47 @@ fun AppAndroidPreview() {
     uiModel = ArtistsUiState(
       daySchedules = listOf(
         DaySchedule(
-          day = "Thursday",
+          day = "Giovedì",
           artists = listOf(
             ArtistItemResponse(
-              name = "Laboratori artistici e creativi per bambini a cura di TEATRO DELLE ISOLE",
+              name = "Laboratori artistici e creativi per bambini",
               time = "18:00",
               location = "Teatro delle isole"
             ),
             ArtistItemResponse(
-              name = "Apertura Mostra Foto e Video “Fiesta Global - 20 anni!”",
+              name = "Apertura Mostra Foto e Video",
               time = "18:00",
+              location = "SOTTOMURA STAGE"
+            ),
+            ArtistItemResponse(
+              name = "Giochi di una volta",
+              time = "19:00",
+              location = "Teatro delle isole"
+            ),
+            ArtistItemResponse(
+              name = "Concerto Jazz",
+              time = "19:00",
+              location = "SOTTOMURA STAGE"
+            ),
+            ArtistItemResponse(
+              name = "Spettacolo teatrale",
+              time = "21:00",
               location = "Teatro delle isole"
             )
           )
         ),
         DaySchedule(
-          day = "Friday",
+          day = "Venerdì",
           artists = listOf(
             ArtistItemResponse(
-              name = "Giochi di una volta e Laboratori a tema con la Capretta Cleopatra a cura di IL GIARDINO DEI COLORI",
-              time = "19:00",
+              name = "Workshop di pittura",
+              time = "17:00",
               location = "Teatro delle isole"
             ),
             ArtistItemResponse(
-              name = "RAFFAELE DI PLACIDO presenta “L’uomo che uccise Mussolini” (Piemme, 2024)",
-              time = "19:00",
-              location = "Teatro delle isole"
+              name = "Concerto rock",
+              time = "20:00",
+              location = "SOTTOMURA STAGE"
             )
           )
         )

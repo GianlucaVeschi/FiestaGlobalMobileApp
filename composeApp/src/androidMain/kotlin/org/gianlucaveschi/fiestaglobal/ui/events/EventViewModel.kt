@@ -1,4 +1,4 @@
-package org.gianlucaveschi.fiestaglobal.ui.artists
+package org.gianlucaveschi.fiestaglobal.ui.events
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -7,33 +7,33 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.gianlucaveschi.fiestaglobal.data.fetchArtists
-import org.gianlucaveschi.fiestaglobal.ui.ArtistsUiState
+import org.gianlucaveschi.fiestaglobal.data.fetchEvents
+import org.gianlucaveschi.fiestaglobal.ui.EventsUiState
 
 
-class ArtistsViewModel {
+class EventViewModel {
   private val viewModelScope = CoroutineScope(Dispatchers.Main)
 
   private val _uiState = MutableStateFlow(
-    ArtistsUiState(
+    EventsUiState(
       daySchedules = emptyList(),
       isLoading = true
     )
   )
-  val uiState: StateFlow<ArtistsUiState> = _uiState.asStateFlow()
+  val uiState: StateFlow<EventsUiState> = _uiState.asStateFlow()
 
   init {
-    loadArtists()
+    loadEvents()
   }
 
-  fun loadArtists() {
+  fun loadEvents() {
     viewModelScope.launch {
       _uiState.update { it.copy(isLoading = true, error = null) }
       try {
-        val artistsList = fetchArtists()
+        val eventsList = fetchEvents()
         _uiState.update {
           it.copy(
-            daySchedules = artistsList.schedule,
+            daySchedules = eventsList.schedule,
             isLoading = false
           )
         }

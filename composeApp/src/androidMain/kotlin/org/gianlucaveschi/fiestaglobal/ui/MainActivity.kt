@@ -1,6 +1,6 @@
 package org.gianlucaveschi.fiestaglobal.ui
 
-import ArtistDetailScreen
+import EventDetailScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -30,10 +30,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
-import org.gianlucaveschi.fiestaglobal.ui.artists.ArtistsScreen
-import org.gianlucaveschi.fiestaglobal.ui.artists.ArtistsViewModel
+import org.gianlucaveschi.fiestaglobal.ui.events.EventsScreen
+import org.gianlucaveschi.fiestaglobal.ui.events.EventViewModel
 import org.gianlucaveschi.fiestaglobal.ui.profile.ProfileScreen
-import org.gianlucaveschi.fiestaglobal.data.model.ArtistItemResponse
+import org.gianlucaveschi.fiestaglobal.data.model.EventItemResponse
 import androidx.compose.material.icons.Icons
 import org.gianlucaveschi.fiestaglobal.ui.theme.FiestaGlobalTheme
 
@@ -58,12 +58,11 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainScreen() {
-  var selectedScreen by remember { mutableStateOf(ARTIST_SCREEN) }
-  val artistsViewModel = ArtistsViewModel()
-  val uiState by artistsViewModel.uiState.collectAsState()
+  var selectedScreen by remember { mutableStateOf(EVENTS_SCREEN) }
+  val eventViewModel = EventViewModel()
+  val uiState by eventViewModel.uiState.collectAsState()
 
-  // For navigating to artist details
-  var selectedArtist by remember { mutableStateOf<ArtistItemResponse?>(null) }
+  var selectedEvents by remember { mutableStateOf< EventItemResponse?>(null) }
 
   val context = LocalContext.current
   DisposableEffect(Unit) {
@@ -91,9 +90,9 @@ fun MainScreen() {
         contentColor = Color.Black
       ) {
         NavigationBarItem(
-          icon = { Icon(Icons.Filled.Home, contentDescription = ARTIST_SCREEN) },
-          label = { Text(ARTIST_SCREEN) },
-          selected = selectedScreen == ARTIST_SCREEN,
+          icon = { Icon(Icons.Filled.Home, contentDescription = EVENTS_SCREEN) },
+          label = { Text(EVENTS_SCREEN) },
+          selected = selectedScreen == EVENTS_SCREEN,
           colors = NavigationBarItemDefaults.colors(
             selectedIconColor = Color.Black,
             selectedTextColor = Color.Black,
@@ -101,7 +100,7 @@ fun MainScreen() {
             unselectedIconColor = Color.Gray,
             unselectedTextColor = Color.Gray
           ),
-          onClick = { selectedScreen = ARTIST_SCREEN }
+          onClick = { selectedScreen = EVENTS_SCREEN }
         )
         NavigationBarItem(
           icon = { Icon(Icons.Filled.Person, contentDescription = PROFILE_SCREEN) },
@@ -125,21 +124,21 @@ fun MainScreen() {
         .padding(innerPadding)
     ) {
       when (selectedScreen) {
-        ARTIST_SCREEN ->
-          if (selectedArtist != null) {
-            ArtistDetailScreen(
-              artist = selectedArtist!!,
-              onBackClick = { selectedArtist = null }
+        EVENTS_SCREEN ->
+          if (selectedEvents != null) {
+            EventDetailScreen(
+              event = selectedEvents!!,
+              onBackClick = { selectedEvents = null }
             )
           } else {
-            ArtistsScreen(
-              uiModel = ArtistsUiState(
+            EventsScreen(
+              uiModel = EventsUiState(
                 daySchedules = uiState.daySchedules,
                 isLoading = uiState.isLoading,
                 error = uiState.error
               ),
-              onRetry = { artistsViewModel.loadArtists() },
-              onArtistClick = { artist -> selectedArtist = artist }
+              onRetry = { eventViewModel.loadEvents() },
+              onEventClick = { event -> selectedEvents = event }
             )
           }
 
@@ -149,5 +148,5 @@ fun MainScreen() {
   }
 }
 
-const val ARTIST_SCREEN = "Artists"
-const val PROFILE_SCREEN = "Profile"
+const val EVENTS_SCREEN = "Eventi"
+const val PROFILE_SCREEN = "Profilo"

@@ -3,7 +3,7 @@ package org.gianlucaveschi.fiestaglobal.data.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ArtistItemResponse(
+data class EventItemResponse(
     val name: String,
     val time: String,
     val location: String,
@@ -12,10 +12,10 @@ data class ArtistItemResponse(
 @Serializable
 data class DaySchedule(
     val day: String,
-    val artists: List<ArtistItemResponse>
+    val events: List<EventItemResponse>
 )
 
 @Serializable
-data class ArtistsListResponse(
+data class EventsListResponse(
     val schedule: List<DaySchedule>
 )

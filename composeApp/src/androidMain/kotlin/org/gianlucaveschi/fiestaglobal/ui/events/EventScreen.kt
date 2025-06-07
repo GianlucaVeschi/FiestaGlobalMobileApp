@@ -1,4 +1,4 @@
-package org.gianlucaveschi.fiestaglobal.ui.artists
+package org.gianlucaveschi.fiestaglobal.ui.events
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -47,15 +47,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
-import org.gianlucaveschi.fiestaglobal.data.model.ArtistItemResponse
+import org.gianlucaveschi.fiestaglobal.data.model.EventItemResponse
 import org.gianlucaveschi.fiestaglobal.data.model.DaySchedule
-import org.gianlucaveschi.fiestaglobal.ui.ArtistsUiState
+import org.gianlucaveschi.fiestaglobal.ui.EventsUiState
 
 @Composable
-fun ArtistsScreen(
-  uiModel: ArtistsUiState,
+fun EventsScreen(
+  uiModel: EventsUiState,
   onRetry: () -> Unit,
-  onArtistClick: (ArtistItemResponse) -> Unit = {}
+  onEventClick: (EventItemResponse) -> Unit = {}
 ) {
   val tabTitles = uiModel.daySchedules.map { it.day }
   val pagerState = rememberPagerState { tabTitles.size }
@@ -154,10 +154,10 @@ fun ArtistsScreen(
         .weight(1f)
     ) { page ->
       if (page < uiModel.daySchedules.size) {
-        ArtistsContent(
-          artists = uiModel.daySchedules[page].artists,
+        EventContent(
+          events = uiModel.daySchedules[page].events,
           onRetry = onRetry,
-          onArtistClick = onArtistClick,
+          onEventClick = onEventClick,
           searchQuery = searchQuery
         )
       }
@@ -166,32 +166,32 @@ fun ArtistsScreen(
 }
 
 @Composable
-fun ArtistsContent(
-  artists: List<ArtistItemResponse>,
+fun EventContent(
+  events: List<EventItemResponse>,
   onRetry: () -> Unit,
-  onArtistClick: (ArtistItemResponse) -> Unit,
+  onEventClick: (EventItemResponse) -> Unit,
   searchQuery: String
 ) {
-  val filteredArtists = remember(artists, searchQuery) {
+  val filteredEvents = remember(events, searchQuery) {
     if (searchQuery.isBlank()) {
-      artists
+      events
     } else {
-      artists.filter {
+      events.filter {
         it.name.contains(searchQuery, ignoreCase = true) ||
             it.location.contains(searchQuery, ignoreCase = true)
       }
     }
   }
 
-  val artistsByTime = filteredArtists.groupBy { it.time }
+  val eventsByTime = filteredEvents.groupBy { it.time }
 
   Box(
     modifier = Modifier
       .fillMaxSize()
   ) {
-    if (filteredArtists.isEmpty()) {
+    if (filteredEvents.isEmpty()) {
       Text(
-        text = "No artists found matching your search",
+        text = "Nessun risultato trovato",
         modifier = Modifier
           .fillMaxSize()
           .padding(16.dp),
@@ -202,14 +202,14 @@ fun ArtistsContent(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
       ) {
-        artistsByTime.forEach { (time, artistsAtTime) ->
+        eventsByTime.forEach { (time, eventsAtTime) ->
           item {
             TimeHeader(time = time)
           }
-          items(artistsAtTime) { artist ->
-            ArtistItem(
-              artist = artist,
-              onClick = { onArtistClick(artist) }
+          items(eventsAtTime) { event ->
+            EventItem(
+              event = event,
+              onClick = { onEventClick(event) }
             )
           }
         }
@@ -231,8 +231,8 @@ fun TimeHeader(time: String) {
 }
 
 @Composable
-fun ArtistItem(
-  artist: ArtistItemResponse,
+fun EventItem(
+  event: EventItemResponse,
   onClick: () -> Unit = {}
 ) {
   Card(
@@ -260,11 +260,11 @@ fun ArtistItem(
       ) {
         Column(modifier = Modifier.weight(1f)) {
           Text(
-            text = artist.name,
+            text = event.name,
             style = MaterialTheme.typography.titleLarge
           )
           Text(
-            text = "Palco - ${artist.location}",
+            text = "Palco - ${event.location}",
             style = MaterialTheme.typography.bodyMedium,
             color = Color.Gray
           )
@@ -277,33 +277,33 @@ fun ArtistItem(
 @Preview
 @Composable
 fun AppAndroidPreview() {
-  ArtistsScreen(
-    uiModel = ArtistsUiState(
+  EventsScreen(
+    uiModel = EventsUiState(
       daySchedules = listOf(
         DaySchedule(
           day = "Giovedì",
-          artists = listOf(
-            ArtistItemResponse(
+          events = listOf(
+            EventItemResponse(
               name = "Laboratori artistici e creativi per bambini",
               time = "18:00",
               location = "Teatro delle isole"
             ),
-            ArtistItemResponse(
+            EventItemResponse(
               name = "Apertura Mostra Foto e Video",
               time = "18:00",
               location = "SOTTOMURA STAGE"
             ),
-            ArtistItemResponse(
+            EventItemResponse(
               name = "Giochi di una volta",
               time = "19:00",
               location = "Teatro delle isole"
             ),
-            ArtistItemResponse(
+            EventItemResponse(
               name = "Concerto Jazz",
               time = "19:00",
               location = "SOTTOMURA STAGE"
             ),
-            ArtistItemResponse(
+            EventItemResponse(
               name = "Spettacolo teatrale",
               time = "21:00",
               location = "Teatro delle isole"
@@ -312,13 +312,13 @@ fun AppAndroidPreview() {
         ),
         DaySchedule(
           day = "Venerdì",
-          artists = listOf(
-            ArtistItemResponse(
+          events = listOf(
+            EventItemResponse(
               name = "Workshop di pittura",
               time = "17:00",
               location = "Teatro delle isole"
             ),
-            ArtistItemResponse(
+            EventItemResponse(
               name = "Concerto rock",
               time = "20:00",
               location = "SOTTOMURA STAGE"
@@ -330,6 +330,6 @@ fun AppAndroidPreview() {
       error = null
     ),
     onRetry = {},
-    onArtistClick = {}
+    onEventClick = {}
   )
 }

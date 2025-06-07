@@ -28,12 +28,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.gianlucaveschi.fiestaglobal.R
-import org.gianlucaveschi.fiestaglobal.data.model.ArtistItemResponse
+import org.gianlucaveschi.fiestaglobal.data.model.EventItemResponse
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ArtistDetailScreen(
-  artist: ArtistItemResponse,
+fun EventDetailScreen(
+  event: EventItemResponse,
   onBackClick: () -> Unit
 ) {
   Box(
@@ -44,7 +44,7 @@ fun ArtistDetailScreen(
     Scaffold(
       topBar = {
         TopAppBar(
-          title = { Text("Artist Details") },
+          title = { Text("Event Details") },
           navigationIcon = {
             IconButton(onClick = onBackClick) {
               Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
@@ -64,27 +64,24 @@ fun ArtistDetailScreen(
           .padding(innerPadding)
           .verticalScroll(rememberScrollState())
       ) {
-        // Artist Image
         Image(
           painter = painterResource(id = R.drawable.fiesta_global_placeholder),
-          contentDescription = "Artist image",
+          contentDescription = "Event image",
           modifier = Modifier
             .fillMaxWidth()
             .height(250.dp),
           contentScale = ContentScale.FillBounds
         )
 
-        // Artist Name
         Text(
-          text = artist.name,
+          text = event.name,
           style = MaterialTheme.typography.headlineMedium,
           fontWeight = FontWeight.Bold,
           modifier = Modifier.padding(16.dp)
         )
 
-        // Artist Time
         Text(
-          text = "Time: ${artist.time}",
+          text = "Time: ${event.time}",
           style = MaterialTheme.typography.bodyLarge,
           modifier = Modifier.padding(horizontal = 16.dp)
         )

@@ -21,6 +21,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.platform.LocalContext
 import android.view.WindowManager
 import android.app.Activity
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -41,6 +42,7 @@ import org.gianlucaveschi.fiestaglobal.ui.theme.FiestaGlobalTheme
 
 class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
+    enableEdgeToEdge()
     super.onCreate(savedInstanceState)
 
     // Make system bars (status and navigation) transparent
@@ -64,7 +66,7 @@ fun MainScreen() {
   val eventViewModel = EventViewModel()
   val uiState by eventViewModel.uiState.collectAsState()
 
-  var selectedEvents by remember { mutableStateOf< EventItemResponse?>(null) }
+  var selectedEvents by remember { mutableStateOf<EventItemResponse?>(null) }
 
   val context = LocalContext.current
   DisposableEffect(Unit) {

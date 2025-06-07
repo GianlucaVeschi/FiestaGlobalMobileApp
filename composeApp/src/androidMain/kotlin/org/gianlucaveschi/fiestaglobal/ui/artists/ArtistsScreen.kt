@@ -1,28 +1,42 @@
 package org.gianlucaveschi.fiestaglobal.ui.artists
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
-import org.gianlucaveschi.fiestaglobal.R
 import org.gianlucaveschi.fiestaglobal.data.model.ArtistItemResponse
 import org.gianlucaveschi.fiestaglobal.data.model.DaySchedule
 import org.gianlucaveschi.fiestaglobal.ui.ArtistsUiState
@@ -66,7 +80,6 @@ fun ArtistsScreen(
   Column(
     modifier = Modifier
       .fillMaxSize()
-      .systemBarsPadding()
   ) {
     TabRow(
       selectedTabIndex = pagerState.currentPage,
@@ -77,7 +90,7 @@ fun ArtistsScreen(
       contentColor = Color.Black,
       indicator = { tabPositions ->
         if (tabPositions.isNotEmpty() && pagerState.currentPage < tabPositions.size) {
-          TabRowDefaults.Indicator(
+          SecondaryIndicator(
             Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
             color = Color.Black
           )
@@ -103,10 +116,13 @@ fun ArtistsScreen(
       state = pagerState,
       modifier = Modifier
         .weight(1f)
-        .systemBarsPadding()
     ) { page ->
       if (page < uiModel.daySchedules.size) {
-        ArtistsContent(uiModel.daySchedules[page].artists, onRetry, onArtistClick)
+        ArtistsContent(
+          artists = uiModel.daySchedules[page].artists,
+          onRetry = onRetry,
+          onArtistClick = onArtistClick
+        )
       }
     }
   }
@@ -126,7 +142,7 @@ fun ArtistsContent(
   ) {
     LazyColumn(
       modifier = Modifier.fillMaxSize(),
-      contentPadding = PaddingValues(16.dp)
+      contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
     ) {
       artistsByTime.forEach { (time, artistsAtTime) ->
         item {
@@ -150,7 +166,7 @@ fun TimeHeader(time: String) {
     style = MaterialTheme.typography.headlineLarge,
     modifier = Modifier
       .fillMaxWidth()
-      .padding(vertical = 16.dp, horizontal = 8.dp),
+      .padding(vertical = 8.dp, horizontal = 8.dp),
     color = Color.Black
   )
 }

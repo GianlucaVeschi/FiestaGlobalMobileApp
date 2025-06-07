@@ -8,6 +8,6 @@ import org.gianlucaveschi.fiestaglobal.data.model.ArtistsListResponse
 suspend fun fetchArtists(): ArtistsListResponse {
   val client = httpClientAndroid
   return client.use {
-    it.get("https://simple-heroku-api-c85d9dd518e3.herokuapp.com/api/timetable").body()
+    it.get("https://fiestaglobalapp.web.app/data.json").body()
   }
 }

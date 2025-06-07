@@ -1,9 +1,9 @@
 package org.gianlucaveschi.fiestaglobal.ui
 
-import org.gianlucaveschi.fiestaglobal.data.model.ArtistItemResponse
+import org.gianlucaveschi.fiestaglobal.data.model.DaySchedule
 
 data class ArtistsUiState(
-  val artists: List<ArtistItemResponse> = emptyList(),
+  val daySchedules: List<DaySchedule>,
   val isLoading: Boolean = false,
   val error: String? = null
 )

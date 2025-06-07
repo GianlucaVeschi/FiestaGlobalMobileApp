@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import org.gianlucaveschi.fiestaglobal.R
 import org.gianlucaveschi.fiestaglobal.data.model.ArtistItemResponse
+import org.gianlucaveschi.fiestaglobal.data.model.DaySchedule
 import org.gianlucaveschi.fiestaglobal.ui.ArtistsUiState
 
 @Composable
@@ -31,9 +32,35 @@ fun ArtistsScreen(
   onRetry: () -> Unit,
   onArtistClick: (ArtistItemResponse) -> Unit = {}
 ) {
-  val tabTitles = listOf(THURSDAY_TAB, FRIDAY_TAB, SATURDAY_TAB, SUNDAY_TAB)
+  val tabTitles = uiModel.daySchedules.map { it.day }
   val pagerState = rememberPagerState { tabTitles.size }
   val coroutineScope = rememberCoroutineScope()
+
+  if (uiModel.daySchedules.isEmpty()) {
+    Box(
+      modifier = Modifier
+        .fillMaxSize()
+        .systemBarsPadding(),
+      contentAlignment = Alignment.Center
+    ) {
+      if (uiModel.isLoading) {
+        CircularProgressIndicator()
+      } else if (uiModel.error != null) {
+        Column(
+          horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+          Text("Error: ${uiModel.error}")
+          Spacer(modifier = Modifier.height(16.dp))
+          Button(onClick = onRetry) {
+            Text("Retry")
+          }
+        }
+      } else {
+        Text("No schedule available")
+      }
+    }
+    return
+  }
 
   Column(
     modifier = Modifier
@@ -48,10 +75,12 @@ fun ArtistsScreen(
       containerColor = Color.White,
       contentColor = Color.Black,
       indicator = { tabPositions ->
-        TabRowDefaults.Indicator(
-          Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
-          color = Color.Black
-        )
+        if (tabPositions.isNotEmpty() && pagerState.currentPage < tabPositions.size) {
+          TabRowDefaults.Indicator(
+            Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
+            color = Color.Black
+          )
+        }
       }
     ) {
       tabTitles.forEachIndexed { index, title ->
@@ -75,11 +104,8 @@ fun ArtistsScreen(
         .weight(1f)
         .systemBarsPadding()
     ) { page ->
-      when (page) {
-        0 -> ArtistsContent(uiModel, onRetry, onArtistClick)
-        1 -> ArtistsContent(uiModel, onRetry, onArtistClick) // TODO : Pass subset of data
-        2 -> ArtistsContent(uiModel, onRetry, onArtistClick) // TODO : Pass subset of data
-        3 -> ArtistsContent(uiModel, onRetry, onArtistClick) // TODO : Pass subset of data
+      if (page < uiModel.daySchedules.size) {
+        ArtistsContent(uiModel.daySchedules[page].artists, onRetry, onArtistClick)
       }
     }
   }
@@ -87,7 +113,7 @@ fun ArtistsScreen(
 
 @Composable
 fun ArtistsContent(
-  uiModel: ArtistsUiState,
+  artists: List<ArtistItemResponse>,
   onRetry: () -> Unit,
   onArtistClick: (ArtistItemResponse) -> Unit
 ) {
@@ -95,38 +121,15 @@ fun ArtistsContent(
     modifier = Modifier
       .fillMaxSize()
   ) {
-    when {
-      uiModel.isLoading -> {
-        CircularProgressIndicator(
-          modifier = Modifier.align(Alignment.Center)
+    LazyColumn(
+      modifier = Modifier.fillMaxSize(),
+      contentPadding = PaddingValues(16.dp)
+    ) {
+      items(artists) { artist ->
+        ArtistItem(
+          artist = artist,
+          onClick = { onArtistClick(artist) }
         )
-      }
-
-      uiModel.error != null -> {
-        Column(
-          modifier = Modifier.align(Alignment.Center),
-          horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-          Text("Error: ${uiModel.error}")
-          Spacer(modifier = Modifier.height(16.dp))
-          Button(onClick = onRetry) {
-            Text("Retry")
-          }
-        }
-      }
-
-      else -> {
-        LazyColumn(
-          modifier = Modifier.fillMaxSize(),
-          contentPadding = PaddingValues(16.dp)
-        ) {
-          items(uiModel.artists) { artist ->
-            ArtistItem(
-              artist = artist,
-              onClick = { onArtistClick(artist) }
-            )
-          }
-        }
       }
     }
   }
@@ -166,7 +169,7 @@ fun ArtistItem(
             style = MaterialTheme.typography.titleLarge
           )
           Text(
-            text = "Subtitle or description",
+            text = "Palco - ${artist.location}",
             style = MaterialTheme.typography.bodyMedium,
             color = Color.Gray
           )
@@ -175,7 +178,7 @@ fun ArtistItem(
           horizontalAlignment = Alignment.End
         ) {
           Text(
-            text = "Day",
+            text = "Orario",
             style = MaterialTheme.typography.bodyMedium
           )
           Text(
@@ -194,23 +197,37 @@ fun ArtistItem(
 fun AppAndroidPreview() {
   ArtistsScreen(
     uiModel = ArtistsUiState(
-      artists = listOf(
-        ArtistItemResponse(
-          name = "Laboratori artistici e creativi per bambini a cura di TEATRO DELLE ISOLE",
-          time = "18:00"
+      daySchedules = listOf(
+        DaySchedule(
+          day = "Thursday",
+          artists = listOf(
+            ArtistItemResponse(
+              name = "Laboratori artistici e creativi per bambini a cura di TEATRO DELLE ISOLE",
+              time = "18:00",
+              location = "Teatro delle isole"
+            ),
+            ArtistItemResponse(
+              name = "Apertura Mostra Foto e Video “Fiesta Global - 20 anni!”",
+              time = "18:00",
+              location = "Teatro delle isole"
+            )
+          )
         ),
-        ArtistItemResponse(
-          name = "Apertura Mostra Foto e Video “Fiesta Global - 20 anni!”",
-          time = "18:00"
-        ),
-        ArtistItemResponse(
-          name = "Giochi di una volta e Laboratori a tema con la Capretta Cleopatra a cura di IL GIARDINO DEI COLORI",
-          time = "19:00"
-        ),
-        ArtistItemResponse(
-          name = "RAFFAELE DI PLACIDO presenta “L’uomo che uccise Mussolini” (Piemme, 2024)",
-          time = "19:00"
-        ),
+        DaySchedule(
+          day = "Friday",
+          artists = listOf(
+            ArtistItemResponse(
+              name = "Giochi di una volta e Laboratori a tema con la Capretta Cleopatra a cura di IL GIARDINO DEI COLORI",
+              time = "19:00",
+              location = "Teatro delle isole"
+            ),
+            ArtistItemResponse(
+              name = "RAFFAELE DI PLACIDO presenta “L’uomo che uccise Mussolini” (Piemme, 2024)",
+              time = "19:00",
+              location = "Teatro delle isole"
+            )
+          )
+        )
       ),
       isLoading = false,
       error = null
@@ -219,8 +236,3 @@ fun AppAndroidPreview() {
     onArtistClick = {}
   )
 }
-
-private const val THURSDAY_TAB = "GIO 17"
-private const val FRIDAY_TAB = "VEN 18"
-private const val SATURDAY_TAB = "SAB 19"
-private const val SUNDAY_TAB = "DOM 20"

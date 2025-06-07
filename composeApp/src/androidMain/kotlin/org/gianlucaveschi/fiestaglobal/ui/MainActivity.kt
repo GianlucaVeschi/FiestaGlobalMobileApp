@@ -134,7 +134,7 @@ fun MainScreen() {
           } else {
             ArtistsScreen(
               uiModel = ArtistsUiState(
-                artists = uiState.artists,
+                daySchedules = uiState.daySchedules,
                 isLoading = uiState.isLoading,
                 error = uiState.error
               ),

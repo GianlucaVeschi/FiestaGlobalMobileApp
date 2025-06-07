@@ -41,7 +41,7 @@ fun AppNavHost(
     ) {
         composable(NavDestination.ARTISTS_ROUTE) {
             ArtistsContent(
-                uiModel = uiState,
+                artists = uiState.daySchedules.flatMap { it.artists },
                 onRetry = onRetry,
                 onArtistClick = { artist ->
                     navController.navigate(NavDestination.artistDetailRoute(artist))

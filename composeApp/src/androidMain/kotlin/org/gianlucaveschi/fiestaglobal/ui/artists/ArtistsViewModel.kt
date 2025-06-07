@@ -14,7 +14,12 @@ import org.gianlucaveschi.fiestaglobal.ui.ArtistsUiState
 class ArtistsViewModel {
   private val viewModelScope = CoroutineScope(Dispatchers.Main)
 
-  private val _uiState = MutableStateFlow(ArtistsUiState(isLoading = true))
+  private val _uiState = MutableStateFlow(
+    ArtistsUiState(
+      daySchedules = emptyList(),
+      isLoading = true
+    )
+  )
   val uiState: StateFlow<ArtistsUiState> = _uiState.asStateFlow()
 
   init {
@@ -28,7 +33,7 @@ class ArtistsViewModel {
         val artistsList = fetchArtists()
         _uiState.update {
           it.copy(
-            artists = artistsList.artists,
+            daySchedules = artistsList.schedule,
             isLoading = false
           )
         }

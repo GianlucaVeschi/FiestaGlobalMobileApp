@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -32,9 +33,10 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import org.gianlucaveschi.fiestaglobal.ui.events.EventsScreen
 import org.gianlucaveschi.fiestaglobal.ui.events.EventViewModel
-import org.gianlucaveschi.fiestaglobal.ui.profile.ProfileScreen
 import org.gianlucaveschi.fiestaglobal.data.model.EventItemResponse
+import org.gianlucaveschi.fiestaglobal.ui.profile.ProfileScreen
 import androidx.compose.material.icons.Icons
+import androidx.compose.ui.unit.dp
 import org.gianlucaveschi.fiestaglobal.ui.theme.FiestaGlobalTheme
 
 class MainActivity : ComponentActivity() {
@@ -85,7 +87,9 @@ fun MainScreen() {
   Scaffold(
     bottomBar = {
       NavigationBar(
-        modifier = Modifier.navigationBarsPadding(),
+        modifier = Modifier
+          .navigationBarsPadding()
+          .height(64.dp),
         containerColor = Color.White,
         contentColor = Color.Black
       ) {

@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.ArrowBack
@@ -42,13 +41,13 @@ fun ProfileScreen() {
   
   when (val screenState = currentScreen) {
     is ProfileScreenState.Main -> MainProfileScreen(
-      onCostsClick = { currentScreen = ProfileScreenState.CostsDetail },
+      onArtistsClick = { currentScreen = ProfileScreenState.ArtistsDetail },
       onLocationClick = { currentScreen = ProfileScreenState.LocationDetail },
       onPartnersClick = { currentScreen = ProfileScreenState.PartnersDetail },
       onContactClick = { currentScreen = ProfileScreenState.ContactDetail }
     )
-    is ProfileScreenState.CostsDetail -> DetailScreen(
-      title = "Costs",
+    is ProfileScreenState.ArtistsDetail -> ArtistsScreen(
+      title = "Artisti & Band",
       onBackClick = { currentScreen = ProfileScreenState.Main }
     )
     is ProfileScreenState.LocationDetail -> DetailScreen(
@@ -68,7 +67,7 @@ fun ProfileScreen() {
 
 @Composable
 fun MainProfileScreen(
-  onCostsClick: () -> Unit,
+  onArtistsClick: () -> Unit,
   onLocationClick: () -> Unit,
   onPartnersClick: () -> Unit,
   onContactClick: () -> Unit
@@ -76,7 +75,6 @@ fun MainProfileScreen(
   Column(
     modifier = Modifier
       .fillMaxSize()
-      .systemBarsPadding(),
   ) {
     Image(
       painter = painterResource(id = R.drawable.montefabbri_landscape),
@@ -87,21 +85,19 @@ fun MainProfileScreen(
       contentScale = ContentScale.Crop
     )
 
-    // Information Text
     Text(
       text = "Montefabbri, Italy",
       modifier = Modifier.padding(16.dp),
       style = MaterialTheme.typography.headlineSmall
     )
     
-    // Cards section
     Column(
       modifier = Modifier
         .fillMaxWidth()
         .padding(16.dp),
       verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-      ProfileCard(title = "Costs", onClick = onCostsClick)
+      ProfileCard(title = "Artisti", onClick = onArtistsClick)
       ProfileCard(title = "Find Location", onClick = onLocationClick)
       ProfileCard(title = "Partners & Sponsors", onClick = onPartnersClick)
       ProfileCard(title = "Contact", onClick = onContactClick)
@@ -183,9 +179,9 @@ fun ProfileCard(
 }
 
 sealed class ProfileScreenState {
-  object Main : ProfileScreenState()
-  object CostsDetail : ProfileScreenState()
-  object LocationDetail : ProfileScreenState()
-  object PartnersDetail : ProfileScreenState()
-  object ContactDetail : ProfileScreenState()
+  data object Main : ProfileScreenState()
+  data object ArtistsDetail : ProfileScreenState()
+  data object LocationDetail : ProfileScreenState()
+  data object PartnersDetail : ProfileScreenState()
+  data object ContactDetail : ProfileScreenState()
 }

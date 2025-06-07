@@ -1,4 +1,4 @@
-package org.gianlucaveschi.fiestaglobal.ui.events
+package org.gianlucaveschi.fiestaglobal.ui.screens.events
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

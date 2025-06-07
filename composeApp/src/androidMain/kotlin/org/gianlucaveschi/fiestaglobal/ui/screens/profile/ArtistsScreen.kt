@@ -1,4 +1,4 @@
-package org.gianlucaveschi.fiestaglobal.ui.profile
+package org.gianlucaveschi.fiestaglobal.ui.screens.profile
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

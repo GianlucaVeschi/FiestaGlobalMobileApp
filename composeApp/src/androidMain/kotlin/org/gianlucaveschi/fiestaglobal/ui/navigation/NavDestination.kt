@@ -10,7 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import org.gianlucaveschi.fiestaglobal.data.model.EventItemResponse
 import org.gianlucaveschi.fiestaglobal.ui.EventsUiState
-import org.gianlucaveschi.fiestaglobal.ui.events.EventContent
+import org.gianlucaveschi.fiestaglobal.ui.screens.events.EventContent
 import kotlinx.serialization.json.Json
 import java.net.URLDecoder
 import java.net.URLEncoder

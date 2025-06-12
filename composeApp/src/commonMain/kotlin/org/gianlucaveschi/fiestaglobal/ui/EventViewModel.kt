@@ -1,4 +1,4 @@
-package org.gianlucaveschi.fiestaglobal.ui.screens.events
+package org.gianlucaveschi.fiestaglobal.ui
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.gianlucaveschi.fiestaglobal.data.fetchEvents
-import org.gianlucaveschi.fiestaglobal.ui.EventsUiState
 
 
 class EventViewModel {

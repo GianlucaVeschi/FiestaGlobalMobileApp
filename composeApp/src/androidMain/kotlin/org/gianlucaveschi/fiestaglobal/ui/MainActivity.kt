@@ -33,7 +33,6 @@ import androidx.compose.material3.Text
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import org.gianlucaveschi.fiestaglobal.ui.screens.events.EventsScreen
-import org.gianlucaveschi.fiestaglobal.ui.screens.events.EventViewModel
 import org.gianlucaveschi.fiestaglobal.ui.screens.profile.ProfileScreen
 import androidx.compose.material.icons.Icons
 import androidx.compose.ui.unit.dp

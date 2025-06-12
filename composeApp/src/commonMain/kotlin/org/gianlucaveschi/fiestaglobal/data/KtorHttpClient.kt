@@ -1,4 +1,5 @@
-import android.util.Log
+package org.gianlucaveschi.fiestaglobal.data
+
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.HttpTimeout
@@ -38,7 +39,7 @@ val httpClientAndroid = HttpClient {
   install(Logging) {
     logger = object : Logger {
       override fun log(message: String) {
-        Log.v("Logger Ktor =>", message)
+//        Log.v("Logger Ktor =>", message)
       }
     }
     level = LogLevel.ALL
@@ -46,7 +47,7 @@ val httpClientAndroid = HttpClient {
 
   install(ResponseObserver) {
     onResponse { response ->
-      Log.d("HTTP status:", "${response.status.value}")
+//      Log.d("HTTP status:", "${response.status.value}")
     }
   }
 

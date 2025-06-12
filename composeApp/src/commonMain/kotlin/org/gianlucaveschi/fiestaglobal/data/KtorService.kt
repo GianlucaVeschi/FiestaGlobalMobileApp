@@ -1,6 +1,5 @@
 package org.gianlucaveschi.fiestaglobal.data
 
-import httpClientAndroid
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import org.gianlucaveschi.fiestaglobal.data.model.EventsListResponse

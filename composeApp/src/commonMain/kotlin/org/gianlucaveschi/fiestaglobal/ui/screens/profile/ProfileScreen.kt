@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -24,9 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import org.gianlucaveschi.fiestaglobal.R
 
 @Composable
 fun ProfileScreen() {
@@ -70,7 +69,7 @@ fun MainProfileScreen(
       .fillMaxSize()
   ) {
     Image(
-      painter = painterResource(id = R.drawable.montefabbri_landscape),
+      imageVector = Icons.AutoMirrored.Filled.ArrowBack,
       contentDescription = "Montefabbri landscape",
       modifier = Modifier
         .fillMaxWidth()

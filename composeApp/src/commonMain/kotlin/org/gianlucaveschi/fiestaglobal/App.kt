@@ -2,14 +2,12 @@ package org.gianlucaveschi.fiestaglobal
 
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import org.gianlucaveschi.fiestaglobal.ui.screens.MainScreen
+import org.gianlucaveschi.fiestaglobal.ui.MainScreen
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinContext
 import org.koin.compose.currentKoinScope
@@ -26,7 +24,6 @@ fun App() {
             ) {
                 composable("screenA") {
                     val viewModel = koinViewModel<MainViewModel>()
-                    val timer by viewModel.timer.collectAsState()
 
                     MainScreen()
                 }

@@ -1,4 +1,4 @@
-package org.gianlucaveschi.fiestaglobal.ui.screens
+package org.gianlucaveschi.fiestaglobal.ui
 
 import EventDetailScreen
 import androidx.compose.foundation.layout.Box
@@ -24,8 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import org.gianlucaveschi.fiestaglobal.data.model.EventItemResponse
-import org.gianlucaveschi.fiestaglobal.ui.EventViewModel
-import org.gianlucaveschi.fiestaglobal.ui.EventsUiState
+import org.gianlucaveschi.fiestaglobal.MainViewModel
 import org.gianlucaveschi.fiestaglobal.ui.screens.events.EventsScreen
 import org.gianlucaveschi.fiestaglobal.ui.screens.profile.ProfileScreen
 
@@ -33,8 +32,8 @@ import org.gianlucaveschi.fiestaglobal.ui.screens.profile.ProfileScreen
 @Composable
 fun MainScreen() {
   var selectedScreen by remember { mutableStateOf(EVENTS_SCREEN) }
-  val eventViewModel = EventViewModel()
-  val uiState by eventViewModel.uiState.collectAsState()
+  val mainViewModel = MainViewModel()
+  val uiState by mainViewModel.uiState.collectAsState()
 
   var selectedEvents by remember { mutableStateOf<EventItemResponse?>(null) }
 
@@ -113,7 +112,7 @@ fun MainScreen() {
                 isLoading = uiState.isLoading,
                 error = uiState.error
               ),
-              onRetry = { eventViewModel.loadEvents() },
+              onRetry = { mainViewModel.loadEvents() },
               onEventClick = { event -> selectedEvents = event }
             )
           }

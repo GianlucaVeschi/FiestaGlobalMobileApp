@@ -6,7 +6,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.WindowCompat
-import org.gianlucaveschi.fiestaglobal.ui.screens.MainScreen
 import org.gianlucaveschi.fiestaglobal.ui.theme.FiestaGlobalTheme
 
 class MainActivity : ComponentActivity() {

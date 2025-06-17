@@ -1,26 +1,50 @@
 package org.gianlucaveschi.fiestaglobal
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.gianlucaveschi.fiestaglobal.data.fetchEvents
+import org.gianlucaveschi.fiestaglobal.ui.EventsUiState
+
 
 class MainViewModel : ViewModel() {
+  private val viewModelScope = CoroutineScope(Dispatchers.Main)
 
-  private val _timer = MutableStateFlow(0)
-  val timer = _timer.asStateFlow()
+  private val _uiState = MutableStateFlow(
+    EventsUiState(
+      daySchedules = emptyList(),
+      isLoading = true
+    )
+  )
+  val uiState: StateFlow<EventsUiState> = _uiState.asStateFlow()
 
   init {
-    startTimer()
+    loadEvents()
   }
 
-  private fun startTimer() {
+  fun loadEvents() {
     viewModelScope.launch {
-      while (true) {
-        delay(1000)
-        _timer.value++
+      _uiState.update { it.copy(isLoading = true, error = null) }
+      try {
+        val eventsList = fetchEvents()
+        _uiState.update {
+          it.copy(
+            daySchedules = eventsList.schedule,
+            isLoading = false
+          )
+        }
+      } catch (e: Exception) {
+        _uiState.update {
+          it.copy(
+            isLoading = false,
+            error = e.message ?: "An unknown error occurred"
+          )
+        }
       }
     }
   }

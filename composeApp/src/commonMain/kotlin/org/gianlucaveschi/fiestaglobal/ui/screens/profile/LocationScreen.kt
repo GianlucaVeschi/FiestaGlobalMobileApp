@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailScreen(
+fun LocationScreen(
   title: String,
   onBackClick: () -> Unit
 ) {
@@ -55,9 +55,20 @@ fun DetailScreen(
       horizontalAlignment = Alignment.CenterHorizontally
     ) {
       Text(
-        text = "This is the $title detail screen",
+        text = comeArrivare,
         style = MaterialTheme.typography.bodyLarge
       )
     }
   }
 }
+
+const val comeArrivare = "Dall'autostrada A14:\n" +
+    "\n" +
+    "Esci al casello di Pesaro-Urbino.\n" +
+    "Dopo l'uscita, segui le indicazioni per la SP423 in direzione Urbino.\n" +
+    "Percorri la SP423 per circa 15 km fino a trovare il bivio per Montefabbri. Il borgo è ben segnalato lungo il percorso.\n" +
+    "Da Urbino:\n" +
+    "\n" +
+    "Prendi la SP423 in direzione Pesaro.\n" +
+    "Dopo circa 10 km, troverai le indicazioni per Montefabbri. Segui il bivio e prosegui per pochi chilometri.\n" +
+    "Montefabbri è facilmente raggiungibile tramite strade provinciali ben mantenute. Ti consiglio di prestare attenzione ai cartelli stradali, poiché il borgo è piccolo e potrebbe non apparire subito visibile."

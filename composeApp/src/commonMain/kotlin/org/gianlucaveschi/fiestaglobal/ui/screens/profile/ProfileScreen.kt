@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -24,7 +23,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
@@ -34,23 +32,20 @@ import fiestaglobalmobileapp.composeapp.generated.resources.montefabbri_landscap
 @Composable
 fun ProfileScreen() {
   var currentScreen by remember { mutableStateOf<ProfileScreenState>(ProfileScreenState.Main) }
-  
+
   when (val screenState = currentScreen) {
     is ProfileScreenState.Main -> MainProfileScreen(
       onArtistsClick = { currentScreen = ProfileScreenState.ArtistsDetail },
       onLocationClick = { currentScreen = ProfileScreenState.LocationDetail },
-      onPartnersClick = { currentScreen = ProfileScreenState.PartnersDetail },
     )
+
     is ProfileScreenState.ArtistsDetail -> ArtistsScreen(
       title = "Artisti & Band",
       onBackClick = { currentScreen = ProfileScreenState.Main }
     )
-    is ProfileScreenState.LocationDetail -> DetailScreen(
+
+    is ProfileScreenState.LocationDetail -> LocationScreen(
       title = "Come arrivare",
-      onBackClick = { currentScreen = ProfileScreenState.Main }
-    )
-    is ProfileScreenState.PartnersDetail -> DetailScreen(
-      title = "Partners & Sponsors",
       onBackClick = { currentScreen = ProfileScreenState.Main }
     )
   }
@@ -60,7 +55,6 @@ fun ProfileScreen() {
 fun MainProfileScreen(
   onArtistsClick: () -> Unit,
   onLocationClick: () -> Unit,
-  onPartnersClick: () -> Unit,
 ) {
   Column(
     modifier = Modifier
@@ -80,7 +74,7 @@ fun MainProfileScreen(
       modifier = Modifier.padding(16.dp),
       style = MaterialTheme.typography.headlineSmall
     )
-    
+
     Column(
       modifier = Modifier
         .fillMaxWidth()
@@ -89,11 +83,9 @@ fun MainProfileScreen(
     ) {
       ProfileCard(title = "Artisti", onClick = onArtistsClick)
       ProfileCard(title = "Come arrivare", onClick = onLocationClick)
-      ProfileCard(title = "Partners & Sponsors", onClick = onPartnersClick)
     }
   }
 }
-
 
 
 @Composable
@@ -131,5 +123,4 @@ sealed class ProfileScreenState {
   data object Main : ProfileScreenState()
   data object ArtistsDetail : ProfileScreenState()
   data object LocationDetail : ProfileScreenState()
-  data object PartnersDetail : ProfileScreenState()
 }

@@ -24,8 +24,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.painterResource
+import fiestaglobalmobileapp.composeapp.generated.resources.Res
+import fiestaglobalmobileapp.composeapp.generated.resources.montefabbri_landscape
 
 @Composable
 fun ProfileScreen() {
@@ -36,22 +40,17 @@ fun ProfileScreen() {
       onArtistsClick = { currentScreen = ProfileScreenState.ArtistsDetail },
       onLocationClick = { currentScreen = ProfileScreenState.LocationDetail },
       onPartnersClick = { currentScreen = ProfileScreenState.PartnersDetail },
-      onContactClick = { currentScreen = ProfileScreenState.ContactDetail }
     )
     is ProfileScreenState.ArtistsDetail -> ArtistsScreen(
       title = "Artisti & Band",
       onBackClick = { currentScreen = ProfileScreenState.Main }
     )
     is ProfileScreenState.LocationDetail -> DetailScreen(
-      title = "Find Location",
+      title = "Come arrivare",
       onBackClick = { currentScreen = ProfileScreenState.Main }
     )
     is ProfileScreenState.PartnersDetail -> DetailScreen(
       title = "Partners & Sponsors",
-      onBackClick = { currentScreen = ProfileScreenState.Main }
-    )
-    is ProfileScreenState.ContactDetail -> ContactScreen(
-      title = "Contact",
       onBackClick = { currentScreen = ProfileScreenState.Main }
     )
   }
@@ -62,19 +61,18 @@ fun MainProfileScreen(
   onArtistsClick: () -> Unit,
   onLocationClick: () -> Unit,
   onPartnersClick: () -> Unit,
-  onContactClick: () -> Unit
 ) {
   Column(
     modifier = Modifier
       .fillMaxSize()
   ) {
     Image(
-      imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+      painter = painterResource(Res.drawable.montefabbri_landscape),
       contentDescription = "Montefabbri landscape",
       modifier = Modifier
         .fillMaxWidth()
         .height(200.dp),
-      contentScale = ContentScale.Crop
+      contentScale = ContentScale.Fit
     )
 
     Text(
@@ -90,9 +88,8 @@ fun MainProfileScreen(
       verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
       ProfileCard(title = "Artisti", onClick = onArtistsClick)
-      ProfileCard(title = "Find Location", onClick = onLocationClick)
+      ProfileCard(title = "Come arrivare", onClick = onLocationClick)
       ProfileCard(title = "Partners & Sponsors", onClick = onPartnersClick)
-      ProfileCard(title = "Contact", onClick = onContactClick)
     }
   }
 }
@@ -135,5 +132,4 @@ sealed class ProfileScreenState {
   data object ArtistsDetail : ProfileScreenState()
   data object LocationDetail : ProfileScreenState()
   data object PartnersDetail : ProfileScreenState()
-  data object ContactDetail : ProfileScreenState()
 }

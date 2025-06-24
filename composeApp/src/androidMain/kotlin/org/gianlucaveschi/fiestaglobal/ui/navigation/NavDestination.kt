@@ -10,7 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import org.gianlucaveschi.fiestaglobal.domain.model.Event
 import org.gianlucaveschi.fiestaglobal.ui.EventsUiState
-import org.gianlucaveschi.fiestaglobal.ui.screens.events.EventContent
+import org.gianlucaveschi.fiestaglobal.ui.screens.events.EventsScreen
 import java.net.URLDecoder
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
@@ -42,13 +42,12 @@ fun AppNavHost(
         startDestination = startDestination
     ) {
         composable(NavDestination.EVENTS_ROUTE) {
-            EventContent(
-                events = uiState.daySchedules.flatMap { it.events },
+            EventsScreen(
+                uiState = uiState,
                 onRetry = onRetry,
                 onEventClick = { event ->
                     navController.navigate(NavDestination.eventDetailRoute(event))
-                },
-                searchQuery = ""
+                }
             )
         }
 

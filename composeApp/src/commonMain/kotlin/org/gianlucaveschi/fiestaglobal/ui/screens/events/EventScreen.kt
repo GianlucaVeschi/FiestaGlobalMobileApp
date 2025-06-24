@@ -1,5 +1,10 @@
 package org.gianlucaveschi.fiestaglobal.ui.screens.events
 
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -12,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
@@ -42,6 +48,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
@@ -52,37 +61,119 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun EventsScreen(
-  uiModel: EventsUiState,
+  uiState: EventsUiState,
   onRetry: () -> Unit,
   onEventClick: (Event) -> Unit = {}
 ) {
-  val tabTitles = uiModel.daySchedules.map { it.day }
+  when (uiState) {
+    is EventsUiState.Loading -> {
+      LoadingEventScreen()
+    }
+    is EventsUiState.Error -> {
+      ErrorEventScreen(
+        message = uiState.message,
+        onRetry = onRetry
+      )
+    }
+    is EventsUiState.Success -> {
+      SuccessEventScreen(
+        daySchedules = uiState.daySchedules,
+        onRetry = onRetry,
+        onEventClick = onEventClick
+      )
+    }
+  }
+}
+
+@Composable
+private fun LoadingEventScreen() {
+  Column(
+    modifier = Modifier.fillMaxSize()
+  ) {
+    Row(
+      modifier = Modifier
+        .fillMaxWidth()
+        .background(Color.White)
+        .padding(horizontal = 16.dp, vertical = 8.dp)
+    ) {
+      repeat(3) { index ->
+        Box(
+          modifier = Modifier
+            .width(80.dp)
+            .height(32.dp)
+            .shimmerEffect()
+        )
+        if (index < 2) {
+          Spacer(modifier = Modifier.width(16.dp))
+        }
+      }
+    }
+
+    Box(
+      modifier = Modifier
+        .fillMaxWidth()
+        .height(56.dp)
+        .padding(16.dp)
+        .shimmerEffect()
+    )
+
+    LazyColumn(
+      modifier = Modifier.fillMaxSize(),
+      contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+    ) {
+      items(6) {
+        ShimmerEventCard()
+      }
+    }
+  }
+}
+
+@Composable
+private fun ErrorEventScreen(
+  message: String,
+  onRetry: () -> Unit
+) {
+  Box(
+    modifier = Modifier
+      .fillMaxSize()
+      .systemBarsPadding(),
+    contentAlignment = Alignment.Center
+  ) {
+    Column(
+      horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+      Text(
+        text = "Error: $message",
+        style = MaterialTheme.typography.bodyLarge,
+        color = MaterialTheme.colorScheme.error
+      )
+      Spacer(modifier = Modifier.height(16.dp))
+      Button(onClick = onRetry) {
+        Text("Retry")
+      }
+    }
+  }
+}
+
+@Composable
+private fun SuccessEventScreen(
+  daySchedules: List<DaySchedule>,
+  onRetry: () -> Unit,
+  onEventClick: (Event) -> Unit
+) {
+  val tabTitles = daySchedules.map { it.day }
   val pagerState = rememberPagerState { tabTitles.size }
   val coroutineScope = rememberCoroutineScope()
   var searchQuery by remember { mutableStateOf("") }
 
-  if (uiModel.daySchedules.isEmpty()) {
+  if (daySchedules.isEmpty()) {
     Box(
       modifier = Modifier
         .fillMaxSize()
         .systemBarsPadding(),
       contentAlignment = Alignment.Center
     ) {
-      if (uiModel.isLoading) {
-        CircularProgressIndicator()
-      } else if (uiModel.error != null) {
-        Column(
-          horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-          Text("Error: ${uiModel.error}")
-          Spacer(modifier = Modifier.height(16.dp))
-          Button(onClick = onRetry) {
-            Text("Retry")
-          }
-        }
-      } else {
-        Text("No schedule available")
-      }
+      Text("No schedule available")
     }
     return
   }
@@ -152,9 +243,9 @@ fun EventsScreen(
       modifier = Modifier
         .weight(1f)
     ) { page ->
-      if (page < uiModel.daySchedules.size) {
+      if (page < daySchedules.size) {
         EventContent(
-          events = uiModel.daySchedules[page].events,
+          events = daySchedules[page].events,
           onRetry = onRetry,
           onEventClick = onEventClick,
           searchQuery = searchQuery
@@ -162,6 +253,69 @@ fun EventsScreen(
       }
     }
   }
+}
+
+@Composable
+private fun ShimmerEventCard() {
+  Card(
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(8.dp),
+    shape = RoundedCornerShape(16.dp),
+    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+  ) {
+    Column {
+      Row(
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically
+      ) {
+        Column(modifier = Modifier.weight(1f)) {
+          // Shimmer for event name
+          Box(
+            modifier = Modifier
+              .fillMaxWidth(0.7f)
+              .height(20.dp)
+              .shimmerEffect()
+          )
+          Spacer(modifier = Modifier.height(8.dp))
+          // Shimmer for location
+          Box(
+            modifier = Modifier
+              .fillMaxWidth(0.5f)
+              .height(16.dp)
+              .shimmerEffect()
+          )
+        }
+      }
+    }
+  }
+}
+
+@Composable
+private fun Modifier.shimmerEffect(): Modifier = composed {
+  val transition = rememberInfiniteTransition()
+  val alpha = transition.animateFloat(
+    initialValue = 0.2f,
+    targetValue = 0.9f,
+    animationSpec = infiniteRepeatable(
+      animation = tween(durationMillis = 1000),
+      repeatMode = RepeatMode.Reverse
+    )
+  ).value
+
+  background(
+    brush = Brush.linearGradient(
+      colors = listOf(
+        Color.LightGray.copy(alpha = alpha),
+        Color.Gray.copy(alpha = alpha)
+      ),
+      start = Offset.Zero,
+      end = Offset(1000f, 1000f)
+    ),
+    shape = RoundedCornerShape(4.dp)
+  )
 }
 
 @Composable
@@ -275,9 +429,29 @@ fun EventItem(
 
 @Preview
 @Composable
+fun LoadingEventScreenPreview() {
+  EventsScreen(
+    uiState = EventsUiState.Loading,
+    onRetry = {},
+    onEventClick = {}
+  )
+}
+
+@Preview
+@Composable
+fun ErrorEventScreenPreview() {
+  EventsScreen(
+    uiState = EventsUiState.Error("Network connection failed"),
+    onRetry = {},
+    onEventClick = {}
+  )
+}
+
+@Preview
+@Composable
 fun AppAndroidPreview() {
   EventsScreen(
-    uiModel = EventsUiState(
+    uiState = EventsUiState.Success(
       daySchedules = listOf(
         DaySchedule(
           day = "Giovedì",
@@ -324,9 +498,7 @@ fun AppAndroidPreview() {
             )
           )
         )
-      ),
-      isLoading = false,
-      error = null
+      )
     ),
     onRetry = {},
     onEventClick = {}

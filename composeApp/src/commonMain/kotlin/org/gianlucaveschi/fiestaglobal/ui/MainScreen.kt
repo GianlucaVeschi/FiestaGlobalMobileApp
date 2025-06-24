@@ -108,11 +108,7 @@ fun MainScreen() {
             )
           } else {
             EventsScreen(
-              uiModel = EventsUiState(
-                daySchedules = uiState.daySchedules,
-                isLoading = uiState.isLoading,
-                error = uiState.error
-              ),
+              uiState = uiState,
               onRetry = { mainViewModel.loadEvents() },
               onEventClick = {
                 // TODO: Navigation to detail screen is disabled as there is no real data yet

@@ -27,12 +27,13 @@ import org.gianlucaveschi.fiestaglobal.domain.model.Event
 import org.gianlucaveschi.fiestaglobal.MainViewModel
 import org.gianlucaveschi.fiestaglobal.ui.screens.events.EventsScreen
 import org.gianlucaveschi.fiestaglobal.ui.screens.profile.ProfileScreen
+import org.koin.compose.koinInject
 
 
 @Composable
 fun MainScreen() {
   var selectedScreen by remember { mutableStateOf(EVENTS_SCREEN) }
-  val mainViewModel = MainViewModel()
+  val mainViewModel: MainViewModel = koinInject()
   val uiState by mainViewModel.uiState.collectAsState()
 
   var selectedEvents by remember { mutableStateOf<Event?>(null) }

@@ -8,12 +8,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.gianlucaveschi.fiestaglobal.data.fetchEvents
- import org.gianlucaveschi.fiestaglobal.domain.mapper.toDomain
+import org.gianlucaveschi.fiestaglobal.domain.repository.EventRepository
 import org.gianlucaveschi.fiestaglobal.ui.EventsUiState
 
 
-class MainViewModel : ViewModel() {
+class MainViewModel(
+  private val eventRepository: EventRepository
+) : ViewModel() {
   private val viewModelScope = CoroutineScope(Dispatchers.Main)
 
   private val _uiState = MutableStateFlow(
@@ -32,11 +33,10 @@ class MainViewModel : ViewModel() {
     viewModelScope.launch {
       _uiState.update { it.copy(isLoading = true, error = null) }
       try {
-        val eventsList = fetchEvents()
-        val domainEventSchedule = eventsList.toDomain()
+        val eventSchedule = eventRepository.getEvents()
         _uiState.update {
           it.copy(
-            daySchedules = domainEventSchedule.schedule,
+            daySchedules = eventSchedule.schedule,
             isLoading = false
           )
         }

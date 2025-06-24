@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.gianlucaveschi.fiestaglobal.data.fetchEvents
+ import org.gianlucaveschi.fiestaglobal.domain.mapper.toDomain
 import org.gianlucaveschi.fiestaglobal.ui.EventsUiState
 
 
@@ -32,9 +33,10 @@ class MainViewModel : ViewModel() {
       _uiState.update { it.copy(isLoading = true, error = null) }
       try {
         val eventsList = fetchEvents()
+        val domainEventSchedule = eventsList.toDomain()
         _uiState.update {
           it.copy(
-            daySchedules = eventsList.schedule,
+            daySchedules = domainEventSchedule.schedule,
             isLoading = false
           )
         }

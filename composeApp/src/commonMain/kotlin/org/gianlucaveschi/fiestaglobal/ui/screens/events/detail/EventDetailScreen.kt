@@ -23,12 +23,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import org.gianlucaveschi.fiestaglobal.data.model.EventItemResponse
+import org.gianlucaveschi.fiestaglobal.domain.model.Event
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EventDetailScreen(
-  event: EventItemResponse,
+  event: Event,
   onBackClick: () -> Unit
 ) {
   Box(

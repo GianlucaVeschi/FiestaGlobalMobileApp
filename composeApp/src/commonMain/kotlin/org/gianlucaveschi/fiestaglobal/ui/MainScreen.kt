@@ -23,7 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import org.gianlucaveschi.fiestaglobal.data.model.EventItemResponse
+import org.gianlucaveschi.fiestaglobal.domain.model.Event
 import org.gianlucaveschi.fiestaglobal.MainViewModel
 import org.gianlucaveschi.fiestaglobal.ui.screens.events.EventsScreen
 import org.gianlucaveschi.fiestaglobal.ui.screens.profile.ProfileScreen
@@ -35,7 +35,7 @@ fun MainScreen() {
   val mainViewModel = MainViewModel()
   val uiState by mainViewModel.uiState.collectAsState()
 
-  var selectedEvents by remember { mutableStateOf<EventItemResponse?>(null) }
+  var selectedEvents by remember { mutableStateOf<Event?>(null) }
 
 //  val context = LocalContext.current
 //  DisposableEffect(Unit) {

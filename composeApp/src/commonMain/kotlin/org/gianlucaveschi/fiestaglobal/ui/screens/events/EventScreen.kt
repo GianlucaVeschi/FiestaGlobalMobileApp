@@ -45,8 +45,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
-import org.gianlucaveschi.fiestaglobal.data.model.DaySchedule
-import org.gianlucaveschi.fiestaglobal.data.model.EventItemResponse
+import org.gianlucaveschi.fiestaglobal.domain.model.DaySchedule
+import org.gianlucaveschi.fiestaglobal.domain.model.Event
 import org.gianlucaveschi.fiestaglobal.ui.EventsUiState
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -54,7 +54,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun EventsScreen(
   uiModel: EventsUiState,
   onRetry: () -> Unit,
-  onEventClick: (EventItemResponse) -> Unit = {}
+  onEventClick: (Event) -> Unit = {}
 ) {
   val tabTitles = uiModel.daySchedules.map { it.day }
   val pagerState = rememberPagerState { tabTitles.size }
@@ -166,9 +166,9 @@ fun EventsScreen(
 
 @Composable
 fun EventContent(
-  events: List<EventItemResponse>,
+  events: List<Event>,
   onRetry: () -> Unit,
-  onEventClick: (EventItemResponse) -> Unit,
+  onEventClick: (Event) -> Unit,
   searchQuery: String
 ) {
   val filteredEvents = remember(events, searchQuery) {
@@ -231,7 +231,7 @@ fun TimeHeader(time: String) {
 
 @Composable
 fun EventItem(
-  event: EventItemResponse,
+  event: Event,
   onClick: () -> Unit = {}
 ) {
   Card(
@@ -282,27 +282,27 @@ fun AppAndroidPreview() {
         DaySchedule(
           day = "Giovedì",
           events = listOf(
-            EventItemResponse(
+            Event(
               name = "Laboratori artistici e creativi per bambini",
               time = "18:00",
               location = "Teatro delle isole"
             ),
-            EventItemResponse(
+            Event(
               name = "Apertura Mostra Foto e Video",
               time = "18:00",
               location = "SOTTOMURA STAGE"
             ),
-            EventItemResponse(
+            Event(
               name = "Giochi di una volta",
               time = "19:00",
               location = "Teatro delle isole"
             ),
-            EventItemResponse(
+            Event(
               name = "Concerto Jazz",
               time = "19:00",
               location = "SOTTOMURA STAGE"
             ),
-            EventItemResponse(
+            Event(
               name = "Spettacolo teatrale",
               time = "21:00",
               location = "Teatro delle isole"
@@ -312,12 +312,12 @@ fun AppAndroidPreview() {
         DaySchedule(
           day = "Venerdì",
           events = listOf(
-            EventItemResponse(
+            Event(
               name = "Workshop di pittura",
               time = "17:00",
               location = "Teatro delle isole"
             ),
-            EventItemResponse(
+            Event(
               name = "Concerto rock",
               time = "20:00",
               location = "SOTTOMURA STAGE"

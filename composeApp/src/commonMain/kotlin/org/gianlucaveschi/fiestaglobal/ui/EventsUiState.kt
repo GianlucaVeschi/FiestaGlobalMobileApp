@@ -1,6 +1,6 @@
 package org.gianlucaveschi.fiestaglobal.ui
 
-import org.gianlucaveschi.fiestaglobal.data.model.DaySchedule
+import org.gianlucaveschi.fiestaglobal.domain.model.DaySchedule
 
 data class EventsUiState(
   val daySchedules: List<DaySchedule>,

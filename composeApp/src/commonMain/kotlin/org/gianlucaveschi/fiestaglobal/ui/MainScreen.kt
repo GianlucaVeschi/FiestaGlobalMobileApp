@@ -113,7 +113,10 @@ fun MainScreen() {
                 error = uiState.error
               ),
               onRetry = { mainViewModel.loadEvents() },
-              onEventClick = { event -> selectedEvents = event }
+              onEventClick = {
+                // TODO: Navigation to detail screen is disabled as there is no real data yet
+                //  event -> selectedEvents = event
+              }
             )
           }
 

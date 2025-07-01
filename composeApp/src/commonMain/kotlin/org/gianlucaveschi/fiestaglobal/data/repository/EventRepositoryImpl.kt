@@ -15,8 +15,10 @@ class EventRepositoryImpl : EventRepository {
             val eventsListResponse = fetchEvents()
             val domainEventSchedule = eventsListResponse.toDomain()
             emit(Result.Success(domainEventSchedule))
+        } catch (exception: kotlinx.io.IOException) {
+            emit(Result.Error(Exception("IOException error: ${exception.message}")))
         } catch (exception: Exception) {
-            emit(Result.Error(exception))
+            emit(Result.Error(Exception("Unexpected error: ${exception.message}")))
         }
     }
-} 
+}

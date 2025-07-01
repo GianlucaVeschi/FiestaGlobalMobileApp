@@ -1,8 +1,7 @@
 package org.gianlucaveschi.fiestaglobal
 
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,8 +14,6 @@ import org.gianlucaveschi.fiestaglobal.ui.EventsUiState
 class MainViewModel(
   private val eventRepository: EventRepository
 ) : ViewModel() {
-
-  private val viewModelScope = CoroutineScope(Dispatchers.Main)
 
   private val _uiState = MutableStateFlow<EventsUiState>(EventsUiState.Loading)
   val uiState: StateFlow<EventsUiState> = _uiState.asStateFlow()

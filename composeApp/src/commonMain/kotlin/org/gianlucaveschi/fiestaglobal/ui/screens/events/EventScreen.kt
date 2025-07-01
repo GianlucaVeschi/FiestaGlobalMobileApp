@@ -27,6 +27,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -69,12 +70,14 @@ fun EventsScreen(
     is EventsUiState.Loading -> {
       LoadingEventScreen()
     }
+
     is EventsUiState.Error -> {
       ErrorEventScreen(
         message = uiState.message,
         onRetry = onRetry
       )
     }
+
     is EventsUiState.Success -> {
       SuccessEventScreen(
         daySchedules = uiState.daySchedules,
@@ -136,6 +139,7 @@ private fun ErrorEventScreen(
   Box(
     modifier = Modifier
       .fillMaxSize()
+      .padding(16.dp)
       .systemBarsPadding(),
     contentAlignment = Alignment.Center
   ) {
@@ -143,14 +147,27 @@ private fun ErrorEventScreen(
       horizontalAlignment = Alignment.CenterHorizontally
     ) {
       Text(
-        text = "Error: $message",
+        text = "Ci dispiace ma si è verificato un errore, controlla la tua connessione a Internet",
+        style = MaterialTheme.typography.titleMedium,
+        color = MaterialTheme.colorScheme.error
+      )
+      Spacer(modifier = Modifier.height(16.dp))
+      Text(
+        text = "$message",
         style = MaterialTheme.typography.bodyLarge,
         color = MaterialTheme.colorScheme.error
       )
       Spacer(modifier = Modifier.height(16.dp))
-      Button(onClick = onRetry) {
-        Text("Retry")
+      Button(
+        onClick = onRetry,
+        colors = ButtonDefaults.buttonColors(
+          containerColor = MaterialTheme.colorScheme.error,
+          contentColor = MaterialTheme.colorScheme.onError,
+        )
+      ) {
+        Text("Riprova")
       }
+
     }
   }
 }

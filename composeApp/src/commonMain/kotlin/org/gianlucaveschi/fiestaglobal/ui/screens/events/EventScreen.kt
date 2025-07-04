@@ -30,7 +30,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -54,11 +53,11 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import kotlinx.coroutines.launch
 import org.gianlucaveschi.fiestaglobal.domain.model.DaySchedule
 import org.gianlucaveschi.fiestaglobal.domain.model.Event
 import org.gianlucaveschi.fiestaglobal.ui.EventsUiState
-import org.gianlucaveschi.fiestaglobal.ui.components.AsyncImage
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -168,7 +167,6 @@ private fun ErrorEventScreen(
       ) {
         Text("Riprova")
       }
-
     }
   }
 }
@@ -416,34 +414,11 @@ fun EventItem(
   ) {
     Column {
       AsyncImage(
-        imageUrl = event.imageUrl,
-        contentDescription = "Event image for ${event.name}",
+        model = event.imageUrl,
+        contentDescription = null,
         modifier = Modifier
           .fillMaxWidth()
           .height(150.dp),
-        onLoading = {
-          Box(
-            modifier = Modifier
-              .fillMaxWidth()
-              .height(150.dp),
-            contentAlignment = Alignment.Center
-          ) {
-            CircularProgressIndicator()
-          }
-        },
-        onError = {
-          Box(
-            modifier = Modifier
-              .fillMaxWidth()
-              .height(150.dp),
-            contentAlignment = Alignment.Center
-          ) {
-            Text(
-              text = "Failed to load image",
-              color = Color.Red
-            )
-          }
-        }
       )
       Row(
         modifier = Modifier

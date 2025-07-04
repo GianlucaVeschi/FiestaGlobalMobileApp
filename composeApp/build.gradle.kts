@@ -35,7 +35,8 @@ kotlin {
 
       implementation(libs.koin.android)
       implementation(libs.koin.androidx.compose)
-      implementation(libs.coil.compose)
+
+      implementation(libs.ktor.client.android)
     }
     commonMain.dependencies {
       implementation(compose.runtime)
@@ -60,9 +61,13 @@ kotlin {
       api(libs.koin.core)
       implementation(libs.koin.compose)
       implementation(libs.lifecycle.viewmodel)
+
+      implementation(libs.coil.compose)
+      implementation(libs.coil.network)
     }
     iosMain.dependencies {
       implementation(libs.ktor.client.ios)
+      implementation(libs.ktor.client.darwin)
     }
   }
 

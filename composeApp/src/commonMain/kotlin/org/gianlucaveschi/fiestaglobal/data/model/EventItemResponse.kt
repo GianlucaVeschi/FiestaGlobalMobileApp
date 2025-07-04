@@ -11,6 +11,8 @@ data class EventItemResponse(
   val time: String,
   @SerialName("location")
   val location: String,
+  @SerialName("imageUrl")
+  val imageUrl: String,
 )
 
 @Serializable

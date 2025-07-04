@@ -8,22 +8,23 @@ import org.gianlucaveschi.fiestaglobal.domain.model.DaySchedule
 import org.gianlucaveschi.fiestaglobal.domain.model.EventSchedule
 
 fun EventItemResponse.toDomain(): Event {
-    return Event(
-        name = this.name,
-        time = this.time,
-        location = this.location
-    )
+  return Event(
+    name = this.name,
+    time = this.time,
+    location = this.location,
+    imageUrl = this.imageUrl
+  )
 }
 
 fun DataDaySchedule.toDomain(): DaySchedule {
-    return DaySchedule(
-        day = this.day,
-        events = this.events.map { it.toDomain() }
-    )
+  return DaySchedule(
+    day = this.day,
+    events = this.events.map { it.toDomain() }
+  )
 }
 
 fun EventsListResponse.toDomain(): EventSchedule {
-    return EventSchedule(
-        schedule = this.schedule.map { it.toDomain() }
-    )
+  return EventSchedule(
+    schedule = this.schedule.map { it.toDomain() }
+  )
 } 

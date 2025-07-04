@@ -71,7 +71,8 @@ fun AppNavHost(
                 val event = Event(
                     name = decodedName,
                     time = decodedTime,
-                    location = decodedLocation
+                    location = decodedLocation,
+                    imageUrl = ""
                 )
                 
                 EventDetailScreen(

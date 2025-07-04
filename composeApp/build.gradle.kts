@@ -35,6 +35,7 @@ kotlin {
 
       implementation(libs.koin.android)
       implementation(libs.koin.androidx.compose)
+      implementation(libs.coil.compose)
     }
     commonMain.dependencies {
       implementation(compose.runtime)
@@ -75,8 +76,8 @@ android {
     applicationId = "org.gianlucaveschi.fiestaglobal"
     minSdk = libs.versions.android.minSdk.get().toInt()
     targetSdk = libs.versions.android.targetSdk.get().toInt()
-    versionCode = 6
-    versionName = "1.0.6"
+    versionCode = 7
+    versionName = "1.0.7"
   }
   packaging {
     resources {

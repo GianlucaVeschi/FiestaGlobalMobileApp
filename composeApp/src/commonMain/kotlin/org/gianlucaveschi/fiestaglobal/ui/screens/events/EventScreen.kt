@@ -58,6 +58,7 @@ import kotlinx.coroutines.launch
 import org.gianlucaveschi.fiestaglobal.domain.model.DaySchedule
 import org.gianlucaveschi.fiestaglobal.domain.model.Event
 import org.gianlucaveschi.fiestaglobal.ui.EventsUiState
+import org.gianlucaveschi.fiestaglobal.ui.components.AsyncImage
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -153,7 +154,7 @@ private fun ErrorEventScreen(
       )
       Spacer(modifier = Modifier.height(16.dp))
       Text(
-        text = "$message",
+        text = message,
         style = MaterialTheme.typography.bodyLarge,
         color = MaterialTheme.colorScheme.error
       )
@@ -414,14 +415,36 @@ fun EventItem(
     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
   ) {
     Column {
-//      Image(
-//        painter = painterResource(id = R.drawable.fiesta_global_placeholder),
-//        contentDescription = null,
-//        modifier = Modifier
-//          .fillMaxWidth()
-//          .height(150.dp),
-//        contentScale = ContentScale.Crop
-//      )
+      AsyncImage(
+        imageUrl = event.imageUrl,
+        contentDescription = "Event image for ${event.name}",
+        modifier = Modifier
+          .fillMaxWidth()
+          .height(150.dp),
+        onLoading = {
+          Box(
+            modifier = Modifier
+              .fillMaxWidth()
+              .height(150.dp),
+            contentAlignment = Alignment.Center
+          ) {
+            CircularProgressIndicator()
+          }
+        },
+        onError = {
+          Box(
+            modifier = Modifier
+              .fillMaxWidth()
+              .height(150.dp),
+            contentAlignment = Alignment.Center
+          ) {
+            Text(
+              text = "Failed to load image",
+              color = Color.Red
+            )
+          }
+        }
+      )
       Row(
         modifier = Modifier
           .fillMaxWidth()
@@ -476,27 +499,32 @@ fun AppAndroidPreview() {
             Event(
               name = "Laboratori artistici e creativi per bambini",
               time = "18:00",
-              location = "Teatro delle isole"
+              location = "Teatro delle isole",
+              imageUrl = "",
             ),
             Event(
               name = "Apertura Mostra Foto e Video",
               time = "18:00",
-              location = "SOTTOMURA STAGE"
+              location = "SOTTOMURA STAGE",
+              imageUrl = "",
             ),
             Event(
               name = "Giochi di una volta",
               time = "19:00",
-              location = "Teatro delle isole"
+              location = "Teatro delle isole",
+              imageUrl = "",
             ),
             Event(
               name = "Concerto Jazz",
               time = "19:00",
-              location = "SOTTOMURA STAGE"
+              location = "SOTTOMURA STAGE",
+              imageUrl = "",
             ),
             Event(
               name = "Spettacolo teatrale",
               time = "21:00",
-              location = "Teatro delle isole"
+              location = "Teatro delle isole",
+              imageUrl = "",
             )
           )
         ),
@@ -506,12 +534,14 @@ fun AppAndroidPreview() {
             Event(
               name = "Workshop di pittura",
               time = "17:00",
-              location = "Teatro delle isole"
+              location = "Teatro delle isole",
+              imageUrl = "",
             ),
             Event(
               name = "Concerto rock",
               time = "20:00",
-              location = "SOTTOMURA STAGE"
+              location = "SOTTOMURA STAGE",
+              imageUrl = "",
             )
           )
         )

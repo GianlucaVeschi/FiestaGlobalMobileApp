@@ -30,6 +30,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -52,8 +53,9 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
+import coil3.compose.SubcomposeAsyncImage
 import kotlinx.coroutines.launch
 import org.gianlucaveschi.fiestaglobal.domain.model.DaySchedule
 import org.gianlucaveschi.fiestaglobal.domain.model.Event
@@ -413,13 +415,28 @@ fun EventItem(
     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
   ) {
     Column {
-      AsyncImage(
-        model = event.imageUrl,
-        contentDescription = null,
-        modifier = Modifier
-          .fillMaxWidth()
-          .height(150.dp),
-      )
+      // Only display the image view if the URL is not blank
+      if (event.imageUrl.isNotBlank()) {
+        SubcomposeAsyncImage(
+          model = event.imageUrl,
+          contentDescription = event.name,
+          modifier = Modifier
+            .fillMaxWidth()
+            .height(150.dp),
+          contentScale = ContentScale.Crop,
+          loading = {
+            // Show a spinner in the center while the image is loading
+            Box(
+              modifier = Modifier.fillMaxSize(),
+              contentAlignment = Alignment.Center
+            ) {
+              CircularProgressIndicator()
+            }
+          }
+          // The success state is handled by default, which displays the image.
+          // An optional error placeholder can be provided via the `error` parameter.
+        )
+      }
       Row(
         modifier = Modifier
           .fillMaxWidth()

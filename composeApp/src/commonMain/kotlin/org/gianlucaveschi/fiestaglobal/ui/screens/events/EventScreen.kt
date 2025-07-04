@@ -55,6 +55,12 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import coil3.compose.SubcomposeAsyncImage
 import kotlinx.coroutines.launch
 import org.gianlucaveschi.fiestaglobal.domain.model.DaySchedule
@@ -183,6 +189,7 @@ private fun SuccessEventScreen(
   val pagerState = rememberPagerState { tabTitles.size }
   val coroutineScope = rememberCoroutineScope()
   var searchQuery by remember { mutableStateOf("") }
+  val focusRequester = remember { FocusRequester() }
 
   if (daySchedules.isEmpty()) {
     Box(
@@ -237,7 +244,8 @@ private fun SuccessEventScreen(
       label = { Text("Cerca artisti e performance") },
       modifier = Modifier
         .fillMaxWidth()
-        .padding(16.dp),
+        .padding(16.dp)
+        .focusRequester(focusRequester),
       colors = OutlinedTextFieldDefaults.colors(
         focusedBorderColor = Color.Black,
         unfocusedBorderColor = Color.Black,
@@ -245,6 +253,15 @@ private fun SuccessEventScreen(
         unfocusedLabelColor = Color.Gray
       ),
       shape = RoundedCornerShape(8.dp),
+      keyboardOptions = KeyboardOptions(
+        keyboardType = KeyboardType.Text,
+        imeAction = ImeAction.Search
+      ),
+      keyboardActions = KeyboardActions(
+        onSearch = {
+          focusRequester.freeFocus()
+        }
+      ),
       trailingIcon = {
         if (searchQuery.isNotBlank()) {
           IconButton(onClick = { searchQuery = "" }) {

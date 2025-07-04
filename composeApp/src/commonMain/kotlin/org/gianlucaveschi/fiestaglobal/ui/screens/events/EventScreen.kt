@@ -61,6 +61,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalFocusManager
 import coil3.compose.SubcomposeAsyncImage
 import kotlinx.coroutines.launch
 import org.gianlucaveschi.fiestaglobal.domain.model.DaySchedule
@@ -190,6 +191,7 @@ private fun SuccessEventScreen(
   val coroutineScope = rememberCoroutineScope()
   var searchQuery by remember { mutableStateOf("") }
   val focusRequester = remember { FocusRequester() }
+  val focusManager = LocalFocusManager.current
 
   if (daySchedules.isEmpty()) {
     Box(
@@ -255,11 +257,14 @@ private fun SuccessEventScreen(
       shape = RoundedCornerShape(8.dp),
       keyboardOptions = KeyboardOptions(
         keyboardType = KeyboardType.Text,
-        imeAction = ImeAction.Search
+        imeAction = ImeAction.Done
       ),
       keyboardActions = KeyboardActions(
         onSearch = {
-          focusRequester.freeFocus()
+          focusManager.clearFocus()
+        },
+        onDone = {
+          focusManager.clearFocus()
         }
       ),
       trailingIcon = {

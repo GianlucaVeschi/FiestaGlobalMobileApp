@@ -527,30 +527,35 @@ fun AppAndroidPreview() {
               time = "18:00",
               location = "Teatro delle isole",
               imageUrl = "",
+              description = "Workshop creativo per i più piccoli"
             ),
             Event(
               name = "Apertura Mostra Foto e Video",
               time = "18:00",
               location = "SOTTOMURA STAGE",
               imageUrl = "",
+              description = "Inaugurazione mostra fotografica"
             ),
             Event(
               name = "Giochi di una volta",
               time = "19:00",
               location = "Teatro delle isole",
               imageUrl = "",
+              description = "Giochi tradizionali per tutta la famiglia"
             ),
             Event(
               name = "Concerto Jazz",
               time = "19:00",
               location = "SOTTOMURA STAGE",
               imageUrl = "",
+              description = "Serata di musica jazz dal vivo"
             ),
             Event(
               name = "Spettacolo teatrale",
               time = "21:00",
               location = "Teatro delle isole",
               imageUrl = "",
+              description = "Performance teatrale serale"
             )
           )
         ),
@@ -562,12 +567,14 @@ fun AppAndroidPreview() {
               time = "17:00",
               location = "Teatro delle isole",
               imageUrl = "",
+              description = "Laboratorio di pittura per tutti i livelli"
             ),
             Event(
               name = "Concerto rock",
               time = "20:00",
               location = "SOTTOMURA STAGE",
               imageUrl = "",
+              description = "Serata rock con band locali"
             )
           )
         )

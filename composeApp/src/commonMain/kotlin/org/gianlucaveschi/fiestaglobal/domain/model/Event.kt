@@ -5,6 +5,7 @@ data class Event(
     val time: String,
     val location: String,
     val imageUrl: String,
+    val description: String,
     val id: String = "${name}_${time}_${location}".hashCode().toString()
 )
 

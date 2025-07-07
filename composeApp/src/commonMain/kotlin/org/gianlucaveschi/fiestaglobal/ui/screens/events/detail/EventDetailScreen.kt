@@ -88,21 +88,15 @@ fun EventDetailScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Description (placeholder text since we don't have real descriptions)
-        Text(
-          text = "This is a detailed description of the artist or event. " +
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quam velit, " +
-              "vulputate eu pharetra nec, mattis ac neque. Duis vulputate commodo lectus, " +
-              "ac blandit elit tincidunt id. Sed rhoncus, tortor sed eleifend tristique, " +
-              "tortor mauris molestie elit, et lacinia ipsum quam nec dui. Quisque nec mauris " +
-              "sit amet elit iaculis pretium sit amet quis magna. Aenean velit odio, elementum " +
-              "in tempus ut, vehicula eu diam. Pellentesque rhoncus aliquam mattis. " +
-              "Ut vulputate eros sed felis sodales nec vulputate justo hendrerit. " +
-              "Vivamus varius pretium ligula, a aliquam odio euismod sit amet.",
-          style = MaterialTheme.typography.bodyLarge,
-          textAlign = TextAlign.Justify,
-          modifier = Modifier.padding(horizontal = 16.dp)
-        )
+        // Description
+        if (event.description.isNotBlank()) {
+          Text(
+            text = event.description,
+            style = MaterialTheme.typography.bodyLarge,
+            textAlign = TextAlign.Justify,
+            modifier = Modifier.padding(horizontal = 16.dp)
+          )
+        }
 
         Spacer(modifier = Modifier.height(24.dp))
       }

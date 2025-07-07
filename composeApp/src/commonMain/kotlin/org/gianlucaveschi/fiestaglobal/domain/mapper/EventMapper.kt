@@ -12,7 +12,8 @@ fun EventItemResponse.toDomain(): Event {
     name = this.name,
     time = this.time,
     location = this.location,
-    imageUrl = this.imageUrl
+    imageUrl = this.imageUrl,
+    description = this.description
   )
 }
 

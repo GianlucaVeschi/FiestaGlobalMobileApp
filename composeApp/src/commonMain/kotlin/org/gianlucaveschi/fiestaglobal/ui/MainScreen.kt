@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import org.gianlucaveschi.fiestaglobal.domain.model.Event
 import org.gianlucaveschi.fiestaglobal.MainViewModel
 import org.gianlucaveschi.fiestaglobal.ui.screens.events.EventsScreen
-import org.gianlucaveschi.fiestaglobal.ui.screens.profile.ProfileScreen
+import org.gianlucaveschi.fiestaglobal.ui.screens.profile.InfoScreen
 import org.koin.compose.koinInject
 
 
@@ -37,24 +37,6 @@ fun MainScreen() {
   val uiState by mainViewModel.uiState.collectAsState()
 
   var selectedEvents by remember { mutableStateOf<Event?>(null) }
-
-//  val context = LocalContext.current
-//  DisposableEffect(Unit) {
-//    val window = (context as? Activity)?.window
-//    window?.apply {
-//      navigationBarColor = android.graphics.Color.WHITE
-//    }
-//
-//    val windowInsetsController = window?.let { WindowCompat.getInsetsController(it, it.decorView) }
-//    windowInsetsController?.apply {
-//      // Show navigation bar and make it white
-//      show(WindowInsetsCompat.Type.navigationBars())
-//      isAppearanceLightNavigationBars =
-//        true  // This makes navigation bar icons dark when on light background
-//    }
-//
-//    onDispose {}
-//  }
 
   Scaffold(
     bottomBar = {
@@ -79,9 +61,9 @@ fun MainScreen() {
           onClick = { selectedScreen = EVENTS_SCREEN }
         )
         NavigationBarItem(
-          icon = { Icon(Icons.Filled.Person, contentDescription = PROFILE_SCREEN) },
-          label = { androidx.compose.material3.Text(PROFILE_SCREEN) },
-          selected = selectedScreen == PROFILE_SCREEN,
+          icon = { Icon(Icons.Filled.Person, contentDescription = INFO_SCREEN) },
+          label = { androidx.compose.material3.Text(INFO_SCREEN) },
+          selected = selectedScreen == INFO_SCREEN,
           colors = NavigationBarItemDefaults.colors(
             selectedIconColor = Color.Black,
             selectedTextColor = Color.Black,
@@ -89,7 +71,7 @@ fun MainScreen() {
             unselectedIconColor = Color.Gray,
             unselectedTextColor = Color.Gray
           ),
-          onClick = { selectedScreen = PROFILE_SCREEN }
+          onClick = { selectedScreen = INFO_SCREEN }
         )
       }
     }
@@ -110,14 +92,13 @@ fun MainScreen() {
             EventsScreen(
               uiState = uiState,
               onRetry = { mainViewModel.loadEvents() },
-              onEventClick = {
-                // TODO: Navigation to detail screen is disabled as there is no real data yet
-                //  event -> selectedEvents = event
+              onEventClick = { event ->
+                selectedEvents = event
               }
             )
           }
 
-        PROFILE_SCREEN -> ProfileScreen()
+        INFO_SCREEN -> InfoScreen()
       }
     }
   }
@@ -125,4 +106,4 @@ fun MainScreen() {
 
 
 const val EVENTS_SCREEN = "Eventi"
-const val PROFILE_SCREEN = "Profilo"
+const val INFO_SCREEN = "Info"

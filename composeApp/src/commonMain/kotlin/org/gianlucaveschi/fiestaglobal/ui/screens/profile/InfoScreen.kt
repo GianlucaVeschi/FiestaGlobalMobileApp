@@ -30,7 +30,7 @@ import fiestaglobalmobileapp.composeapp.generated.resources.Res
 import fiestaglobalmobileapp.composeapp.generated.resources.montefabbri_landscape
 
 @Composable
-fun ProfileScreen() {
+fun InfoScreen() {
   var currentScreen by remember { mutableStateOf<ProfileScreenState>(ProfileScreenState.Main) }
 
   when (val screenState = currentScreen) {

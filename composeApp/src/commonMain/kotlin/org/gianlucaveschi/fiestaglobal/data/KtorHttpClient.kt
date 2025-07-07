@@ -26,6 +26,7 @@ val httpClientAndroid = HttpClient {
       Json {
         prettyPrint = true
         isLenient = true
+        ignoreUnknownKeys = true
       }
     )
   }

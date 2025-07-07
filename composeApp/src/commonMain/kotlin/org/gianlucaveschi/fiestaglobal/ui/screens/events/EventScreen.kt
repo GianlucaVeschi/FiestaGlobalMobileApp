@@ -19,8 +19,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -73,7 +76,9 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun EventsScreen(
   uiState: EventsUiState,
   onRetry: () -> Unit,
-  onEventClick: (Event) -> Unit = {}
+  onEventClick: (Event) -> Unit = {},
+  lazyListState: LazyListState = rememberLazyListState(),
+  pagerState: PagerState? = null
 ) {
   when (uiState) {
     is EventsUiState.Loading -> {
@@ -91,7 +96,9 @@ fun EventsScreen(
       SuccessEventScreen(
         daySchedules = uiState.daySchedules,
         onRetry = onRetry,
-        onEventClick = onEventClick
+        onEventClick = onEventClick,
+        lazyListState = lazyListState,
+        pagerState = pagerState
       )
     }
   }
@@ -184,10 +191,12 @@ private fun ErrorEventScreen(
 private fun SuccessEventScreen(
   daySchedules: List<DaySchedule>,
   onRetry: () -> Unit,
-  onEventClick: (Event) -> Unit
+  onEventClick: (Event) -> Unit,
+  lazyListState: LazyListState,
+  pagerState: PagerState?
 ) {
   val tabTitles = daySchedules.map { it.day }
-  val pagerState = rememberPagerState { tabTitles.size }
+  val actualPagerState = pagerState ?: rememberPagerState { tabTitles.size }
   val coroutineScope = rememberCoroutineScope()
   var searchQuery by remember { mutableStateOf("") }
   val focusRequester = remember { FocusRequester() }
@@ -210,16 +219,16 @@ private fun SuccessEventScreen(
       .fillMaxSize()
   ) {
     TabRow(
-      selectedTabIndex = pagerState.currentPage,
+      selectedTabIndex = actualPagerState.currentPage,
       modifier = Modifier
         .fillMaxWidth()
         .background(Color.White),
       containerColor = Color.White,
       contentColor = Color.Black,
       indicator = { tabPositions ->
-        if (tabPositions.isNotEmpty() && pagerState.currentPage < tabPositions.size) {
+        if (tabPositions.isNotEmpty() && actualPagerState.currentPage < tabPositions.size) {
           TabRowDefaults.Indicator(
-            Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
+            Modifier.tabIndicatorOffset(tabPositions[actualPagerState.currentPage]),
             color = Color.Black
           )
         }
@@ -227,10 +236,10 @@ private fun SuccessEventScreen(
     ) {
       tabTitles.forEachIndexed { index, title ->
         Tab(
-          selected = pagerState.currentPage == index,
+          selected = actualPagerState.currentPage == index,
           onClick = {
             coroutineScope.launch {
-              pagerState.animateScrollToPage(index)
+              actualPagerState.animateScrollToPage(index)
             }
           },
           text = { Text(text = title) },
@@ -279,7 +288,7 @@ private fun SuccessEventScreen(
     )
 
     HorizontalPager(
-      state = pagerState,
+      state = actualPagerState,
       modifier = Modifier
         .weight(1f)
     ) { page ->
@@ -288,7 +297,8 @@ private fun SuccessEventScreen(
           events = daySchedules[page].events,
           onRetry = onRetry,
           onEventClick = onEventClick,
-          searchQuery = searchQuery
+          searchQuery = searchQuery,
+          lazyListState = lazyListState
         )
       }
     }
@@ -363,7 +373,8 @@ fun EventContent(
   events: List<Event>,
   onRetry: () -> Unit,
   onEventClick: (Event) -> Unit,
-  searchQuery: String
+  searchQuery: String,
+  lazyListState: LazyListState
 ) {
   val filteredEvents = remember(events, searchQuery) {
     if (searchQuery.isBlank()) {
@@ -393,7 +404,8 @@ fun EventContent(
     } else {
       LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
+        state = lazyListState
       ) {
         eventsByTime.forEach { (time, eventsAtTime) ->
           item {

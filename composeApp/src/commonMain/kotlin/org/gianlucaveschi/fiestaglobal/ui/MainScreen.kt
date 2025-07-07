@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
@@ -37,6 +39,13 @@ fun MainScreen() {
   val uiState by mainViewModel.uiState.collectAsState()
 
   var selectedEvents by remember { mutableStateOf<Event?>(null) }
+  val lazyListState = rememberLazyListState()
+  
+  // Create PagerState based on current UI state
+  val pagerState = when (val currentUiState = uiState) {
+    is EventsUiState.Success -> rememberPagerState { currentUiState.daySchedules.size }
+    else -> null
+  }
 
   Scaffold(
     bottomBar = {
@@ -94,7 +103,9 @@ fun MainScreen() {
               onRetry = { mainViewModel.loadEvents() },
               onEventClick = { event ->
                 selectedEvents = event
-              }
+              },
+              lazyListState = lazyListState,
+              pagerState = pagerState
             )
           }
 

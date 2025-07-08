@@ -9,6 +9,6 @@ This is a Kotlin Multiplatform project targeting Android, iOS. The UI is shared 
 
 
 ## Download the app
-- [Play Store]([url](https://play.google.com/store/apps/details?id=org.gianlucaveschi.fiestaglobal&pcampaignid=web_share&pli=1))
-- [App Store]([url](https://apps.apple.com/it/app/fiesta-global/id6747587552))
-- [Official Website]([url](https://www.fiestaglobal.it/))
+- [Play Store](https://play.google.com/store/apps/details?id=org.gianlucaveschi.fiestaglobal&pcampaignid=web_share&pli=1)
+- [App Store](https://apps.apple.com/it/app/fiesta-global/id6747587552)
+- [Official Website](https://www.fiestaglobal.it/)

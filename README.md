@@ -1,15 +1,15 @@
 ## Description
-Vibing...
+Welcome to the official App of the FiestaGlobal in Montefabbri. 
 
-## Template
-This is a Kotlin Multiplatform project targeting Android, iOS.
+This is a Kotlin Multiplatform project targeting Android, iOS. The UI is shared using Compose Multiplatform. 
 
-* `/composeApp` is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - `commonMain` is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    `iosMain` would be the right folder for such calls.
+| Events Screen | Detail Screen |
+|---------|---------|
+| ![Image 1](https://github.com/user-attachments/assets/18d729ee-d625-4fa4-870e-427001c70426) | ![Image 2](https://github.com/user-attachments/assets/803530b4-4f31-4a97-893d-990776658ff1) |
 
-* `/iosApp` contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform, 
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+
+
+## Download the app
+- [Play Store]([url](https://play.google.com/store/apps/details?id=org.gianlucaveschi.fiestaglobal&pcampaignid=web_share&pli=1))
+- [App Store]([url](https://apps.apple.com/it/app/fiesta-global/id6747587552))
+- [Official Website]([url](https://www.fiestaglobal.it/))

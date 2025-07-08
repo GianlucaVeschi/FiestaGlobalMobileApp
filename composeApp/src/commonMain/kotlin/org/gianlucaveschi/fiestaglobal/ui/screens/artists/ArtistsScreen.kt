@@ -1,5 +1,6 @@
 package org.gianlucaveschi.fiestaglobal.ui.screens.artists
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,7 +32,9 @@ fun ArtistsScreen(
   onBackClick: () -> Unit
 ) {
   Scaffold(
-    modifier = Modifier.systemBarsPadding(),
+    modifier = Modifier
+      .systemBarsPadding()
+      .background(Color(255, 244, 229)),
     topBar = {
       TopAppBar(
         title = { Text(title) },
@@ -44,7 +47,7 @@ fun ArtistsScreen(
           }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-          containerColor = Color.White,
+          containerColor = Color(255, 244, 229),
           titleContentColor = Color.Black,
           navigationIconContentColor = Color.Black
         )
@@ -54,6 +57,7 @@ fun ArtistsScreen(
     LazyColumn(
       modifier = Modifier
         .fillMaxSize()
+        .background(Color(255, 244, 229))
         .padding(paddingValues)
         .padding(16.dp),
       verticalArrangement = Arrangement.spacedBy(8.dp)

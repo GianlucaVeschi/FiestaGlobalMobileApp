@@ -52,11 +52,8 @@ fun FiestaGlobalTheme(
   darkTheme: Boolean = isSystemInDarkTheme(),
   content: @Composable () -> Unit
 ) {
-  val colorScheme = if (darkTheme) {
-    DarkColorScheme
-  } else {
-    LightColorScheme
-  }
+  // Force light theme always, ignoring system dark mode
+  val colorScheme = LightColorScheme
 
   MaterialTheme(
     colorScheme = colorScheme,

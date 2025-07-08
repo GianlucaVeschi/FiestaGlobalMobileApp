@@ -1,6 +1,10 @@
 package org.gianlucaveschi.fiestaglobal.ui.screens
 
 import EventDetailScreen
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -10,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -61,40 +66,94 @@ fun MainScreen() {
     else -> null
   }
 
-  when (currentScreen) {
-    is ScreenState.Info -> {
-      var profileScreen by remember { mutableStateOf<ProfileScreenState>(ProfileScreenState.Main) }
-      
-      when (profileScreen) {
-        is ProfileScreenState.Main -> MainProfileScreen(
-          onArtistsClick = { profileScreen = ProfileScreenState.ArtistsDetail },
-          onEventsClick = { currentScreen = ScreenState.Events }
-        )
-
-        is ProfileScreenState.ArtistsDetail -> ArtistsScreen(
-          title = "Artisti & Band",
-          onBackClick = { profileScreen = ProfileScreenState.Main }
-        )
+  AnimatedContent(
+    targetState = currentScreen,
+    transitionSpec = {
+      if (targetState is ScreenState.Events && initialState is ScreenState.Info) {
+        // Slide in from right when going to Events
+        slideInHorizontally(initialOffsetX = { it }) togetherWith
+        slideOutHorizontally(targetOffsetX = { -it })
+      } else if (targetState is ScreenState.Info && initialState is ScreenState.Events) {
+        // Slide in from left when going back to Info
+        slideInHorizontally(initialOffsetX = { -it }) togetherWith
+        slideOutHorizontally(targetOffsetX = { it })
+      } else {
+        // Default transition
+        slideInHorizontally() togetherWith slideOutHorizontally()
       }
     }
+  ) { screen ->
+    when (screen) {
+      is ScreenState.Info -> {
+        var profileScreen by remember { mutableStateOf<ProfileScreenState>(ProfileScreenState.Main) }
+        
+        AnimatedContent(
+          targetState = profileScreen,
+          transitionSpec = {
+            if (targetState is ProfileScreenState.ArtistsDetail && initialState is ProfileScreenState.Main) {
+              // Slide in from right when going to Artists
+              slideInHorizontally(initialOffsetX = { it }) togetherWith
+              slideOutHorizontally(targetOffsetX = { -it })
+            } else if (targetState is ProfileScreenState.Main && initialState is ProfileScreenState.ArtistsDetail) {
+              // Slide in from left when going back to Main
+              slideInHorizontally(initialOffsetX = { -it }) togetherWith
+              slideOutHorizontally(targetOffsetX = { it })
+            } else {
+              // Default transition
+              slideInHorizontally() togetherWith slideOutHorizontally()
+            }
+          }
+        ) { profileState ->
+          when (profileState) {
+            is ProfileScreenState.Main -> MainProfileScreen(
+              onArtistsClick = { profileScreen = ProfileScreenState.ArtistsDetail },
+              onEventsClick = { currentScreen = ScreenState.Events }
+            )
 
-    is ScreenState.Events -> {
-      if (selectedEvents != null) {
-        EventDetailScreen(
-          event = selectedEvents!!,
-          onBackClick = { selectedEvents = null }
-        )
-      } else {
-        EventsScreen(
-          uiState = uiState,
-          onRetry = { mainViewModel.loadEvents() },
-          onEventClick = { event ->
-            selectedEvents = event
-          },
-          lazyListState = lazyListState,
-          pagerState = pagerState,
-          onBackClick = { currentScreen = ScreenState.Info }
-        )
+            is ProfileScreenState.ArtistsDetail -> ArtistsScreen(
+              title = "Artisti & Band",
+              onBackClick = { profileScreen = ProfileScreenState.Main }
+            )
+          }
+        }
+      }
+
+      is ScreenState.Events -> {
+        AnimatedContent(
+          targetState = selectedEvents,
+          transitionSpec = {
+            if (targetState != null && initialState == null) {
+              // Slide in from right when going to Event Detail
+              slideInHorizontally(initialOffsetX = { it }) togetherWith
+              slideOutHorizontally(targetOffsetX = { -it })
+            } else if (targetState == null && initialState != null) {
+              // Slide in from left when going back to Events List
+              slideInHorizontally(initialOffsetX = { -it }) togetherWith
+              slideOutHorizontally(targetOffsetX = { it })
+            } else {
+              // Default transition
+              slideInHorizontally() togetherWith slideOutHorizontally()
+            }
+          }
+        ) { selectedEvent ->
+          if (selectedEvent != null) {
+            EventDetailScreen(
+              event = selectedEvent,
+              onBackClick = { selectedEvents = null }
+            )
+          } else {
+            EventsScreen(
+              uiState = uiState,
+              onRetry = { mainViewModel.loadEvents() },
+              onEventClick = { event ->
+                selectedEvents = event
+              },
+              lazyListState = lazyListState,
+              pagerState = pagerState,
+              onBackClick = { currentScreen = ScreenState.Info }
+            )
+          }
+        }
       }
     }
   }
@@ -111,6 +170,7 @@ fun MainProfileScreen(
     modifier = Modifier
       .fillMaxSize()
       .background(Color(255, 251, 229))
+      .systemBarsPadding()
       .verticalScroll(scrollState)
   ) {
     Image(
@@ -136,13 +196,13 @@ fun MainProfileScreen(
 
 @Composable
 private fun EventsSwimlane(
-  onEventsClick: () -> Unit = {}
+  onEventsClick: () -> Unit,
 ) {
   Text(
     text = "Programmazione",
     style = MaterialTheme.typography.headlineSmall,
     fontWeight = FontWeight.Bold,
-    modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
+    modifier = Modifier.padding(8.dp)
   )
 
   LazyRow(
@@ -157,8 +217,7 @@ private fun EventsSwimlane(
   Button(
     onClick = onEventsClick,
     modifier = Modifier
-      .fillMaxWidth()
-      .padding(top = 12.dp),
+      .fillMaxWidth(),
     colors = ButtonDefaults.buttonColors(
       containerColor = Color(255, 165, 0)
     ),
@@ -166,7 +225,7 @@ private fun EventsSwimlane(
   ) {
     Text(
       text = "Vedi tutti gli eventi",
-      color = Color.White,
+      color = Color.Black,
       style = MaterialTheme.typography.bodyMedium,
       fontWeight = FontWeight.Medium
     )
@@ -174,7 +233,9 @@ private fun EventsSwimlane(
 }
 
 @Composable
-private fun ArtistsSwimlane(onArtistsClick: () -> Unit) {
+private fun ArtistsSwimlane(
+  onArtistsClick: () -> Unit
+) {
   Text(
     text = "Artisti",
     style = MaterialTheme.typography.headlineSmall,
@@ -186,16 +247,15 @@ private fun ArtistsSwimlane(onArtistsClick: () -> Unit) {
     modifier = Modifier.fillMaxWidth(),
     horizontalArrangement = Arrangement.spacedBy(12.dp)
   ) {
-    items(hardcodedArtists.take(10)) { artist ->
-      ArtistasTile(text = artist)
+    items(hardcodedArtists) { artist ->
+      ArtistsTiles(text = artist)
     }
   }
 
   Button(
     onClick = onArtistsClick,
     modifier = Modifier
-      .fillMaxWidth()
-      .padding(top = 12.dp),
+      .fillMaxWidth(),
     colors = ButtonDefaults.buttonColors(
       containerColor = Color(255, 165, 0)
     ),
@@ -203,7 +263,7 @@ private fun ArtistsSwimlane(onArtistsClick: () -> Unit) {
   ) {
     Text(
       text = "Vedi tutti gli artisti",
-      color = Color.White,
+      color = Color.Black,
       style = MaterialTheme.typography.bodyMedium,
       fontWeight = FontWeight.Medium
     )
@@ -236,12 +296,10 @@ val programmazioneItems = listOf(
   "Venerdì 11 Luglio",
   "Sabato 12 Luglio",
   "Domenica 13 Luglio",
-  "Aperitivo Time",
-  "After Party"
 )
 
 @Composable
-fun ArtistasTile(text: String) {
+fun ArtistsTiles(text: String) {
   Box(
     modifier = Modifier
       .width(180.dp)

@@ -68,6 +68,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import coil3.compose.SubcomposeAsyncImage
@@ -114,12 +115,14 @@ fun EventsScreen(
 @Composable
 private fun LoadingEventScreen() {
   Column(
-    modifier = Modifier.fillMaxSize()
+    modifier = Modifier
+      .fillMaxSize()
+      .background(Color(255, 244, 229))
   ) {
     Row(
       modifier = Modifier
         .fillMaxWidth()
-        .background(Color.White)
+        .background(Color(255, 244, 229))
         .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
       repeat(3) { index ->
@@ -162,6 +165,7 @@ private fun ErrorEventScreen(
   Box(
     modifier = Modifier
       .fillMaxSize()
+      .background(Color(255, 244, 229))
       .padding(16.dp)
       .systemBarsPadding(),
     contentAlignment = Alignment.Center
@@ -215,6 +219,7 @@ private fun SuccessEventScreen(
     Box(
       modifier = Modifier
         .fillMaxSize()
+        .background(Color(255, 244, 229))
         .systemBarsPadding(),
       contentAlignment = Alignment.Center
     ) {
@@ -227,18 +232,19 @@ private fun SuccessEventScreen(
     Column(
       modifier = Modifier
         .fillMaxSize()
+        .background(Color(255, 244, 229))
         .padding(paddingValues)
     ) {
     TabRow(
       selectedTabIndex = actualPagerState.currentPage,
       modifier = Modifier
         .fillMaxWidth()
-        .background(Color.White),
-      containerColor = Color.White,
+        .background(Color(255, 244, 229)),
+      containerColor = Color(255, 244, 229),
       contentColor = Color.Black,
       indicator = { tabPositions ->
         if (tabPositions.isNotEmpty() && actualPagerState.currentPage < tabPositions.size) {
-          TabRowDefaults.Indicator(
+          SecondaryIndicator(
             Modifier.tabIndicatorOffset(tabPositions[actualPagerState.currentPage]),
             color = Color.Black
           )
@@ -318,7 +324,9 @@ private fun SuccessEventScreen(
 
   if (onBackClick != null) {
     Scaffold(
-      modifier = Modifier.systemBarsPadding(),
+      modifier = Modifier
+        .systemBarsPadding()
+        .background(Color(255, 244, 229)),
       topBar = {
         TopAppBar(
           title = { Text("Eventi") },
@@ -331,7 +339,7 @@ private fun SuccessEventScreen(
             }
           },
           colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color.White,
+            containerColor = Color(255, 244, 229),
             titleContentColor = Color.Black,
             navigationIconContentColor = Color.Black
           )
@@ -476,7 +484,7 @@ fun TimeHeader(time: String) {
 }
 
 @Composable
-fun EventItem(
+fun  EventItem(
   event: Event,
   onClick: () -> Unit = {}
 ) {
@@ -486,10 +494,12 @@ fun EventItem(
       .padding(8.dp)
       .clickable(onClick = onClick),
     shape = RoundedCornerShape(16.dp),
-    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+    colors = CardDefaults.cardColors(
+      containerColor = Color(249, 196, 52)
+    )
   ) {
     Column {
-      // Only display the image view if the URL is not blank
       if (event.imageUrl.isNotBlank()) {
         SubcomposeAsyncImage(
           model = event.imageUrl,
@@ -499,7 +509,6 @@ fun EventItem(
             .height(150.dp),
           contentScale = ContentScale.Crop,
           loading = {
-            // Show a spinner in the center while the image is loading
             Box(
               modifier = Modifier.fillMaxSize(),
               contentAlignment = Alignment.Center
@@ -507,8 +516,6 @@ fun EventItem(
               CircularProgressIndicator()
             }
           }
-          // The success state is handled by default, which displays the image.
-          // An optional error placeholder can be provided via the `error` parameter.
         )
       }
       Row(

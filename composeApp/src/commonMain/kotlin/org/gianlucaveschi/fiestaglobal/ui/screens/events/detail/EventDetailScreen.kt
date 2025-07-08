@@ -1,3 +1,4 @@
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -37,6 +38,7 @@ fun EventDetailScreen(
   Box(
     modifier = Modifier
       .fillMaxSize()
+      .background(Color(255, 244, 229))
       .systemBarsPadding()
   ) {
     Scaffold(
@@ -49,7 +51,7 @@ fun EventDetailScreen(
             }
           },
           colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color.White,
+            containerColor = Color(255, 244, 229),
             titleContentColor = Color.Black,
             navigationIconContentColor = Color.Black
           )
@@ -59,6 +61,7 @@ fun EventDetailScreen(
       Column(
         modifier = Modifier
           .fillMaxSize()
+          .background(Color(255, 244, 229))
           .padding(innerPadding)
           .verticalScroll(rememberScrollState())
       ) {

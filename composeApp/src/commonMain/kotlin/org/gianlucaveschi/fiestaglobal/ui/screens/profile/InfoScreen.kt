@@ -36,16 +36,10 @@ fun InfoScreen() {
   when (val screenState = currentScreen) {
     is ProfileScreenState.Main -> MainProfileScreen(
       onArtistsClick = { currentScreen = ProfileScreenState.ArtistsDetail },
-      onLocationClick = { currentScreen = ProfileScreenState.LocationDetail },
     )
 
     is ProfileScreenState.ArtistsDetail -> ArtistsScreen(
       title = "Artisti & Band",
-      onBackClick = { currentScreen = ProfileScreenState.Main }
-    )
-
-    is ProfileScreenState.LocationDetail -> LocationScreen(
-      title = "Come arrivare",
       onBackClick = { currentScreen = ProfileScreenState.Main }
     )
   }
@@ -54,7 +48,6 @@ fun InfoScreen() {
 @Composable
 fun MainProfileScreen(
   onArtistsClick: () -> Unit,
-  onLocationClick: () -> Unit,
 ) {
   Column(
     modifier = Modifier
@@ -82,7 +75,6 @@ fun MainProfileScreen(
       verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
       ProfileCard(title = "Artisti", onClick = onArtistsClick)
-      ProfileCard(title = "Come arrivare", onClick = onLocationClick)
     }
   }
 }
@@ -122,5 +114,4 @@ fun ProfileCard(
 sealed class ProfileScreenState {
   data object Main : ProfileScreenState()
   data object ArtistsDetail : ProfileScreenState()
-  data object LocationDetail : ProfileScreenState()
 }

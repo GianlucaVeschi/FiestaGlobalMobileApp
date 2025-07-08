@@ -65,6 +65,11 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import coil3.compose.SubcomposeAsyncImage
 import kotlinx.coroutines.launch
 import org.gianlucaveschi.fiestaglobal.domain.model.DaySchedule
@@ -78,7 +83,8 @@ fun EventsScreen(
   onRetry: () -> Unit,
   onEventClick: (Event) -> Unit = {},
   lazyListState: LazyListState = rememberLazyListState(),
-  pagerState: PagerState? = null
+  pagerState: PagerState? = null,
+  onBackClick: (() -> Unit)? = null
 ) {
   when (uiState) {
     is EventsUiState.Loading -> {
@@ -98,7 +104,8 @@ fun EventsScreen(
         onRetry = onRetry,
         onEventClick = onEventClick,
         lazyListState = lazyListState,
-        pagerState = pagerState
+        pagerState = pagerState,
+        onBackClick = onBackClick
       )
     }
   }
@@ -187,13 +194,15 @@ private fun ErrorEventScreen(
   }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SuccessEventScreen(
   daySchedules: List<DaySchedule>,
   onRetry: () -> Unit,
   onEventClick: (Event) -> Unit,
   lazyListState: LazyListState,
-  pagerState: PagerState?
+  pagerState: PagerState?,
+  onBackClick: (() -> Unit)?
 ) {
   val tabTitles = daySchedules.map { it.day }
   val actualPagerState = pagerState ?: rememberPagerState { tabTitles.size }
@@ -214,10 +223,12 @@ private fun SuccessEventScreen(
     return
   }
 
-  Column(
-    modifier = Modifier
-      .fillMaxSize()
-  ) {
+  val content = @Composable { paddingValues: PaddingValues ->
+    Column(
+      modifier = Modifier
+        .fillMaxSize()
+        .padding(paddingValues)
+    ) {
     TabRow(
       selectedTabIndex = actualPagerState.currentPage,
       modifier = Modifier
@@ -302,6 +313,35 @@ private fun SuccessEventScreen(
         )
       }
     }
+  }
+  }
+
+  if (onBackClick != null) {
+    Scaffold(
+      modifier = Modifier.systemBarsPadding(),
+      topBar = {
+        TopAppBar(
+          title = { Text("Eventi") },
+          navigationIcon = {
+            IconButton(onClick = onBackClick) {
+              Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = "Back"
+              )
+            }
+          },
+          colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = Color.White,
+            titleContentColor = Color.Black,
+            navigationIconContentColor = Color.Black
+          )
+        )
+      }
+    ) { paddingValues ->
+      content(paddingValues)
+    }
+  } else {
+    content(PaddingValues(0.dp))
   }
 }
 

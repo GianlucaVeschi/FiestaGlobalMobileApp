@@ -1,4 +1,4 @@
-package org.gianlucaveschi.fiestaglobal.ui.screens.profile
+package org.gianlucaveschi.fiestaglobal.ui.screens.artists
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
@@ -62,13 +62,14 @@ fun ArtistsScreen(
         Card(
           modifier = Modifier.fillMaxWidth(),
           colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
+            containerColor = Color(249, 196, 52)
           ),
           elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
         ) {
           Text(
             text = artist,
             style = MaterialTheme.typography.bodyLarge,
+            color = Color.Black,
             modifier = Modifier.padding(16.dp)
           )
         }

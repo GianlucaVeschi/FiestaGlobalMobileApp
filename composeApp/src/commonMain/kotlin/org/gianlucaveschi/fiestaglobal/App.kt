@@ -7,7 +7,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import org.gianlucaveschi.fiestaglobal.ui.MainScreen
+import org.gianlucaveschi.fiestaglobal.ui.screens.MainScreen
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinContext
 import org.koin.compose.currentKoinScope
@@ -23,8 +23,6 @@ fun App() {
                 startDestination = "screenA"
             ) {
                 composable("screenA") {
-                    val viewModel = koinViewModel<MainViewModel>()
-
                     MainScreen()
                 }
             }

@@ -1,8 +1,9 @@
-package org.gianlucaveschi.fiestaglobal.ui.screens.artists
+package org.gianlucaveschi.fiestaglobal.ui.screens.food
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -24,12 +25,13 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import org.gianlucaveschi.fiestaglobal.ui.screens.hardcodedArtists
+import org.gianlucaveschi.fiestaglobal.ui.screens.hardcodedFood
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ArtistsScreen(
+fun FoodScreen(
   title: String,
   onBackClick: () -> Unit
 ) {
@@ -68,9 +70,9 @@ fun ArtistsScreen(
           .background(Color(255, 244, 229))
           .padding(paddingValues)
           .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp)
       ) {
-        items(hardcodedArtists) { artist ->
+        items(hardcodedFood) { foodItem ->
           Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(
@@ -78,12 +80,22 @@ fun ArtistsScreen(
             ),
             elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
           ) {
-            Text(
-              text = artist,
-              style = MaterialTheme.typography.bodyLarge,
-              color = Color.Black,
+            Column(
               modifier = Modifier.padding(16.dp)
-            )
+            ) {
+              Text(
+                text = foodItem.name,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
+              )
+              Text(
+                text = foodItem.description,
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.Black,
+                modifier = Modifier.padding(top = 8.dp)
+              )
+            }
           }
         }
       }

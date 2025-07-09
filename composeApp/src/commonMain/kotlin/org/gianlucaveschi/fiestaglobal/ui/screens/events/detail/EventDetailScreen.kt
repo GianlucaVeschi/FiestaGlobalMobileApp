@@ -83,7 +83,7 @@ fun EventDetailScreen(
         )
 
         Text(
-          text = "Time: ${event.time}",
+          text = "Orario: ${event.time}",
           style = MaterialTheme.typography.bodyLarge,
           modifier = Modifier.padding(horizontal = 16.dp)
         )

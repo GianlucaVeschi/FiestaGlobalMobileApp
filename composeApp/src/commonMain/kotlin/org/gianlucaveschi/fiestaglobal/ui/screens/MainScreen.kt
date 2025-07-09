@@ -7,6 +7,7 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,15 +15,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -41,6 +42,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -50,12 +52,16 @@ import fiestaglobalmobileapp.composeapp.generated.resources._18
 import fiestaglobalmobileapp.composeapp.generated.resources._19
 import fiestaglobalmobileapp.composeapp.generated.resources._20
 import fiestaglobalmobileapp.composeapp.generated.resources.banner
+import fiestaglobalmobileapp.composeapp.generated.resources.facebook
+import fiestaglobalmobileapp.composeapp.generated.resources.instagram
+import fiestaglobalmobileapp.composeapp.generated.resources.youtube
 import org.gianlucaveschi.fiestaglobal.MainViewModel
 import org.gianlucaveschi.fiestaglobal.domain.model.Event
 import org.gianlucaveschi.fiestaglobal.ui.EventsUiState
-import org.gianlucaveschi.fiestaglobal.ui.screens.events.EventsScreen
 import org.gianlucaveschi.fiestaglobal.ui.screens.artists.ArtistsScreen
-import org.gianlucaveschi.fiestaglobal.ui.screens.artists.hardcodedArtists
+import org.gianlucaveschi.fiestaglobal.ui.screens.events.EventsScreen
+import org.gianlucaveschi.fiestaglobal.ui.screens.food.FoodScreen
+import org.gianlucaveschi.fiestaglobal.ui.screens.FoodItem
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 
@@ -80,11 +86,11 @@ fun MainScreen() {
       if (targetState is ScreenState.Events && initialState is ScreenState.Info) {
         // Slide in from right when going to Events
         slideInHorizontally(initialOffsetX = { it }) togetherWith
-        slideOutHorizontally(targetOffsetX = { -it })
+            slideOutHorizontally(targetOffsetX = { -it })
       } else if (targetState is ScreenState.Info && initialState is ScreenState.Events) {
         // Slide in from left when going back to Info
         slideInHorizontally(initialOffsetX = { -it }) togetherWith
-        slideOutHorizontally(targetOffsetX = { it })
+            slideOutHorizontally(targetOffsetX = { it })
       } else {
         // Default transition
         slideInHorizontally() togetherWith slideOutHorizontally()
@@ -94,18 +100,18 @@ fun MainScreen() {
     when (screen) {
       is ScreenState.Info -> {
         var profileScreen by remember { mutableStateOf<ProfileScreenState>(ProfileScreenState.Main) }
-        
+
         AnimatedContent(
           targetState = profileScreen,
           transitionSpec = {
-            if (targetState is ProfileScreenState.ArtistsDetail && initialState is ProfileScreenState.Main) {
-              // Slide in from right when going to Artists
+            if ((targetState is ProfileScreenState.ArtistsDetail || targetState is ProfileScreenState.FoodDetail) && initialState is ProfileScreenState.Main) {
+              // Slide in from right when going to Artists or Food
               slideInHorizontally(initialOffsetX = { it }) togetherWith
-              slideOutHorizontally(targetOffsetX = { -it })
-            } else if (targetState is ProfileScreenState.Main && initialState is ProfileScreenState.ArtistsDetail) {
+                  slideOutHorizontally(targetOffsetX = { -it })
+            } else if (targetState is ProfileScreenState.Main && (initialState is ProfileScreenState.ArtistsDetail || initialState is ProfileScreenState.FoodDetail)) {
               // Slide in from left when going back to Main
               slideInHorizontally(initialOffsetX = { -it }) togetherWith
-              slideOutHorizontally(targetOffsetX = { it })
+                  slideOutHorizontally(targetOffsetX = { it })
             } else {
               // Default transition
               slideInHorizontally() togetherWith slideOutHorizontally()
@@ -115,14 +121,20 @@ fun MainScreen() {
           when (profileState) {
             is ProfileScreenState.Main -> MainProfileScreen(
               onArtistsClick = { profileScreen = ProfileScreenState.ArtistsDetail },
-              onEventsClick = { tabIndex -> 
+              onEventsClick = { tabIndex ->
                 selectedTabIndex = tabIndex
-                currentScreen = ScreenState.Events 
-              }
+                currentScreen = ScreenState.Events
+              },
+              onCiboClick = { profileScreen = ProfileScreenState.FoodDetail }
             )
 
             is ProfileScreenState.ArtistsDetail -> ArtistsScreen(
               title = "Artisti & Band",
+              onBackClick = { profileScreen = ProfileScreenState.Main }
+            )
+
+            is ProfileScreenState.FoodDetail -> FoodScreen(
+              title = "Cibo",
               onBackClick = { profileScreen = ProfileScreenState.Main }
             )
           }
@@ -136,11 +148,11 @@ fun MainScreen() {
             if (targetState != null && initialState == null) {
               // Slide in from right when going to Event Detail
               slideInHorizontally(initialOffsetX = { it }) togetherWith
-              slideOutHorizontally(targetOffsetX = { -it })
+                  slideOutHorizontally(targetOffsetX = { -it })
             } else if (targetState == null && initialState != null) {
               // Slide in from left when going back to Events List
               slideInHorizontally(initialOffsetX = { -it }) togetherWith
-              slideOutHorizontally(targetOffsetX = { it })
+                  slideOutHorizontally(targetOffsetX = { it })
             } else {
               // Default transition
               slideInHorizontally() togetherWith slideOutHorizontally()
@@ -177,7 +189,8 @@ fun MainScreen() {
 @Composable
 fun MainProfileScreen(
   onArtistsClick: () -> Unit,
-  onEventsClick: (Int) -> Unit = {}
+  onEventsClick: (Int) -> Unit = {},
+  onCiboClick: () -> Unit = {}
 ) {
   val scrollState = rememberScrollState()
 
@@ -200,11 +213,12 @@ fun MainProfileScreen(
       modifier = Modifier
         .fillMaxWidth()
         .padding(8.dp),
-      verticalArrangement = Arrangement.spacedBy(16.dp)
+      verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
       EventsSwimlane { tabIndex -> onEventsClick(tabIndex) }
       ArtistsSwimlane(onArtistsClick)
-
+      FoodSwimlane(onCiboClick)
+      SocialSwimlane()
     }
   }
 }
@@ -217,16 +231,16 @@ private fun EventsSwimlane(
     text = "Programmazione",
     style = MaterialTheme.typography.headlineSmall,
     fontWeight = FontWeight.Bold,
-    modifier = Modifier.padding(8.dp)
+    modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
   )
 
   LazyRow(
     modifier = Modifier.fillMaxWidth(),
     horizontalArrangement = Arrangement.spacedBy(8.dp)
   ) {
-    itemsIndexed(programmazioneItems) { index, item ->
+    items(4) { index ->
       EventTile(
-        text = item,
+        text = "",
         imageIndex = index,
         onClick = { onEventsClick(index) }
       )
@@ -259,7 +273,7 @@ private fun ArtistsSwimlane(
     text = "Artisti",
     style = MaterialTheme.typography.headlineSmall,
     fontWeight = FontWeight.Bold,
-    modifier = Modifier.padding(bottom = 8.dp)
+    modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
   )
 
   LazyRow(
@@ -290,6 +304,61 @@ private fun ArtistsSwimlane(
 }
 
 @Composable
+private fun SocialSwimlane() {
+  val uriHandler = LocalUriHandler.current
+
+  Text(
+    text = "Seguici sui social",
+    style = MaterialTheme.typography.headlineSmall,
+    fontWeight = FontWeight.Bold,
+  )
+
+  LazyRow(
+    modifier = Modifier.fillMaxWidth(),
+    horizontalArrangement = Arrangement.spacedBy(16.dp)
+  ) {
+    items(3) { index ->
+      SocialImageTile(
+        socialIndex = index,
+        onClick = { url ->
+          uriHandler.openUri(url)
+        }
+      )
+    }
+  }
+}
+
+@Composable
+fun SocialImageTile(
+  socialIndex: Int,
+  onClick: (String) -> Unit = {}
+) {
+  val imageResource = when (socialIndex) {
+    0 -> Res.drawable.facebook
+    1 -> Res.drawable.instagram
+    2 -> Res.drawable.youtube
+    else -> Res.drawable.facebook
+  }
+
+  val socialUrl = when (socialIndex) {
+    0 -> "https://www.facebook.com/fiestaglobal"
+    1 -> "https://www.instagram.com/fiesta_global_off/"
+    2 -> "https://www.youtube.com/@tribaleggs"
+    else -> "https://www.facebook.com/fiestaglobal"
+  }
+
+  Image(
+    painter = painterResource(imageResource),
+    contentDescription = null,
+    modifier = Modifier
+      .size(80.dp)
+      .clip(CircleShape)
+      .clickable { onClick(socialUrl) },
+    contentScale = ContentScale.Fit
+  )
+}
+
+@Composable
 fun EventTile(
   text: String,
   imageIndex: Int,
@@ -302,7 +371,7 @@ fun EventTile(
     3 -> Res.drawable._20
     else -> Res.drawable._19
   }
-  
+
   Image(
     painter = painterResource(imageResource),
     contentDescription = null,
@@ -315,12 +384,70 @@ fun EventTile(
   )
 }
 
-val programmazioneItems = listOf(
-  "Giovedì 10 Luglio",
-  "Venerdì 11 Luglio",
-  "Sabato 12 Luglio",
-  "Domenica 13 Luglio",
-)
+@Composable
+private fun FoodSwimlane(
+  onFoodClick: () -> Unit
+) {
+  Text(
+    text = "Food",
+    style = MaterialTheme.typography.headlineSmall,
+    fontWeight = FontWeight.Bold,
+    modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
+  )
+
+  LazyRow(
+    modifier = Modifier.fillMaxWidth(),
+    horizontalArrangement = Arrangement.spacedBy(12.dp)
+  ) {
+    items(hardcodedFood) { food ->
+      FoodTiles(foodItem = food)
+    }
+  }
+
+  Button(
+    onClick = onFoodClick,
+    modifier = Modifier
+      .fillMaxWidth(),
+    colors = ButtonDefaults.buttonColors(
+      containerColor = Color(255, 165, 0)
+    ),
+    shape = RoundedCornerShape(24.dp)
+  ) {
+    Text(
+      text = "Vedi tutto quello che c'è da mangiare",
+      color = Color.Black,
+      style = MaterialTheme.typography.bodyMedium,
+      fontWeight = FontWeight.Medium
+    )
+  }
+}
+
+@Composable
+fun FoodTiles(foodItem: FoodItem) {
+  Box(
+    modifier = Modifier
+      .width(180.dp)
+      .height(80.dp)
+      .shadow(
+        elevation = 4.dp,
+        shape = RoundedCornerShape(8.dp)
+      )
+      .clip(RoundedCornerShape(8.dp))
+      .background(Color(249, 196, 52))
+      .padding(12.dp),
+    contentAlignment = Alignment.Center
+  ) {
+    Text(
+      text = foodItem.name,
+      color = Color.Black,
+      style = MaterialTheme.typography.bodySmall,
+      fontWeight = FontWeight.Medium,
+      textAlign = TextAlign.Center,
+      maxLines = 2
+    )
+  }
+}
+
 
 @Composable
 fun ArtistsTiles(text: String) {
@@ -356,4 +483,5 @@ sealed class ScreenState {
 sealed class ProfileScreenState {
   data object Main : ProfileScreenState()
   data object ArtistsDetail : ProfileScreenState()
+  data object FoodDetail : ProfileScreenState()
 }

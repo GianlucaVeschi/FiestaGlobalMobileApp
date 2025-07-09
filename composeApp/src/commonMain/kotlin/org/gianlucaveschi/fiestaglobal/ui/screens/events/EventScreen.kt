@@ -85,7 +85,8 @@ fun EventsScreen(
   onEventClick: (Event) -> Unit = {},
   lazyListState: LazyListState = rememberLazyListState(),
   pagerState: PagerState? = null,
-  onBackClick: (() -> Unit)? = null
+  onBackClick: (() -> Unit)? = null,
+  initialTabIndex: Int = 0
 ) {
   when (uiState) {
     is EventsUiState.Loading -> {
@@ -106,7 +107,8 @@ fun EventsScreen(
         onEventClick = onEventClick,
         lazyListState = lazyListState,
         pagerState = pagerState,
-        onBackClick = onBackClick
+        onBackClick = onBackClick,
+        initialTabIndex = initialTabIndex
       )
     }
   }
@@ -206,11 +208,25 @@ private fun SuccessEventScreen(
   onEventClick: (Event) -> Unit,
   lazyListState: LazyListState,
   pagerState: PagerState?,
-  onBackClick: (() -> Unit)?
+  onBackClick: (() -> Unit)?,
+  initialTabIndex: Int = 0
 ) {
   val tabTitles = daySchedules.map { it.day }
-  val actualPagerState = pagerState ?: rememberPagerState { tabTitles.size }
+  val actualPagerState = pagerState ?: rememberPagerState(
+    initialPage = initialTabIndex.coerceIn(0, tabTitles.size - 1)
+  ) { tabTitles.size }
+  
   val coroutineScope = rememberCoroutineScope()
+  
+  // Navigate to the selected tab when pagerState is provided from MainScreen
+  // Only do this once when the screen is first created
+  if (pagerState != null) {
+    androidx.compose.runtime.LaunchedEffect(Unit) {
+      if (initialTabIndex in 0 until tabTitles.size && initialTabIndex != actualPagerState.currentPage) {
+        actualPagerState.animateScrollToPage(initialTabIndex)
+      }
+    }
+  }
   var searchQuery by remember { mutableStateOf("") }
   val focusRequester = remember { FocusRequester() }
   val focusManager = LocalFocusManager.current

@@ -70,8 +70,7 @@ fun EventDetailScreen(
             model = event.imageUrl,
             contentDescription = "Event image",
             modifier = Modifier
-              .fillMaxWidth()
-              .height(250.dp),
+              .fillMaxSize(),
             contentScale = ContentScale.FillBounds
           )
         }

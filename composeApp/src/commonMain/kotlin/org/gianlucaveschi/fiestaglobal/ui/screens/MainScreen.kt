@@ -16,8 +16,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -36,13 +38,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import fiestaglobalmobileapp.composeapp.generated.resources.Res
-import fiestaglobalmobileapp.composeapp.generated.resources.fiesta_global_date_banner
+import fiestaglobalmobileapp.composeapp.generated.resources._17
+import fiestaglobalmobileapp.composeapp.generated.resources._18
+import fiestaglobalmobileapp.composeapp.generated.resources._19
+import fiestaglobalmobileapp.composeapp.generated.resources._20
+import fiestaglobalmobileapp.composeapp.generated.resources.banner
 import org.gianlucaveschi.fiestaglobal.MainViewModel
 import org.gianlucaveschi.fiestaglobal.domain.model.Event
 import org.gianlucaveschi.fiestaglobal.ui.EventsUiState
@@ -59,6 +66,7 @@ fun MainScreen() {
   val uiState by mainViewModel.uiState.collectAsState()
 
   var selectedEvents by remember { mutableStateOf<Event?>(null) }
+  var selectedTabIndex by remember { mutableStateOf(0) }
   val lazyListState = rememberLazyListState()
 
   val pagerState = when (val currentUiState = uiState) {
@@ -107,7 +115,10 @@ fun MainScreen() {
           when (profileState) {
             is ProfileScreenState.Main -> MainProfileScreen(
               onArtistsClick = { profileScreen = ProfileScreenState.ArtistsDetail },
-              onEventsClick = { currentScreen = ScreenState.Events }
+              onEventsClick = { tabIndex -> 
+                selectedTabIndex = tabIndex
+                currentScreen = ScreenState.Events 
+              }
             )
 
             is ProfileScreenState.ArtistsDetail -> ArtistsScreen(
@@ -150,7 +161,8 @@ fun MainScreen() {
               },
               lazyListState = lazyListState,
               pagerState = pagerState,
-              onBackClick = { currentScreen = ScreenState.Info }
+              onBackClick = { currentScreen = ScreenState.Info },
+              initialTabIndex = selectedTabIndex
             )
           }
         }
@@ -162,7 +174,7 @@ fun MainScreen() {
 @Composable
 fun MainProfileScreen(
   onArtistsClick: () -> Unit,
-  onEventsClick: () -> Unit = {}
+  onEventsClick: (Int) -> Unit = {}
 ) {
   val scrollState = rememberScrollState()
 
@@ -174,7 +186,7 @@ fun MainProfileScreen(
       .verticalScroll(scrollState)
   ) {
     Image(
-      painter = painterResource(Res.drawable.fiesta_global_date_banner),
+      painter = painterResource(Res.drawable.banner),
       contentDescription = "Montefabbri landscape",
       modifier = Modifier
         .fillMaxWidth(),
@@ -187,7 +199,7 @@ fun MainProfileScreen(
         .padding(8.dp),
       verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-      EventsSwimlane(onEventsClick)
+      EventsSwimlane { tabIndex -> onEventsClick(tabIndex) }
       ArtistsSwimlane(onArtistsClick)
 
     }
@@ -196,7 +208,7 @@ fun MainProfileScreen(
 
 @Composable
 private fun EventsSwimlane(
-  onEventsClick: () -> Unit,
+  onEventsClick: (Int) -> Unit,
 ) {
   Text(
     text = "Programmazione",
@@ -207,15 +219,19 @@ private fun EventsSwimlane(
 
   LazyRow(
     modifier = Modifier.fillMaxWidth(),
-    horizontalArrangement = Arrangement.spacedBy(12.dp)
+    horizontalArrangement = Arrangement.spacedBy(8.dp)
   ) {
-    items(programmazioneItems) { item ->
-      ProgrammazioneTile(text = item)
+    itemsIndexed(programmazioneItems) { index, item ->
+      EventTile(
+        text = item,
+        imageIndex = index,
+        onClick = { onEventsClick(index) }
+      )
     }
   }
 
   Button(
-    onClick = onEventsClick,
+    onClick = { onEventsClick(0) },
     modifier = Modifier
       .fillMaxWidth(),
     colors = ButtonDefaults.buttonColors(
@@ -271,24 +287,29 @@ private fun ArtistsSwimlane(
 }
 
 @Composable
-fun ProgrammazioneTile(text: String) {
-  Box(
-    modifier = Modifier
-      .width(150.dp)
-      .height(100.dp)
-      .clip(RoundedCornerShape(8.dp))
-      .background(Color(249, 196, 52))
-      .padding(12.dp),
-    contentAlignment = Alignment.Center
-  ) {
-    Text(
-      text = text,
-      color = Color.Black,
-      style = MaterialTheme.typography.bodyMedium,
-      fontWeight = FontWeight.Medium,
-      textAlign = TextAlign.Center
-    )
+fun EventTile(
+  text: String,
+  imageIndex: Int,
+  onClick: () -> Unit = {}
+) {
+  val imageResource = when (imageIndex) {
+    0 -> Res.drawable._17
+    1 -> Res.drawable._18
+    2 -> Res.drawable._19
+    3 -> Res.drawable._20
+    else -> Res.drawable._19
   }
+  
+  Image(
+    painter = painterResource(imageResource),
+    contentDescription = null,
+    modifier = Modifier
+      .width(100.dp)
+      .height(100.dp)
+      .clip(RoundedCornerShape(16.dp))
+      .clickable(onClick = onClick),
+    contentScale = ContentScale.Fit
+  )
 }
 
 val programmazioneItems = listOf(
@@ -304,6 +325,10 @@ fun ArtistsTiles(text: String) {
     modifier = Modifier
       .width(180.dp)
       .height(80.dp)
+      .shadow(
+        elevation = 4.dp,
+        shape = RoundedCornerShape(8.dp)
+      )
       .clip(RoundedCornerShape(8.dp))
       .background(Color(249, 196, 52))
       .padding(12.dp),

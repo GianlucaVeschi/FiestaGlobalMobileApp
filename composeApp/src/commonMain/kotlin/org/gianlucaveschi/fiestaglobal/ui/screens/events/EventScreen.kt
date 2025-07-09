@@ -86,7 +86,8 @@ fun EventsScreen(
   lazyListState: LazyListState = rememberLazyListState(),
   pagerState: PagerState? = null,
   onBackClick: (() -> Unit)? = null,
-  initialTabIndex: Int = 0
+  initialTabIndex: Int = 0,
+  onTabChanged: (Int) -> Unit = {}
 ) {
   when (uiState) {
     is EventsUiState.Loading -> {
@@ -108,7 +109,8 @@ fun EventsScreen(
         lazyListState = lazyListState,
         pagerState = pagerState,
         onBackClick = onBackClick,
-        initialTabIndex = initialTabIndex
+        initialTabIndex = initialTabIndex,
+        onTabChanged = onTabChanged
       )
     }
   }
@@ -209,7 +211,8 @@ private fun SuccessEventScreen(
   lazyListState: LazyListState,
   pagerState: PagerState?,
   onBackClick: (() -> Unit)?,
-  initialTabIndex: Int = 0
+  initialTabIndex: Int = 0,
+  onTabChanged: (Int) -> Unit = {}
 ) {
   val tabTitles = daySchedules.map { it.day }
   val actualPagerState = pagerState ?: rememberPagerState(
@@ -226,6 +229,11 @@ private fun SuccessEventScreen(
         actualPagerState.animateScrollToPage(initialTabIndex)
       }
     }
+  }
+  
+  // Track tab changes and notify MainScreen
+  androidx.compose.runtime.LaunchedEffect(actualPagerState.currentPage) {
+    onTabChanged(actualPagerState.currentPage)
   }
   var searchQuery by remember { mutableStateOf("") }
   val focusRequester = remember { FocusRequester() }
@@ -338,34 +346,47 @@ private fun SuccessEventScreen(
   }
   }
 
-  if (onBackClick != null) {
-    Scaffold(
-      modifier = Modifier
-        .systemBarsPadding()
-        .background(Color(255, 244, 229)),
-      topBar = {
-        TopAppBar(
-          title = { Text("Eventi") },
-          navigationIcon = {
-            IconButton(onClick = onBackClick) {
-              Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "Back"
-              )
-            }
-          },
-          colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color(255, 244, 229),
-            titleContentColor = Color.Black,
-            navigationIconContentColor = Color.Black
+  Box(
+    modifier = Modifier
+      .fillMaxSize()
+      .background(Color(255, 244, 229))
+  ) {
+    if (onBackClick != null) {
+      Scaffold(
+        modifier = Modifier
+          .fillMaxSize()
+          .systemBarsPadding(),
+        containerColor = Color(255, 244, 229),
+        topBar = {
+          TopAppBar(
+            title = { Text("Eventi") },
+            navigationIcon = {
+              IconButton(onClick = onBackClick) {
+                Icon(
+                  imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                  contentDescription = "Back"
+                )
+              }
+            },
+            colors = TopAppBarDefaults.topAppBarColors(
+              containerColor = Color(255, 244, 229),
+              titleContentColor = Color.Black,
+              navigationIconContentColor = Color.Black
+            )
           )
-        )
+        }
+      ) { paddingValues ->
+        content(paddingValues)
       }
-    ) { paddingValues ->
-      content(paddingValues)
+    } else {
+      Column(
+        modifier = Modifier
+          .fillMaxSize()
+          .systemBarsPadding()
+      ) {
+        content(PaddingValues(0.dp))
+      }
     }
-  } else {
-    content(PaddingValues(0.dp))
   }
 }
 

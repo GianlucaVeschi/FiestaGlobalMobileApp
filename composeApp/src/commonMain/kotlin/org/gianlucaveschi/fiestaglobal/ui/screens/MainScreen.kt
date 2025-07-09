@@ -162,7 +162,10 @@ fun MainScreen() {
               lazyListState = lazyListState,
               pagerState = pagerState,
               onBackClick = { currentScreen = ScreenState.Info },
-              initialTabIndex = selectedTabIndex
+              initialTabIndex = selectedTabIndex,
+              onTabChanged = { tabIndex ->
+                selectedTabIndex = tabIndex
+              }
             )
           }
         }

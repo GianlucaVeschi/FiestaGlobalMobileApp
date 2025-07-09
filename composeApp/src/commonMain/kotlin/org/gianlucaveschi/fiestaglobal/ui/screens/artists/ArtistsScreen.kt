@@ -2,6 +2,7 @@ package org.gianlucaveschi.fiestaglobal.ui.screens.artists
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -31,51 +32,58 @@ fun ArtistsScreen(
   title: String,
   onBackClick: () -> Unit
 ) {
-  Scaffold(
+  Box(
     modifier = Modifier
-      .systemBarsPadding()
-      .background(Color(255, 244, 229)),
-    topBar = {
-      TopAppBar(
-        title = { Text(title) },
-        navigationIcon = {
-          IconButton(onClick = onBackClick) {
-            Icon(
-              imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-              contentDescription = "Back"
-            )
-          }
-        },
-        colors = TopAppBarDefaults.topAppBarColors(
-          containerColor = Color(255, 244, 229),
-          titleContentColor = Color.Black,
-          navigationIconContentColor = Color.Black
-        )
-      )
-    }
-  ) { paddingValues ->
-    LazyColumn(
+      .fillMaxSize()
+      .background(Color(255, 244, 229))
+  ) {
+    Scaffold(
       modifier = Modifier
         .fillMaxSize()
-        .background(Color(255, 244, 229))
-        .padding(paddingValues)
-        .padding(16.dp),
-      verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-      items(hardcodedArtists) { artist ->
-        Card(
-          modifier = Modifier.fillMaxWidth(),
-          colors = CardDefaults.cardColors(
-            containerColor = Color(249, 196, 52)
-          ),
-          elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-        ) {
-          Text(
-            text = artist,
-            style = MaterialTheme.typography.bodyLarge,
-            color = Color.Black,
-            modifier = Modifier.padding(16.dp)
+        .systemBarsPadding(),
+      containerColor = Color(255, 244, 229),
+      topBar = {
+        TopAppBar(
+          title = { Text(title) },
+          navigationIcon = {
+            IconButton(onClick = onBackClick) {
+              Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = "Back"
+              )
+            }
+          },
+          colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = Color(255, 244, 229),
+            titleContentColor = Color.Black,
+            navigationIconContentColor = Color.Black
           )
+        )
+      }
+    ) { paddingValues ->
+      LazyColumn(
+        modifier = Modifier
+          .fillMaxSize()
+          .background(Color(255, 244, 229))
+          .padding(paddingValues)
+          .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+      ) {
+        items(hardcodedArtists) { artist ->
+          Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+              containerColor = Color(249, 196, 52)
+            ),
+            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+          ) {
+            Text(
+              text = artist,
+              style = MaterialTheme.typography.bodyLarge,
+              color = Color.Black,
+              modifier = Modifier.padding(16.dp)
+            )
+          }
         }
       }
     }

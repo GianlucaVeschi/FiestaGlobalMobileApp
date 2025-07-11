@@ -577,12 +577,13 @@ fun EventItem(
           .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
       ) {
-        Text(
-          text = event.location,
-          style = MaterialTheme.typography.titleMedium,
-          color = Color.Gray,
-          modifier = Modifier.padding(end = 8.dp)
-        )
+        // TODO: Location
+//        Text(
+//          text = event.location,
+//          style = MaterialTheme.typography.titleMedium,
+//          color = Color.Gray,
+//          modifier = Modifier.padding(end = 8.dp)
+//        )
         Text(
           text = event.name,
           style = MaterialTheme.typography.titleLarge,

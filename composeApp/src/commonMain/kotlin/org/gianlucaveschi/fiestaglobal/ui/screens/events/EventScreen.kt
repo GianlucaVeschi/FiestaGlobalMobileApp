@@ -26,7 +26,10 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
@@ -34,17 +37,22 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
-import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -53,24 +61,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.ui.unit.dp
 import coil3.compose.SubcomposeAsyncImage
 import kotlinx.coroutines.launch
 import org.gianlucaveschi.fiestaglobal.domain.model.DaySchedule
@@ -218,23 +218,32 @@ private fun SuccessEventScreen(
   val actualPagerState = pagerState ?: rememberPagerState(
     initialPage = initialTabIndex.coerceIn(0, tabTitles.size - 1)
   ) { tabTitles.size }
-  
+
   val coroutineScope = rememberCoroutineScope()
+
+  // Store scroll states for each tab, but always use the external lazyListState for the current tab
+  val tabScrollStates = remember(daySchedules.size) {
+    mutableMapOf<Int, LazyListState>()
+  }
   
+  // Ensure the current tab's state is always the external one
+  tabScrollStates[actualPagerState.currentPage] = lazyListState
+
   // Navigate to the selected tab when pagerState is provided from MainScreen
   // Only do this once when the screen is first created
   if (pagerState != null) {
-    androidx.compose.runtime.LaunchedEffect(Unit) {
-      if (initialTabIndex in 0 until tabTitles.size && initialTabIndex != actualPagerState.currentPage) {
+    LaunchedEffect(Unit) {
+      if (initialTabIndex in tabTitles.indices && initialTabIndex != actualPagerState.currentPage) {
         actualPagerState.animateScrollToPage(initialTabIndex)
       }
     }
   }
-  
+
   // Track tab changes and notify MainScreen
-  androidx.compose.runtime.LaunchedEffect(actualPagerState.currentPage) {
+  LaunchedEffect(actualPagerState.currentPage) {
     onTabChanged(actualPagerState.currentPage)
   }
+
   var searchQuery by remember { mutableStateOf("") }
   val focusRequester = remember { FocusRequester() }
   val focusManager = LocalFocusManager.current
@@ -259,91 +268,95 @@ private fun SuccessEventScreen(
         .background(Color(255, 244, 229))
         .padding(paddingValues)
     ) {
-    TabRow(
-      selectedTabIndex = actualPagerState.currentPage,
-      modifier = Modifier
-        .fillMaxWidth()
-        .background(Color(255, 244, 229)),
-      containerColor = Color(255, 244, 229),
-      contentColor = Color.Black,
-      indicator = { tabPositions ->
-        if (tabPositions.isNotEmpty() && actualPagerState.currentPage < tabPositions.size) {
-          SecondaryIndicator(
-            Modifier.tabIndicatorOffset(tabPositions[actualPagerState.currentPage]),
-            color = Color.Black
+      TabRow(
+        selectedTabIndex = actualPagerState.currentPage,
+        modifier = Modifier
+          .fillMaxWidth()
+          .background(Color(255, 244, 229)),
+        containerColor = Color(255, 244, 229),
+        contentColor = Color.Black,
+        indicator = { tabPositions ->
+          if (tabPositions.isNotEmpty() && actualPagerState.currentPage < tabPositions.size) {
+            SecondaryIndicator(
+              Modifier.tabIndicatorOffset(tabPositions[actualPagerState.currentPage]),
+              color = Color.Black
+            )
+          }
+        }
+      ) {
+        tabTitles.forEachIndexed { index, title ->
+          Tab(
+            selected = actualPagerState.currentPage == index,
+            onClick = {
+              coroutineScope.launch {
+                actualPagerState.animateScrollToPage(index)
+              }
+            },
+            text = { Text(text = title) },
+            selectedContentColor = Color.Black,
+            unselectedContentColor = Color.Gray
           )
         }
       }
-    ) {
-      tabTitles.forEachIndexed { index, title ->
-        Tab(
-          selected = actualPagerState.currentPage == index,
-          onClick = {
-            coroutineScope.launch {
-              actualPagerState.animateScrollToPage(index)
-            }
+
+      OutlinedTextField(
+        value = searchQuery,
+        onValueChange = { searchQuery = it },
+        label = { Text("Cerca artisti e performance") },
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(16.dp)
+          .focusRequester(focusRequester),
+        colors = OutlinedTextFieldDefaults.colors(
+          focusedBorderColor = Color.Black,
+          unfocusedBorderColor = Color.Black,
+          focusedLabelColor = Color.Black,
+          unfocusedLabelColor = Color.Gray
+        ),
+        shape = RoundedCornerShape(8.dp),
+        keyboardOptions = KeyboardOptions(
+          keyboardType = KeyboardType.Text,
+          imeAction = ImeAction.Done
+        ),
+        keyboardActions = KeyboardActions(
+          onSearch = {
+            focusManager.clearFocus()
           },
-          text = { Text(text = title) },
-          selectedContentColor = Color.Black,
-          unselectedContentColor = Color.Gray
-        )
-      }
-    }
-
-    OutlinedTextField(
-      value = searchQuery,
-      onValueChange = { searchQuery = it },
-      label = { Text("Cerca artisti e performance") },
-      modifier = Modifier
-        .fillMaxWidth()
-        .padding(16.dp)
-        .focusRequester(focusRequester),
-      colors = OutlinedTextFieldDefaults.colors(
-        focusedBorderColor = Color.Black,
-        unfocusedBorderColor = Color.Black,
-        focusedLabelColor = Color.Black,
-        unfocusedLabelColor = Color.Gray
-      ),
-      shape = RoundedCornerShape(8.dp),
-      keyboardOptions = KeyboardOptions(
-        keyboardType = KeyboardType.Text,
-        imeAction = ImeAction.Done
-      ),
-      keyboardActions = KeyboardActions(
-        onSearch = {
-          focusManager.clearFocus()
-        },
-        onDone = {
-          focusManager.clearFocus()
-        }
-      ),
-      trailingIcon = {
-        if (searchQuery.isNotBlank()) {
-          IconButton(onClick = { searchQuery = "" }) {
-            Icon(imageVector = Icons.Default.Clear, contentDescription = "Clear search")
+          onDone = {
+            focusManager.clearFocus()
           }
-        } else {
-          Icon(imageVector = Icons.Default.Search, contentDescription = "Search")
+        ),
+        trailingIcon = {
+          if (searchQuery.isNotBlank()) {
+            IconButton(onClick = { searchQuery = "" }) {
+              Icon(imageVector = Icons.Default.Clear, contentDescription = "Clear search")
+            }
+          } else {
+            Icon(imageVector = Icons.Default.Search, contentDescription = "Search")
+          }
+        }
+      )
+
+      HorizontalPager(
+        state = actualPagerState,
+        modifier = Modifier
+          .weight(1f),
+        key = { page -> if (page < daySchedules.size) daySchedules[page].day else page }
+      ) { page ->
+        if (page < daySchedules.size) {
+          // Always get the scroll state from the map (current tab will have external state)
+          val pageScrollState = tabScrollStates.getOrPut(page) { LazyListState() }
+
+          EventContent(
+            events = daySchedules[page].events,
+            onRetry = onRetry,
+            onEventClick = onEventClick,
+            searchQuery = searchQuery,
+            lazyListState = pageScrollState
+          )
         }
       }
-    )
-
-    HorizontalPager(
-      state = actualPagerState,
-      modifier = Modifier
-        .weight(1f)
-    ) { page ->
-      if (page < daySchedules.size) {
-        EventContent(
-          events = daySchedules[page].events,
-          onRetry = onRetry,
-          onEventClick = onEventClick,
-          searchQuery = searchQuery,
-          lazyListState = lazyListState
-        )
-      }
     }
-  }
   }
 
   Box(
@@ -493,10 +506,13 @@ fun EventContent(
         state = lazyListState
       ) {
         eventsByTime.forEach { (time, eventsAtTime) ->
-          item {
+          item(key = "header_$time") {
             TimeHeader(time = time)
           }
-          items(eventsAtTime) { event ->
+          items(
+            items = eventsAtTime,
+            key = { event -> "${event.time}_${event.name}_${event.location}" }
+          ) { event ->
             EventItem(
               event = event,
               onClick = { onEventClick(event) }
@@ -521,7 +537,7 @@ fun TimeHeader(time: String) {
 }
 
 @Composable
-fun  EventItem(
+fun EventItem(
   event: Event,
   onClick: () -> Unit = {}
 ) {
@@ -561,17 +577,17 @@ fun  EventItem(
           .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
       ) {
-        Column(modifier = Modifier.weight(1f)) {
-          Text(
-            text = event.name,
-            style = MaterialTheme.typography.titleLarge
-          )
-          Text(
-            text = "Palco - ${event.location}",
-            style = MaterialTheme.typography.bodyMedium,
-            color = Color.Gray
-          )
-        }
+        Text(
+          text = event.location,
+          style = MaterialTheme.typography.titleMedium,
+          color = Color.Gray,
+          modifier = Modifier.padding(end = 8.dp)
+        )
+        Text(
+          text = event.name,
+          style = MaterialTheme.typography.titleLarge,
+          modifier = Modifier.weight(1f)
+        )
       }
     }
   }

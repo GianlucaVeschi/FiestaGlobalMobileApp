@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -54,6 +53,7 @@ import fiestaglobalmobileapp.composeapp.generated.resources._20
 import fiestaglobalmobileapp.composeapp.generated.resources.banner
 import fiestaglobalmobileapp.composeapp.generated.resources.facebook
 import fiestaglobalmobileapp.composeapp.generated.resources.instagram
+import fiestaglobalmobileapp.composeapp.generated.resources.new_banner
 import fiestaglobalmobileapp.composeapp.generated.resources.youtube
 import org.gianlucaveschi.fiestaglobal.MainViewModel
 import org.gianlucaveschi.fiestaglobal.domain.model.Event
@@ -61,7 +61,7 @@ import org.gianlucaveschi.fiestaglobal.ui.EventsUiState
 import org.gianlucaveschi.fiestaglobal.ui.screens.artists.ArtistsScreen
 import org.gianlucaveschi.fiestaglobal.ui.screens.events.EventsScreen
 import org.gianlucaveschi.fiestaglobal.ui.screens.food.FoodScreen
-import org.gianlucaveschi.fiestaglobal.ui.screens.FoodItem
+import org.gianlucaveschi.fiestaglobal.ui.screens.map.MapScreen
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 
@@ -73,7 +73,6 @@ fun MainScreen() {
 
   var selectedEvents by remember { mutableStateOf<Event?>(null) }
   var selectedTabIndex by remember { mutableStateOf(0) }
-  val lazyListState = rememberLazyListState()
 
   val pagerState = when (val currentUiState = uiState) {
     is EventsUiState.Success -> rememberPagerState { currentUiState.daySchedules.size }
@@ -104,11 +103,11 @@ fun MainScreen() {
         AnimatedContent(
           targetState = profileScreen,
           transitionSpec = {
-            if ((targetState is ProfileScreenState.ArtistsDetail || targetState is ProfileScreenState.FoodDetail) && initialState is ProfileScreenState.Main) {
-              // Slide in from right when going to Artists or Food
+            if ((targetState is ProfileScreenState.ArtistsDetail || targetState is ProfileScreenState.FoodDetail || targetState is ProfileScreenState.MapDetail) && initialState is ProfileScreenState.Main) {
+              // Slide in from right when going to Artists, Food, or Map
               slideInHorizontally(initialOffsetX = { it }) togetherWith
                   slideOutHorizontally(targetOffsetX = { -it })
-            } else if (targetState is ProfileScreenState.Main && (initialState is ProfileScreenState.ArtistsDetail || initialState is ProfileScreenState.FoodDetail)) {
+            } else if (targetState is ProfileScreenState.Main && (initialState is ProfileScreenState.ArtistsDetail || initialState is ProfileScreenState.FoodDetail || initialState is ProfileScreenState.MapDetail)) {
               // Slide in from left when going back to Main
               slideInHorizontally(initialOffsetX = { -it }) togetherWith
                   slideOutHorizontally(targetOffsetX = { it })
@@ -125,7 +124,8 @@ fun MainScreen() {
                 selectedTabIndex = tabIndex
                 currentScreen = ScreenState.Events
               },
-              onCiboClick = { profileScreen = ProfileScreenState.FoodDetail }
+              onCiboClick = { profileScreen = ProfileScreenState.FoodDetail },
+              onMapClick = { profileScreen = ProfileScreenState.MapDetail }
             )
 
             is ProfileScreenState.ArtistsDetail -> ArtistsScreen(
@@ -135,6 +135,11 @@ fun MainScreen() {
 
             is ProfileScreenState.FoodDetail -> FoodScreen(
               title = "Cibo",
+              onBackClick = { profileScreen = ProfileScreenState.Main }
+            )
+
+            is ProfileScreenState.MapDetail -> MapScreen(
+              title = "Mappa",
               onBackClick = { profileScreen = ProfileScreenState.Main }
             )
           }
@@ -171,7 +176,6 @@ fun MainScreen() {
               onEventClick = { event ->
                 selectedEvents = event
               },
-              lazyListState = lazyListState,
               pagerState = pagerState,
               onBackClick = { currentScreen = ScreenState.Info },
               initialTabIndex = selectedTabIndex,
@@ -190,7 +194,8 @@ fun MainScreen() {
 fun MainProfileScreen(
   onArtistsClick: () -> Unit,
   onEventsClick: (Int) -> Unit = {},
-  onCiboClick: () -> Unit = {}
+  onCiboClick: () -> Unit = {},
+  onMapClick: () -> Unit = {}
 ) {
   val scrollState = rememberScrollState()
 
@@ -202,9 +207,10 @@ fun MainProfileScreen(
       .verticalScroll(scrollState)
   ) {
     Image(
-      painter = painterResource(Res.drawable.banner),
+      painter = painterResource(Res.drawable.new_banner),
       contentDescription = "Montefabbri landscape",
       modifier = Modifier
+        .height(400.dp)
         .fillMaxWidth(),
       contentScale = ContentScale.FillBounds
     )
@@ -217,6 +223,7 @@ fun MainProfileScreen(
     ) {
       EventsSwimlane { tabIndex -> onEventsClick(tabIndex) }
       ArtistsSwimlane(onArtistsClick)
+      MapsSwimlane(onMapClick)
       FoodSwimlane(onCiboClick)
       SocialSwimlane()
     }
@@ -228,7 +235,7 @@ private fun EventsSwimlane(
   onEventsClick: (Int) -> Unit,
 ) {
   Text(
-    text = "Programmazione",
+    text = "🎭 Programmazione",
     style = MaterialTheme.typography.headlineSmall,
     fontWeight = FontWeight.Bold,
     modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
@@ -257,7 +264,36 @@ private fun EventsSwimlane(
     shape = RoundedCornerShape(24.dp)
   ) {
     Text(
-      text = "Vedi tutti gli eventi",
+      text = "Tutti gli Eventi",
+      color = Color.Black,
+      style = MaterialTheme.typography.bodyMedium,
+      fontWeight = FontWeight.Medium
+    )
+  }
+}
+
+@Composable
+private fun MapsSwimlane(
+  onMapClick: () -> Unit
+) {
+  Text(
+    text = "🗺️ Mappa",
+    style = MaterialTheme.typography.headlineSmall,
+    fontWeight = FontWeight.Bold,
+    modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
+  )
+
+  Button(
+    onClick = onMapClick,
+    modifier = Modifier
+      .fillMaxWidth(),
+    colors = ButtonDefaults.buttonColors(
+      containerColor = Color(255, 165, 0)
+    ),
+    shape = RoundedCornerShape(24.dp)
+  ) {
+    Text(
+      text = "Vedi Mappa",
       color = Color.Black,
       style = MaterialTheme.typography.bodyMedium,
       fontWeight = FontWeight.Medium
@@ -270,7 +306,7 @@ private fun ArtistsSwimlane(
   onArtistsClick: () -> Unit
 ) {
   Text(
-    text = "Artisti",
+    text = "🎤 Artisti",
     style = MaterialTheme.typography.headlineSmall,
     fontWeight = FontWeight.Bold,
     modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
@@ -295,7 +331,7 @@ private fun ArtistsSwimlane(
     shape = RoundedCornerShape(24.dp)
   ) {
     Text(
-      text = "Vedi tutti gli artisti",
+      text = "Tutti gli Artisti",
       color = Color.Black,
       style = MaterialTheme.typography.bodyMedium,
       fontWeight = FontWeight.Medium
@@ -308,7 +344,7 @@ private fun SocialSwimlane() {
   val uriHandler = LocalUriHandler.current
 
   Text(
-    text = "Seguici sui social",
+    text = "📱 Social",
     style = MaterialTheme.typography.headlineSmall,
     fontWeight = FontWeight.Bold,
   )
@@ -389,7 +425,7 @@ private fun FoodSwimlane(
   onFoodClick: () -> Unit
 ) {
   Text(
-    text = "Food",
+    text = "🍕 Food",
     style = MaterialTheme.typography.headlineSmall,
     fontWeight = FontWeight.Bold,
     modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
@@ -484,4 +520,5 @@ sealed class ProfileScreenState {
   data object Main : ProfileScreenState()
   data object ArtistsDetail : ProfileScreenState()
   data object FoodDetail : ProfileScreenState()
+  data object MapDetail : ProfileScreenState()
 }

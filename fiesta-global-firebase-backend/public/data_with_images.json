@@ -1,0 +1,388 @@
+{
+  "schedule": [
+    {
+      "day": "Gio 17",
+      "artists": [
+        {
+          "name": "Taglio del nastro FIESTA GLOBAL",
+          "time": "18:00",
+          "location": "ARCO",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/Screenshot%202025-07-09%20at%2021.40.28.png?alt=media&token=dce8afed-8a38-48c2-be7d-d00b3343cdcd",
+          "description": "Cerimonia di apertura del festival che segna l'inizio ufficiale delle celebrazioni musicali e culturali. Un momento di benvenuto per artisti e pubblico in un'atmosfera festosa."
+        },
+        {
+          "name": "Laboratori Artistici e Creativi per bambini a cura di TEATRO DELLE ISOLE",
+          "time": "18:00",
+          "location": "CHIESA",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/il%20teatro%20delle%20isole.jpg?alt=media&token=351dfad9-6244-425f-b88d-5cf60ef2b648",
+          "description": "Un giardino dove i bambini possono esplorare, imparare e divertirsi all'aria aperta. Uno spazio allestito con giochi in legno di abilità e laboratori creativi."
+        },
+        {
+          "name": "Apertura Mostra di pittura 'Fauna locale' di Giuseppe Sicignano",
+          "time": "18:00",
+          "location": "GIARDINO",
+          "imageUrl": "",
+          "description": "Mostra di pittura che esplora il tema della fauna locale attraverso opere d'arte coinvolgenti."
+        },
+        {
+          "name": "Giochi di una volta a cura di IL GIARDINO DEI COLORI",
+          "time": "19:00",
+          "location": "GIARDINO",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/il%20giardino%20dei%20colori.jpeg?alt=media&token=e9e08653-b279-4324-8233-2ba0f5178ccd",
+          "description": "Laboratorio creativo per bambini dove esplorare l'arte attraverso i colori. Attività di pittura, disegno e creazione artistica in un ambiente naturale stimolante."
+        },
+        {
+          "name": "BANDAKADABRA Techno-brass Marching Band",
+          "time": "19:00",
+          "location": "ARCO",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/Bandakadabra.jpg?alt=media&token=44526149-b96f-4ba2-81f5-45f82a6d062c",
+          "description": "Il groove ipnotico della techno e la potenza di fiati e percussioni. Due universi sonori che s'incontrano in uno spettacolo con la cassa dritta capace di trasformare qualsiasi luogo in una dance hall."
+        },
+        {
+          "name": "LAPALLAROTONDA Il Vicolo del Viaggio Lento e Responsabile",
+          "time": "19:00",
+          "location": "FIANCO CHIESA",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/Lapallarotonda%202.jpeg?alt=media&token=42816915-8115-4e7b-bb92-6ed39403259e",
+          "description": "Chiara Cervi racconta 'Sulla Faglia. Una ricerca biografica in cammino lungo le Terre Mutate'."
+        },
+        {
+          "name": "SINGLE BARREL Musica radici americane",
+          "time": "20:30",
+          "location": "ARCO",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/Single%20Barrel%201.jpeg?alt=media&token=fb679761-f4f7-40d1-b865-1a7833b4f7f3",
+          "description": "Musica radici americane che esplora suoni e canzoni originarie del sud degli Stati Uniti."
+        },
+        {
+          "name": "COMPAGNIA POÙET Continua",
+          "time": "20:30",
+          "location": "PIANELLO",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/compagnia%20pouet%20continua.1.JPG?alt=media&token=b849664a-5a0f-4b7f-99ed-06e16f8d4741",
+          "description": "Burattini, marionette, oggetti, suoni e persone in uno spettacolo coinvolgente."
+        },
+        {
+          "name": "VERONICA GONZALEZ Teatro di figura e burattini con i piedi",
+          "time": "21:00",
+          "location": "ARCO",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/Veronica%20Gonzalez.JPG?alt=media&token=142b911f-9d28-4c34-aaef-863809b9ab0b",
+          "description": "Spettacolo teatrale unico con marionette interpretate dai piedi dell'artista."
+        },
+        {
+          "name": "SLACK presents ERMANNO AND THE EX PRESIDENTS",
+          "time": "21:00",
+          "location": "ASILO",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/Ermanno.jpeg?alt=media&token=d71d373b-b8af-4fa0-8961-3a869df10435",
+          "description": "Musica garage punk, psichedelia, punk ‘n’ roll."
+        },
+        {
+          "name": "LE SGAMBATE Animazione itinerante sui trampoli",
+          "time": "21:00",
+          "location": "ITINERANTE",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/Le%20Sgambate%20-%20Camminate%20-%20festa%20dei%20fiori%20piove%20di%20sacco.jpg?alt=media&token=2bf39146-148b-4c54-b1dd-22765af390f1",
+          "description": "Animazione itinerante con trampoli e interazione con il pubblico."
+        },
+        {
+          "name": "GAIA MA Clown e giocoleria",
+          "time": "21:15",
+          "location": "PIANELLO",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/gaia%20matulli%2002.jpg?alt=media&token=7198633a-3adc-4693-8a4c-02a89ebbfd54",
+          "description": "Spettacolo clownesco e poetico con acrobazie e danze."
+        },
+        {
+          "name": "ANGE Musica Hard Rock",
+          "time": "21:30",
+          "location": "SOTTOMURA STAGE",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/Ange.jpeg?alt=media&token=a2ec85a0-7f8b-497a-afdc-80789082420f",
+          "description": "Performance musicale che mescola influenze rock e alternative."
+        },
+        {
+          "name": "PINAKOTEK Musica Psy funk Electro ambient",
+          "time": "23:00",
+          "location": "SOTTOMURA STAGE",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/Pinakotek.jpeg?alt=media&token=062283b9-6e25-4686-a981-f4fa50ae3a6a",
+          "description": "Progetto musicale che fonde musica elettronica e suoni analogici."
+        },
+        {
+          "name": "SLACK DJSET Phil Spector meets Black Sabbath",
+          "time": "23:30",
+          "location": "ASILO",
+          "imageUrl": "",
+          "description": "Rock'n'roll dancefloor hits con influenze Phil Spector e Black Sabbath."
+        }
+      ]
+    },
+    {
+      "day": "Ven 18",
+      "artists": [
+        {
+          "name": "Laboratori artistici e creativi per bambini a cura di TEATRO DELLE ISOLE",
+          "time": "18:00",
+          "location": "CHIESA",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/il%20teatro%20delle%20isole.jpg?alt=media&token=351dfad9-6244-425f-b88d-5cf60ef2b648",
+          "description": "Laboratori artistici e creativi per bambini a cura di TEATRO DELLE ISOLE. Un giardino dove i bambini possono esplorare, imparare e divertirsi all'aria aperta. Uno spazio allestito con giochi in legno di abilità e laboratori creativi."
+        },
+        {
+          "name": "Apertura Mostra di pittura 'Fauna locale' di Giuseppe Sicignano",
+          "time": "18:00",
+          "location": "GIARDINO",
+          "imageUrl": "",
+          "description": "Mostra di pittura 'Fauna locale' di Giuseppe Sicignano. Esplora il tema della fauna locale attraverso opere d'arte coinvolgenti."
+        },
+        {
+          "name": "Giochi di una volta a cura di IL GIARDINO DEI COLORI",
+          "time": "19:00",
+          "location": "GIARDINO",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/il%20giardino%20dei%20colori.jpeg?alt=media&token=e9e08653-b279-4324-8233-2ba0f5178ccd",
+          "description": "Giochi di una volta a cura di IL GIARDINO DEI COLORI. Laboratorio creativo per bambini dove esplorare l'arte attraverso i colori."
+        },
+        {
+          "name": "LAPALLAROTONDA Il Vicolo del Viaggio Lento e Responsabile",
+          "time": "19:00",
+          "location": "FIANCO CHIESA",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/Lapallarotonda%202.jpeg?alt=media&token=42816915-8115-4e7b-bb92-6ed39403259e",
+          "description": "LAPALLAROTONDA Il Vicolo del Viaggio Lento e Responsabile. Daniele Grassetti modera e racconta le esperienze in Cammino in compagnia di alcuni ospiti e il suo cicloviaggio al Circolo Polare Artico."
+        },
+        {
+          "name": "PAPA MENGO SELECTOR DJset Electrodance Hip hop anni 90/2000",
+          "time": "20:00",
+          "location": "ARCO",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/Papa%20Mengo%20selector.jpeg?alt=media&token=73a0fe74-20dd-47a9-a6fe-f0777885697b",
+          "description": "DJset Electrodance Hip hop anni 90/2000. Ritmi coinvolgenti e atmosfere vibranti."
+        },
+        {
+          "name": "ARTISTS ALLEY Live Painting 'Micro e Macro'",
+          "time": "20:00",
+          "location": "PIANELLO",
+          "imageUrl": "",
+          "description": "Live Painting 'Micro e Macro'. Esplora il tema attraverso l'arte visiva."
+        },
+        {
+          "name": "OTTO PANZER Clownerie",
+          "time": "20:15",
+          "location": "PIANELLO",
+          "imageUrl": "",
+          "description": "Performance clownesca con umorismo e interazione."
+        },
+        {
+          "name": "VERONICA GONZALEZ Teatro di figura, corporeale, burattini con i piedi",
+          "time": "20:45",
+          "location": "ARCO",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/Veronica%20Gonzalez.JPG?alt=media&token=142b911f-9d28-4c34-aaef-863809b9ab0b",
+          "description": "Spettacolo teatrale unico con marionette interpretate dai piedi dell'artista."
+        },
+        {
+          "name": "COLORI IN MUSICA Duo Acustico e Live Painting",
+          "time": "20:45",
+          "location": "ASILO",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/Colori%20in%20musica%201.jpeg?alt=media&token=1cb72aef-573d-4b0d-b412-ff1c5cd4a4c5",
+          "description": "Musica e pittura, suoni e colori, parole e tela: tutto si fonde per creare emozioni e risvegliare ricordi."
+        },
+        {
+          "name": "LE SGAMBATE Animazione itinerante sui trampoli",
+          "time": "21:00",
+          "location": "ITINERANTE",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/Le%20Sgambate%20-%20Camminate%20-%20festa%20dei%20fiori%20piove%20di%20sacco.jpg?alt=media&token=2bf39146-148b-4c54-b1dd-22765af390f1",
+          "description": "Animazione itinerante sui trampoli con interazione e spettacolo."
+        },
+        {
+          "name": "QUETZALCOATL Ritual de Fuego",
+          "time": "22:00",
+          "location": "ASILO",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/Quetzalcoatl.jpg?alt=media&token=6764c68d-13ee-4ab9-99dc-2a6f7b929d3a",
+          "description": "Spettacolo teatrale con danza, fuoco e percussioni. Una storia piena di simboli e azioni."
+        },
+        {
+          "name": "PACKIM DJset Dance-Elettronica, Synth-Pop",
+          "time": "23:30",
+          "location": "ASILO",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/Packim%201.jpeg?alt=media&token=8d9d44ef-11b2-49f5-a592-4d0a39e27c93",
+          "description": "Performance di musica elettronica con influenze Indie Dance e Disco sound."
+        }
+      ]
+    },
+    {
+      "day": "Sab 19",
+      "artists": [
+        {
+          "name": "Laboratori Artistici e Creativi per bambini a cura di TEATRO DELLE ISOLE",
+          "time": "18:00",
+          "location": "CHIESA",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/il%20teatro%20delle%20isole.jpg?alt=media&token=351dfad9-6244-425f-b88d-5cf60ef2b648",
+          "description": "Un giardino dove i bambini possono esplorare, imparare e divertirsi all'aria aperta. Uno spazio allestito con giochi in legno di abilità e laboratori creativi."
+        },
+        {
+          "name": "Apertura Mostra di pittura 'Fauna locale' di Giuseppe Sicignano",
+          "time": "18:00",
+          "location": "GIARDINO",
+          "imageUrl": "",
+          "description": "Mostra di pittura che esplora il tema della fauna locale attraverso opere d'arte coinvolgenti."
+        },
+        {
+          "name": "Giochi di una volta a cura di IL GIARDINO DEI COLORI",
+          "time": "19:00",
+          "location": "GIARDINO",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/il%20giardino%20dei%20colori.jpeg?alt=media&token=e9e08653-b279-4324-8233-2ba0f5178ccd",
+          "description": "Laboratorio creativo per bambini dove esplorare l'arte attraverso i colori. Attività di pittura, disegno e creazione artistica in un ambiente naturale stimolante."
+        },
+        {
+          "name": "LA COMPAGNIA DI VIVA EL BALL! Danze, Musiche e Canti Popolari",
+          "time": "19:00",
+          "location": "ARCO",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/LA%20COMPAGNIA%20DI%20VIVA%20EL%20BALL!.jpeg?alt=media&token=02423b35-8865-4750-ba91-2f10ec692a71",
+          "description": "Un organetto, un violino, un clarinetto e un canterino tamburellista. Danze, musiche e canti popolari."
+        },
+        {
+          "name": "LAPALLAROTONDA Il Vicolo del Viaggio Lento e Responsabile",
+          "time": "19:00",
+          "location": "FIANCO CHIESA",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/Lapallarotonda%202.jpeg?alt=media&token=42816915-8115-4e7b-bb92-6ed39403259e",
+          "description": "Daniele Grassetti modera e racconta le esperienze in Cammino in compagnia di alcuni ospiti e il suo cicloviaggio al Circolo Polare Artico."
+        },
+        {
+          "name": "BOLOGNA BRIDGE BAND Street brass band con groove funky e ritmi techno",
+          "time": "20:00",
+          "location": "SOTTOMURA STAGE",
+          "imageUrl": "",
+          "description": "La street band che condisce lo stile New Orleans con groove funky e ritmi techno. La Bologna Bridge Band, per gli amici BBB, è una brass band nata sotto uno dei ponti più suggestivi di Bologna."
+        },
+        {
+          "name": "COMPAGNIA POÙET La Dama dell'Ermellino",
+          "time": "20:00",
+          "location": "FIANCO CHIESA",
+          "imageUrl": "",
+          "description": "Spettacolo teatrale con clown e teatro di figura. La Dama dell'Ermellino."
+        },
+        {
+          "name": "KATASTROPHA Clown, magia comica e bolle di sapone",
+          "time": "20:30",
+          "location": "ARCO",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/katastrofa%20show%208.jpg?alt=media&token=4926c7f1-e8a8-41b7-ac96-245fe8e77aae",
+          "description": "Uno spettacolo travolgente, dove comicità, rock and roll, magia, clownerie e bolle di sapone giganti si uniscono per creare un'esperienza unica e coinvolgente."
+        },
+        {
+          "name": "FREE MUSIC FOR KIDS Esperienza creativa condivisa",
+          "time": "21:00",
+          "location": "ASILO",
+          "imageUrl": "",
+          "description": "Un'esperienza musicale per bambini che incoraggia la creatività e la collaborazione."
+        },
+        {
+          "name": "JBEAT & MARINELLI PianoBeat - Jazz e Hip Hop",
+          "time": "21:30",
+          "location": "SOTTOMURA STAGE",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/JBeat%26Marinelli.jpg?alt=media&token=13b7794e-0600-4d4f-a74d-9425a7c31eab",
+          "description": "Jazz e HipHop si fondono in un sound unico e innoxvativo: I Pionieri del PianoBeat."
+        },
+        {
+          "name": "WORABBI E LE DOVUTE PRECAUZIONI",
+          "time": "22:00",
+          "location": "ARCO",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/Worabbi.jpeg?alt=media&token=41e0f8b3-e421-423c-9c2a-9b2ef9928a9c",
+          "description": "Un gustosissimo collettivo di sbandati alle prese con un teatrino colorito e grottesco di personaggi caricaturali."
+        },
+        {
+          "name": "THE SOULFIRE PROJECT Mestizo World Music",
+          "time": "00:00",
+          "location": "ASILO",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/The%20SoulfireProject%201.jpg?alt=media&token=c51cd2d4-903c-4a57-a958-43fc597b6e80",
+          "description": "Un progetto nomade multiculturale che spazia da cumbia, reggae e afro/latíno."
+        },
+        {
+          "name": "DJ GHIGO Afro Reggae Brasil",
+          "time": "01:30",
+          "location": "ASILO",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/Ghigo%20dj.jpeg?alt=media&token=fcf06a17-0d0a-4627-958c-7e0459f37baf",
+          "description": "Ghigo ritorna con il suo sound Afro a farci ballare e cantare sotto il bellissimo cielo di stelle di Fiesta Global."
+        }
+      ]
+    },
+    {
+      "day": "Dom 20",
+      "artists": [
+        {
+          "name": "Laboratori Artistici e Creativi per bambini a cura di TEATRO DELLE ISOLE",
+          "time": "17:00",
+          "location": "CHIESA",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/il%20teatro%20delle%20isole.jpg?alt=media&token=351dfad9-6244-425f-b88d-5cf60ef2b648",
+          "description": "Un giardino dove i bambini possono esplorare, imparare e divertirsi all'aria aperta. Uno spazio allestito con giochi in legno di abilità e laboratori creativi."
+        },
+        {
+          "name": "Apertura Mostra di pittura 'Fauna locale' di Giuseppe Sicignano",
+          "time": "17:00",
+          "location": "GIARDINO",
+          "imageUrl": "",
+          "description": "Mostra di pittura che esplora il tema della fauna locale attraverso opere d'arte coinvolgenti."
+        },
+        {
+          "name": "Giochi di una volta a cura di IL GIARDINO DEI COLORI",
+          "time": "18:00",
+          "location": "GIARDINO",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/il%20giardino%20dei%20colori.jpeg?alt=media&token=e9e08653-b279-4324-8233-2ba0f5178ccd",
+          "description": "Laboratorio creativo per bambini dove esplorare l'arte attraverso i colori. Attività di pittura, disegno e creazione artistica in un ambiente naturale stimolante."
+        },
+        {
+          "name": "BOLOGNA BRIDGE BAND Street brass band con groove funky e ritmi techno",
+          "time": "19:00",
+          "location": "SOTTOMURA STAGE",
+          "imageUrl": "",
+          "description": "La street band che condisce lo stile New Orleans con groove funky e ritmi techno. La Bologna Bridge Band, per gli amici BBB, è una brass band nata sotto uno dei ponti più suggestivi di Bologna."
+        },
+        {
+          "name": "LAPALLAROTONDA Il Vicolo del Viaggio Lento e Responsabile",
+          "time": "19:00",
+          "location": "FIANCO CHIESA",
+          "imageUrl": "",
+          "description": "Dal sogno del viaggio alla preparazione del viaggio. Discussione sui cammini europei e esperienze di viaggio lento e responsabile."
+        },
+        {
+          "name": "IL MAGICO OLIFANTE Teatro di figura",
+          "time": "19:30",
+          "location": "ITINERANTE",
+          "imageUrl": "",
+          "description": "Performance teatrale itinerante con elementi di figura e narrazione."
+        },
+        {
+          "name": "SWING-O-LELES Spettacolo di musica e teatro",
+          "time": "20:30",
+          "location": "SOTTOMURA STAGE",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/Swing-o-Leles.jpg?alt=media&token=f00e03e5-b496-460a-ac62-da10b88afd93",
+          "description": "Una serata in compagnia dei Swing-o-Leles fra canzoni, aneddoti, poesie e buon umore. Un viaggio musicale e teatrale con il pubblico coinvolto."
+        },
+        {
+          "name": "COMPAGNIA 3DIDANE' Amor Pérignon - Circo Teatro",
+          "time": "20:30",
+          "location": "ARCO",
+          "imageUrl": "",
+          "description": "Spettacolo teatrale con clown e arte circense. Un'esperienza unica e coinvolgente."
+        },
+        {
+          "name": "KATASTROPHA Clown, magia comica e bolle di sapone",
+          "time": "20:45",
+          "location": "ASILO",
+          "imageUrl": "",
+          "description": "Uno spettacolo travolgente, dove comicità, magia e bolle di sapone giganti si uniscono per creare un'esperienza unica e coinvolgente."
+        },
+        {
+          "name": "MOTSWAKO JAZZ COLLECTIVE feat. MIKE ROSSI Musica jazz con influenze africane",
+          "time": "21:00",
+          "location": "SOTTOMURA STAGE",
+          "imageUrl": "",
+          "description": "Performance musicale che mescola jazz e influenze africane, con artisti di talento internazionale."
+        },
+        {
+          "name": "LION D & MODERN ROOTS COLLECTIVE International Reggae Music",
+          "time": "22:15",
+          "location": "ASILO",
+          "imageUrl": "https://reggae.today/images/Albums-reggaetoday-reggae-today/lion-d-heartical-soul-reggae-reggaetoday-2.jpg",
+          "description": "Lion D è un artista reggae internazionale di origini italo-nigeriane. La sua musica riflette un mix di influenze culturali e sonorità reggae autentiche."
+        },
+        {
+          "name": "VIBRA FAMILY DJset Roots, Reggae & Dub",
+          "time": "00:00",
+          "location": "ASILO",
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/VIBRA%20FAMILY.jpeg?alt=media&token=316f7325-1749-43be-af2c-24e484e1daff",
+          "description": "Diventati ormai resident djs di Fiesta Globàl, la Vibra Family farà ballare tutti gli appassionati di musica roots, reggae e dub."
+        }
+      ]
+    }    
+  ]
+}

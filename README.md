@@ -3,9 +3,16 @@ Welcome to the official App of the FiestaGlobal in Montefabbri.
 
 This is a Kotlin Multiplatform project targeting Android, iOS. The UI is shared using Compose Multiplatform. 
 
-| Events Screen | Detail Screen | Artists Screen |
-|---------------|---------------|--------------|
-| ![Image 1](https://github.com/user-attachments/assets/18d729ee-d625-4fa4-870e-427001c70426) | ![Image 2](https://github.com/user-attachments/assets/803530b4-4f31-4a97-893d-990776658ff1) | ![Image 3](https://github.com/user-attachments/assets/c74be3ab-938c-4709-b0f8-1d430750fea7) |
+| Screenshot 4 | Screenshot 5 | Screenshot 6 |
+|--------------|--------------|--------------|
+| ![Image 4](https://github.com/user-attachments/assets/98c6e857-fb2b-429a-9194-0dc6170068d9) | ![Image 5](https://github.com/user-attachments/assets/6a1f035f-bc9b-4650-845a-fb0d548117a3) | ![Image 6](https://github.com/user-attachments/assets/06166bab-1da7-4f44-8c35-1aede4f928c8) |
+
+| Screenshot 1 | Screenshot 2 | Screenshot 3 |
+|--------------|--------------|--------------|
+| ![Image 1](https://github.com/user-attachments/assets/d458d362-be06-4f8f-8988-72e27a72e7df) | ![Image 2](https://github.com/user-attachments/assets/173f80ed-2693-43a3-999e-8775e2481639) | ![Image 3](https://github.com/user-attachments/assets/ea40e2f2-2928-4508-90a2-4e39c03d26ab) |
+
+
+
 
 
 ## Download the app

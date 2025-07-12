@@ -81,8 +81,8 @@ android {
     applicationId = "org.gianlucaveschi.fiestaglobal"
     minSdk = libs.versions.android.minSdk.get().toInt()
     targetSdk = libs.versions.android.targetSdk.get().toInt()
-    versionCode = 12
-    versionName = "1.2.0"
+    versionCode = 14
+    versionName = "1.4.0"
   }
   packaging {
     resources {

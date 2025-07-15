@@ -459,7 +459,7 @@ private fun FoodSwimlane(
     shape = RoundedCornerShape(24.dp)
   ) {
     Text(
-      text = "Vedi tutto quello che c'è da mangiare",
+      text = "Tutto il cibo",
       color = Color.Black,
       style = MaterialTheme.typography.bodyMedium,
       fontWeight = FontWeight.Medium

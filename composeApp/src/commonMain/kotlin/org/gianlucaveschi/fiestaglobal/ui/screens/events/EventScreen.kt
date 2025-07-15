@@ -83,7 +83,6 @@ fun EventsScreen(
   uiState: EventsUiState,
   onRetry: () -> Unit,
   onEventClick: (Event) -> Unit = {},
-  lazyListState: LazyListState = rememberLazyListState(),
   pagerState: PagerState? = null,
   onBackClick: (() -> Unit)? = null,
   initialTabIndex: Int = 0,
@@ -105,7 +104,6 @@ fun EventsScreen(
       SuccessEventScreen(
         daySchedules = uiState.daySchedules,
         onEventClick = onEventClick,
-        lazyListState = lazyListState,
         pagerState = pagerState,
         onBackClick = onBackClick,
         initialTabIndex = initialTabIndex,
@@ -206,7 +204,6 @@ private fun ErrorEventScreen(
 private fun SuccessEventScreen(
   daySchedules: List<DaySchedule>,
   onEventClick: (Event) -> Unit,
-  lazyListState: LazyListState,
   pagerState: PagerState?,
   onBackClick: (() -> Unit)?,
   initialTabIndex: Int = 0,
@@ -221,15 +218,14 @@ private fun SuccessEventScreen(
   val focusManager = LocalFocusManager.current
   val coroutineScope = rememberCoroutineScope()
 
-  // Store scroll states for each tab, but always use the external lazyListState for the current tab
-  val tabScrollStates = remember(daySchedules.size) {
-    mutableMapOf<Int, LazyListState>()
+  // Create and remember a LazyListState for each tab.
+  // This is the key fix: each list gets its own, stable state instance,
+  // preventing state conflicts and ANRs when switching tabs.
+  val lazyListStates = remember(daySchedules.size) {
+    List(daySchedules.size) { LazyListState() }
   }
-  
-  // Ensure the current tab's state is always the external one
-  tabScrollStates[actualPagerState.currentPage] = lazyListState
 
-  // Navigate to the selected tab when pagerState is provided from MainScreen
+// Navigate to the selected tab when pagerState is provided from MainScreen
   // Only do this once when the screen is first created
   if (pagerState != null) {
     LaunchedEffect(Unit) {
@@ -237,6 +233,11 @@ private fun SuccessEventScreen(
         actualPagerState.animateScrollToPage(initialTabIndex)
       }
     }
+  }
+
+  // Track tab changes and notify MainScreen
+  LaunchedEffect(actualPagerState.currentPage) {
+    onTabChanged(actualPagerState.currentPage)
   }
 
   // Track tab changes and notify MainScreen
@@ -340,14 +341,11 @@ private fun SuccessEventScreen(
         key = { page -> if (page < daySchedules.size) daySchedules[page].day else page }
       ) { page ->
         if (page < daySchedules.size) {
-          // Always get the scroll state from the map (current tab will have external state)
-          val pageScrollState = tabScrollStates.getOrPut(page) { LazyListState() }
-
           EventContent(
             events = daySchedules[page].events,
             onEventClick = onEventClick,
             searchQuery = searchQuery,
-            lazyListState = pageScrollState
+            lazyListState = lazyListStates[page]
           )
         }
       }
@@ -393,6 +391,63 @@ private fun SuccessEventScreen(
           .systemBarsPadding()
       ) {
         content(PaddingValues(0.dp))
+      }
+    }
+  }
+}
+
+@Composable
+fun EventContent(
+  events: List<Event>,
+  onEventClick: (Event) -> Unit,
+  searchQuery: String,
+  lazyListState: LazyListState
+) {
+  val filteredEvents = remember(events, searchQuery) {
+    if (searchQuery.isBlank()) {
+      events
+    } else {
+      events.filter {
+        it.name.contains(searchQuery, ignoreCase = true) ||
+            it.location.contains(searchQuery, ignoreCase = true)
+      }
+    }
+  }
+
+  val eventsByTime = filteredEvents.groupBy { it.time }
+
+  Box(
+    modifier = Modifier
+      .fillMaxSize()
+  ) {
+    if (filteredEvents.isEmpty()) {
+      Text(
+        text = "Nessun risultato trovato! Prova a cercare in un altro giorno.",
+        modifier = Modifier
+          .fillMaxSize()
+          .padding(16.dp),
+        style = MaterialTheme.typography.bodyMedium
+      )
+    } else {
+      LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
+        state = lazyListState
+      ) {
+        eventsByTime.forEach { (time, eventsAtTime) ->
+          item(key = "header_$time") {
+            TimeHeader(time = time)
+          }
+          items(
+            items = eventsAtTime,
+            key = { event -> "${event.time}_${event.name}_${event.location}" }
+          ) { event ->
+            EventItem(
+              event = event,
+              onClick = { onEventClick(event) }
+            )
+          }
+        }
       }
     }
   }
@@ -459,63 +514,6 @@ private fun Modifier.shimmerEffect(): Modifier = composed {
     ),
     shape = RoundedCornerShape(4.dp)
   )
-}
-
-@Composable
-fun EventContent(
-  events: List<Event>,
-  onEventClick: (Event) -> Unit,
-  searchQuery: String,
-  lazyListState: LazyListState
-) {
-  val filteredEvents = remember(events, searchQuery) {
-    if (searchQuery.isBlank()) {
-      events
-    } else {
-      events.filter {
-        it.name.contains(searchQuery, ignoreCase = true) ||
-            it.location.contains(searchQuery, ignoreCase = true)
-      }
-    }
-  }
-
-  val eventsByTime = filteredEvents.groupBy { it.time }
-
-  Box(
-    modifier = Modifier
-      .fillMaxSize()
-  ) {
-    if (filteredEvents.isEmpty()) {
-      Text(
-        text = "Nessun risultato trovato",
-        modifier = Modifier
-          .fillMaxSize()
-          .padding(16.dp),
-        style = MaterialTheme.typography.bodyMedium
-      )
-    } else {
-      LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
-        state = lazyListState
-      ) {
-        eventsByTime.forEach { (time, eventsAtTime) ->
-          item(key = "header_$time") {
-            TimeHeader(time = time)
-          }
-          items(
-            items = eventsAtTime,
-            key = { event -> "${event.time}_${event.name}_${event.location}" }
-          ) { event ->
-            EventItem(
-              event = event,
-              onClick = { onEventClick(event) }
-            )
-          }
-        }
-      }
-    }
-  }
 }
 
 @Composable

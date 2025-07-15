@@ -485,9 +485,16 @@
         {
           "name": "COMPAGNIA 3DIDANE' La famiglia Carlucci",
           "time": "20:45",
-          "location": 5,
+          "location": 2,
           "imageUrl": "",
           "description": "Clownerie con la famiglia Carlucci. Spettacolo teatrale divertente e coinvolgente."
+        },
+        {
+          "name": "LAPALLAROTONDA Il Vicolo del Viaggio Lento e Responsabile",
+          "time": "21:00",
+          "location": 6,
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/Lapallarotonda%202.jpeg?alt=media&token=42816915-8115-4e7b-bb92-6ed39403259e",
+          "description": "I camminatori si raccontano. Esperienze di viaggio lento e responsabile."
         },
         {
           "name": "FREE MUSIC FOR KIDS Esperienza creativa condivisa",
@@ -497,60 +504,32 @@
           "description": "Un'esperienza musicale per bambini che incoraggia la creatività e la collaborazione."
         },
         {
-          "name": "LAPALLAROTONDA Il Vicolo del Viaggio Lento e Responsabile",
-          "time": "21:00",
-          "location": 10,
-          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/Lapallarotonda%202.jpeg?alt=media&token=42816915-8115-4e7b-bb92-6ed39403259e",
-          "description": "I camminatori si raccontano. Esperienze di viaggio lento e responsabile."
-        },
-        {
           "name": "Giochi di una volta a cura di IL GIARDINO DEI COLORI",
           "time": "21:00",
-          "location": 3,
+          "location": 9,
           "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/il%20giardino%20dei%20colori.jpeg?alt=media&token=e9e08653-b279-4324-8233-2ba0f5178ccd",
           "description": "Giochi di una volta a cura di IL GIARDINO DEI COLORI. Laboratorio creativo per bambini dove esplorare l'arte attraverso i colori."
         },
         {
           "name": "BOLOGNA BRIDGE BAND Street brass band con groove funky e ritmi techno",
           "time": "21:30",
-          "location": 8,
+          "location": 4,
           "imageUrl": "",
           "description": "La street band che condisce lo stile New Orleans con groove funky e ritmi techno. La Bologna Bridge Band, per gli amici BBB, è una brass band nata sotto uno dei ponti più suggestivi di Bologna."
         },
         {
           "name": "JBEAT & MARINELLI PianoBeat - Jazz e Hip Hop",
           "time": "21:30",
-          "location": 4,
+          "location": 1,
           "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/JBeat%26Marinelli.jpg?alt=media&token=13b7794e-0600-4d4f-a74d-9425a7c31eab",
           "description": "Jazz e HipHop si fondono in un sound unico e innoxvativo: I Pionieri del PianoBeat."
         },
         {
           "name": "MA KENLUCK Acrobatica Rola bola verticale su pila di sedie",
           "time": "22:00",
-          "location": 1,
+          "location": 10,
           "imageUrl": "",
           "description": "Acrobatica Rola bola verticale su pila di sedie. Spettacolo acrobatico mozzafiato."
-        },
-        {
-          "name": "DUBADUBA Concerto interattivo para-jazz-pop-alternativo",
-          "time": "22:00",
-          "location": 2,
-          "imageUrl": "",
-          "description": "Concerto interattivo para-jazz-pop-alternativo con energia e creatività."
-        },
-        {
-          "name": "Laboratori artistici e creativi per bambini a cura di TEATRO DELLE ISOLE",
-          "time": "22:00",
-          "location": 6,
-          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/il%20teatro%20delle%20isole.jpg?alt=media&token=351dfad9-6244-425f-b88d-5cf60ef2b648",
-          "description": "Laboratori artistici e creativi per bambini a cura di TEATRO DELLE ISOLE. Un giardino dove i bambini possono esplorare, imparare e divertirsi all'aria aperta. Uno spazio allestito con giochi in legno di abilità e laboratori creativi."
-        },
-        {
-          "name": "IL MAGICO OLIFANTE Teatro di figura",
-          "time": "22:00",
-          "location": 8,
-          "imageUrl": "",
-          "description": "Performance teatrale itinerante con elementi di figura e narrazione."
         },
         {
           "name": "WORABBI E LE DOVUTE PRECAUZIONI",
@@ -560,30 +539,51 @@
           "description": "Cantautorato d'avanguardia Zumppappista. Un gustosissimo collettivo di sbandati alle prese con un teatrino colorito e grottesco di personaggi caricaturali."
         },
         {
+          "name": "DUBADUBA Concerto interattivo para-jazz-pop-alternativo",
+          "time": "22:00",
+          "location": 8,
+          "imageUrl": "",
+          "description": "Concerto interattivo para-jazz-pop-alternativo con energia e creatività."
+        },
+        {
+          "name": "Laboratori artistici e creativi per bambini a cura di TEATRO DELLE ISOLE",
+          "time": "22:00",
+          "location": 7,
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/il%20teatro%20delle%20isole.jpg?alt=media&token=351dfad9-6244-425f-b88d-5cf60ef2b648",
+          "description": "Laboratori artistici e creativi per bambini a cura di TEATRO DELLE ISOLE. Un giardino dove i bambini possono esplorare, imparare e divertirsi all'aria aperta. Uno spazio allestito con giochi in legno di abilità e laboratori creativi."
+        },
+        {
+          "name": "IL MAGICO OLIFANTE Teatro di figura",
+          "time": "22:00",
+          "location": 11,
+          "imageUrl": "",
+          "description": "Performance teatrale itinerante con elementi di figura e narrazione."
+        },
+        {
           "name": "COMPAGNIA POÙET La Dama dell'Ermellino",
           "time": "22:15",
-          "location": 1,
+          "location": 5,
           "imageUrl": "",
           "description": "Clownerie, teatro di figura. La Dama dell'Ermellino."
         },
         {
           "name": "COMPAGNIA 3DIDANE' La famiglia Carlucci",
           "time": "22:30",
-          "location": 5,
+          "location": 2,
           "imageUrl": "",
           "description": "Clownerie con la famiglia Carlucci. Spettacolo teatrale divertente e coinvolgente."
         },
         {
           "name": "KATASTROPHA Clown, magia comica e bolle di sapone",
           "time": "22:45",
-          "location": 10,
+          "location": 4,
           "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/katastrofa%20show%208.jpg?alt=media&token=4926c7f1-e8a8-41b7-ac96-245fe8e77aae",
           "description": "Uno spettacolo travolgente, dove comicità, rock and roll, magia, clownerie e bolle di sapone giganti si uniscono per creare un'esperienza unica e coinvolgente."
         },
         {
           "name": "FOLÀ Percussioni e Danze dall'Africa dell'Ovest",
           "time": "23:00",
-          "location": 3,
+          "location": 10,
           "imageUrl": "",
           "description": "Percussioni e Danze dall'Africa dell'Ovest con ritmi coinvolgenti e tradizionali."
         },
@@ -597,14 +597,14 @@
         {
           "name": "K LSY Musica elettronica con synth e drum machine",
           "time": "23:15",
-          "location": 7,
+          "location": 1,
           "imageUrl": "",
           "description": "Musica elettronica con synth e drum machine. Suoni moderni e coinvolgenti."
         },
         {
           "name": "BOLOGNA BRIDGE BAND Street brass band con groove funky e ritmi techno",
           "time": "23:30",
-          "location": 11,
+          "location": 3,
           "imageUrl": "",
           "description": "La street band che condisce lo stile New Orleans con groove funky e ritmi techno. La Bologna Bridge Band, per gli amici BBB, è una brass band nata sotto uno dei ponti più suggestivi di Bologna."
         },
@@ -733,6 +733,13 @@
           "description": "Un'esperienza musicale per bambini che incoraggia la creatività e la collaborazione."
         },
         {
+          "name": "MOTSWAKO JAZZ COLLECTIVE feat. MIKE ROSSI Musica jazz con influenze africane",
+          "time": "21:00",
+          "location": 1,
+          "imageUrl": "",
+          "description": "Performance musicale che mescola jazz e influenze africane, con artisti di talento internazionale."
+        },
+        {
           "name": "LAPALLAROTONDA Il Vicolo del Viaggio Lento e Responsabile",
           "time": "21:00",
           "location": 6,
@@ -752,13 +759,6 @@
           "location": 9,
           "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/il%20giardino%20dei%20colori.jpeg?alt=media&token=e9e08653-b279-4324-8233-2ba0f5178ccd",
           "description": "Giochi di una volta a cura di IL GIARDINO DEI COLORI. Laboratorio creativo per bambini dove esplorare l'arte attraverso i colori."
-        },
-        {
-          "name": "MOTSWAKO JAZZ COLLECTIVE feat. MIKE ROSSI Musica jazz con influenze africane",
-          "time": "21:00",
-          "location": 1,
-          "imageUrl": "",
-          "description": "Performance musicale che mescola jazz e influenze africane, con artisti di talento internazionale."
         },
         {
           "name": "COMPAGNIA 3DIDANE' Black Smilzo - Teatro di Strada",

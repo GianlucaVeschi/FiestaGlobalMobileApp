@@ -1,6 +1,5 @@
 package org.gianlucaveschi.fiestaglobal.ui.screens
 
-import org.gianlucaveschi.fiestaglobal.ui.screens.events.EventDetailScreen
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
@@ -58,6 +57,7 @@ import org.gianlucaveschi.fiestaglobal.MainViewModel
 import org.gianlucaveschi.fiestaglobal.domain.model.Event
 import org.gianlucaveschi.fiestaglobal.ui.EventsUiState
 import org.gianlucaveschi.fiestaglobal.ui.screens.artists.ArtistsScreen
+import org.gianlucaveschi.fiestaglobal.ui.screens.events.EventDetailScreen
 import org.gianlucaveschi.fiestaglobal.ui.screens.events.EventsScreen
 import org.gianlucaveschi.fiestaglobal.ui.screens.food.FoodScreen
 import org.gianlucaveschi.fiestaglobal.ui.screens.map.MapScreen
@@ -225,6 +225,16 @@ fun MainProfileScreen(
       MapsSwimlane(onMapClick)
       FoodSwimlane(onCiboClick)
       SocialSwimlane()
+      
+      Text(
+        text = "Made with ❤️ in Berlin - v1.5.0",
+        style = MaterialTheme.typography.bodySmall,
+        color = Color.Gray,
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(16.dp),
+        textAlign = TextAlign.Center
+      )
     }
   }
 }

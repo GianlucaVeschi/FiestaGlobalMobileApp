@@ -104,7 +104,6 @@ fun EventsScreen(
     is EventsUiState.Success -> {
       SuccessEventScreen(
         daySchedules = uiState.daySchedules,
-        onRetry = onRetry,
         onEventClick = onEventClick,
         lazyListState = lazyListState,
         pagerState = pagerState,
@@ -206,7 +205,6 @@ private fun ErrorEventScreen(
 @Composable
 private fun SuccessEventScreen(
   daySchedules: List<DaySchedule>,
-  onRetry: () -> Unit,
   onEventClick: (Event) -> Unit,
   lazyListState: LazyListState,
   pagerState: PagerState?,
@@ -218,7 +216,9 @@ private fun SuccessEventScreen(
   val actualPagerState = pagerState ?: rememberPagerState(
     initialPage = initialTabIndex.coerceIn(0, tabTitles.size - 1)
   ) { tabTitles.size }
-
+  var searchQuery by remember { mutableStateOf("") }
+  val focusRequester = remember { FocusRequester() }
+  val focusManager = LocalFocusManager.current
   val coroutineScope = rememberCoroutineScope()
 
   // Store scroll states for each tab, but always use the external lazyListState for the current tab
@@ -243,10 +243,6 @@ private fun SuccessEventScreen(
   LaunchedEffect(actualPagerState.currentPage) {
     onTabChanged(actualPagerState.currentPage)
   }
-
-  var searchQuery by remember { mutableStateOf("") }
-  val focusRequester = remember { FocusRequester() }
-  val focusManager = LocalFocusManager.current
 
   if (daySchedules.isEmpty()) {
     Box(
@@ -349,7 +345,6 @@ private fun SuccessEventScreen(
 
           EventContent(
             events = daySchedules[page].events,
-            onRetry = onRetry,
             onEventClick = onEventClick,
             searchQuery = searchQuery,
             lazyListState = pageScrollState
@@ -469,7 +464,6 @@ private fun Modifier.shimmerEffect(): Modifier = composed {
 @Composable
 fun EventContent(
   events: List<Event>,
-  onRetry: () -> Unit,
   onEventClick: (Event) -> Unit,
   searchQuery: String,
   lazyListState: LazyListState

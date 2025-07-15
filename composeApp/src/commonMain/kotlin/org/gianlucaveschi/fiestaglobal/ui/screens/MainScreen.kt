@@ -1,6 +1,6 @@
 package org.gianlucaveschi.fiestaglobal.ui.screens
 
-import EventDetailScreen
+import org.gianlucaveschi.fiestaglobal.ui.screens.events.EventDetailScreen
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
@@ -50,7 +50,6 @@ import fiestaglobalmobileapp.composeapp.generated.resources._17
 import fiestaglobalmobileapp.composeapp.generated.resources._18
 import fiestaglobalmobileapp.composeapp.generated.resources._19
 import fiestaglobalmobileapp.composeapp.generated.resources._20
-import fiestaglobalmobileapp.composeapp.generated.resources.banner
 import fiestaglobalmobileapp.composeapp.generated.resources.facebook
 import fiestaglobalmobileapp.composeapp.generated.resources.instagram
 import fiestaglobalmobileapp.composeapp.generated.resources.new_banner

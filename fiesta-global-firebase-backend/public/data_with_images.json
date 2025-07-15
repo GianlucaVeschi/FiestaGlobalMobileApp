@@ -90,21 +90,21 @@
         {
           "name": "LE SGAMBATE Animazione itinerante sui trampoli",
           "time": "21:00",
-          "location": 6,
+          "location": 11,
           "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/Le%20Sgambate%20-%20Camminate%20-%20festa%20dei%20fiori%20piove%20di%20sacco.jpg?alt=media&token=2bf39146-148b-4c54-b1dd-22765af390f1",
           "description": "Animazione itinerante con trampoli e interazione con il pubblico."
         },
         {
           "name": "GAIA MA Clown e giocoleria",
           "time": "21:15",
-          "location": 9,
+          "location": 4,
           "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/gaia%20matulli%2002.jpg?alt=media&token=7198633a-3adc-4693-8a4c-02a89ebbfd54",
           "description": "Spettacolo clownesco e poetico con acrobazie e danze."
         },
         {
           "name": "ANGE Musica Hard Rock",
           "time": "21:30",
-          "location": 11,
+          "location": 1,
           "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/Ange.jpeg?alt=media&token=a2ec85a0-7f8b-497a-afdc-80789082420f",
           "description": "Performance musicale che mescola influenze rock e alternative."
         },
@@ -172,6 +172,13 @@
           "description": "Musica garage punk, psichedelia, punk 'n' roll."
         },
         {
+          "name": "PINAKOTEK Musica Psy funk Electro ambient",
+          "time": "23:00",
+          "location": 1,
+          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/Pinakotek.jpeg?alt=media&token=062283b9-6e25-4686-a981-f4fa50ae3a6a",
+          "description": "Progetto musicale che fonde musica elettronica e suoni analogici."
+        },
+        {
           "name": "BANDAKADABRA Techno-brass Marching Band",
           "time": "23:30",
           "location": 3,
@@ -179,16 +186,9 @@
           "description": "Il groove ipnotico della techno e la potenza di fiati e percussioni. Due universi sonori che s'incontrano in uno spettacolo con la cassa dritta capace di trasformare qualsiasi luogo in una dance hall."
         },
         {
-          "name": "PINAKOTEK Musica Psy funk Electro ambient",
-          "time": "23:00",
-          "location": 4,
-          "imageUrl": "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/Pinakotek.jpeg?alt=media&token=062283b9-6e25-4686-a981-f4fa50ae3a6a",
-          "description": "Progetto musicale che fonde musica elettronica e suoni analogici."
-        },
-        {
           "name": "SLACK DJSET Phil Spector meets Black Sabbath. DJSet Rock'n'Roll",
           "time": "24:00",
-          "location": 1,
+          "location": 10,
           "imageUrl": "",
           "description": "Rock'n'roll dancefloor hits con influenze Phil Spector e Black Sabbath."
         }

@@ -1,6 +1,5 @@
 package org.gianlucaveschi.fiestaglobal.ui.navigation
 
-import EventDetailScreen
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -11,6 +10,7 @@ import androidx.navigation.navArgument
 import org.gianlucaveschi.fiestaglobal.domain.model.Event
 import org.gianlucaveschi.fiestaglobal.ui.EventsUiState
 import org.gianlucaveschi.fiestaglobal.ui.screens.events.EventsScreen
+import org.gianlucaveschi.fiestaglobal.ui.screens.events.EventDetailScreen
 import java.net.URLDecoder
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets

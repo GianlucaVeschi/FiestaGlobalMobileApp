@@ -21,7 +21,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -569,13 +568,29 @@ fun EventItem(
           .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
       ) {
-        // TODO: Location
-//        Text(
-//          text = event.location,
-//          style = MaterialTheme.typography.titleMedium,
-//          color = Color.Gray,
-//          modifier = Modifier.padding(end = 8.dp)
-//        )
+        val locationImageUrl = getLocationImageUrl(event.location)
+        if (locationImageUrl != null) {
+          SubcomposeAsyncImage(
+            model = locationImageUrl,
+            contentDescription = "Location ${event.location}",
+            modifier = Modifier
+              .width(40.dp)
+              .height(40.dp)
+              .padding(end = 8.dp),
+            contentScale = ContentScale.Fit,
+            loading = {
+              Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+              ) {
+                CircularProgressIndicator(
+                  modifier = Modifier.width(20.dp).height(20.dp)
+                )
+              }
+            },
+          )
+        }
+        
         Text(
           text = event.name,
           style = MaterialTheme.typography.titleLarge,
@@ -677,3 +692,4 @@ fun AppAndroidPreview() {
     onEventClick = {}
   )
 }
+

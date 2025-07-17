@@ -86,7 +86,6 @@ fun MapScreen(
         .verticalScroll(rememberScrollState())
         .padding(16.dp)
     ) {
-      // Map section
       Box(
         modifier = Modifier
           .fillMaxWidth()
@@ -108,27 +107,6 @@ fun MapScreen(
           contentScale = ContentScale.Fit
         )
       }
-      
-      // TODO: Legend section
-//      Column(
-//        modifier = Modifier
-//          .fillMaxWidth()
-//          .padding(top = 16.dp)
-//      ) {
-//        Text(
-//          text = "Legenda",
-//          style = MaterialTheme.typography.headlineSmall,
-//          fontWeight = FontWeight.Bold,
-//          modifier = Modifier.padding(bottom = 8.dp)
-//        )
-//
-//        // Placeholder for legend content
-//        Text(
-//          text = "Contenuto della legenda verrà aggiunto qui",
-//          style = MaterialTheme.typography.bodyMedium,
-//          color = Color.Gray
-//        )
-//      }
     }
   }
 }

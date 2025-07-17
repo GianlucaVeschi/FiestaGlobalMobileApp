@@ -1,6 +1,8 @@
 package org.gianlucaveschi.fiestaglobal.ui.screens.events
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.rememberTransformableState
+import androidx.compose.foundation.gestures.transformable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,9 +27,14 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -42,6 +49,11 @@ fun EventDetailScreen(
   event: Event,
   onBackClick: () -> Unit
 ) {
+  var scale by remember { mutableStateOf(1f) }
+  
+  val transformableState = rememberTransformableState { zoomChange, _, _ ->
+    scale = (scale * zoomChange).coerceIn(0.5f, 3f)
+  }
   Box(
     modifier = Modifier
       .fillMaxSize()
@@ -161,34 +173,45 @@ fun EventDetailScreen(
           
           Spacer(modifier = Modifier.height(8.dp))
           
-          SubcomposeAsyncImage(
-            model = mapUrl,
-            contentDescription = "Mappa evento location ${event.location}",
+          Box(
             modifier = Modifier
               .fillMaxSize()
-              .padding(horizontal = 16.dp),
-            contentScale = ContentScale.Fit,
-            loading = {
-              Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-              ) {
-                CircularProgressIndicator()
+              .padding(horizontal = 16.dp)
+              .transformable(state = transformableState),
+            contentAlignment = Alignment.Center
+          ) {
+            SubcomposeAsyncImage(
+              model = mapUrl,
+              contentDescription = "Mappa evento location ${event.location}",
+              modifier = Modifier
+                .fillMaxSize()
+                .graphicsLayer(
+                  scaleX = scale,
+                  scaleY = scale
+                ),
+              contentScale = ContentScale.Fit,
+              loading = {
+                Box(
+                  modifier = Modifier.fillMaxSize(),
+                  contentAlignment = Alignment.Center
+                ) {
+                  CircularProgressIndicator()
+                }
+              },
+              error = {
+                Box(
+                  modifier = Modifier.fillMaxSize(),
+                  contentAlignment = Alignment.Center
+                ) {
+                  Text(
+                    text = "Mappa non disponibile",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.Gray
+                  )
+                }
               }
-            },
-            error = {
-              Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-              ) {
-                Text(
-                  text = "Mappa non disponibile",
-                  style = MaterialTheme.typography.bodyMedium,
-                  color = Color.Gray
-                )
-              }
-            }
-          )
+            )
+          }
           
           Spacer(modifier = Modifier.height(16.dp))
         }

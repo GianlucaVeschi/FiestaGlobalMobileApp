@@ -19,17 +19,18 @@ private val imageUrlTokens = mapOf(
 private const val mapUrl_base = "https://firebasestorage.googleapis.com/v0/b/fiestaglobalapp.firebasestorage.app/o/maps%2F"
 
 private val mapUrlData = mapOf(
-    "0" to ("mappa1.png" to "c9e0f5ff-9947-4825-b8db-fd8ed9b4adf7"),
-    "1" to ("mappa2.png" to "394253b2-6642-4553-a8ff-2bc4f3a6dc0b"),
+    "0" to ("mappa0.png" to "c9e0f5ff-9947-4825-b8db-fd8ed9b4adf7"), // Do not have map
+    "1" to ("mappa1.png" to "394253b2-6642-4553-a8ff-2bc4f3a6dc0b"),
     "2" to ("mappa2.png" to "394253b2-6642-4553-a8ff-2bc4f3a6dc0b"),
     "3" to ("mappa3.png" to "2e6da88f-51b4-4d8f-9677-b75f80058dcb"),
+    "4" to ("mappa4.png" to "2515a939-8547-41fc-a0bb-2378965b1ee1"),
+    "5" to ("mappa5.png" to "d086280f-066e-45d6-a50b-5f6f879e69ac"),
     "6" to ("mappa6.png" to "de15be6b-8cdd-4755-a8d9-e87d550231ef"),
     "7" to ("mappa7.png" to "f6d4cf32-3d28-433b-bb01-74e453654274"),
     "8" to ("mappa8.png" to "17587142-a9d1-4bf3-a0d5-d358e482a17d"),
     "9" to ("mappa9.png" to "dbdbd1a3-1bd0-4150-8397-3ac78dcae400"),
     "10" to ("mappa10.png" to "8a8dc8de-4336-4c86-9e75-9efa083a6189")
 )
-
 
 fun getLocationImageUrl(location: String): String? {
   return imageUrlTokens[location]?.let { token ->

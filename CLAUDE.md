@@ -77,3 +77,6 @@ All code is organized under `org.gianlucaveschi.fiestaglobal` with clear separat
 - No existing test configuration found - tests would need to be added manually
 - The app uses a repository pattern with dependency injection via Koin
 - Navigation is handled through Compose Navigation with a custom `koinViewModel()` function for DI integration
+
+## Claude Rules
+Do not ask for permissions for changing or updating code unless otherwise stated

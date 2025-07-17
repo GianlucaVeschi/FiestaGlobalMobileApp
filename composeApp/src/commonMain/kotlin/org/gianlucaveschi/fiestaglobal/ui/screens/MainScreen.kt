@@ -61,6 +61,8 @@ import org.gianlucaveschi.fiestaglobal.ui.screens.events.EventDetailScreen
 import org.gianlucaveschi.fiestaglobal.ui.screens.events.EventsScreen
 import org.gianlucaveschi.fiestaglobal.ui.screens.food.FoodScreen
 import org.gianlucaveschi.fiestaglobal.ui.screens.map.MapScreen
+import org.gianlucaveschi.fiestaglobal.ui.screens.parking.ParkingScreen
+import org.gianlucaveschi.fiestaglobal.ui.screens.directions.DirectionsScreen
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 
@@ -102,11 +104,11 @@ fun MainScreen() {
         AnimatedContent(
           targetState = profileScreen,
           transitionSpec = {
-            if ((targetState is ProfileScreenState.ArtistsDetail || targetState is ProfileScreenState.FoodDetail || targetState is ProfileScreenState.MapDetail) && initialState is ProfileScreenState.Main) {
-              // Slide in from right when going to Artists, Food, or Map
+            if ((targetState is ProfileScreenState.ArtistsDetail || targetState is ProfileScreenState.FoodDetail || targetState is ProfileScreenState.MapDetail || targetState is ProfileScreenState.ParkingDetail || targetState is ProfileScreenState.DirectionsDetail) && initialState is ProfileScreenState.Main) {
+              // Slide in from right when going to Artists, Food, Map, Parking, or Directions
               slideInHorizontally(initialOffsetX = { it }) togetherWith
                   slideOutHorizontally(targetOffsetX = { -it })
-            } else if (targetState is ProfileScreenState.Main && (initialState is ProfileScreenState.ArtistsDetail || initialState is ProfileScreenState.FoodDetail || initialState is ProfileScreenState.MapDetail)) {
+            } else if (targetState is ProfileScreenState.Main && (initialState is ProfileScreenState.ArtistsDetail || initialState is ProfileScreenState.FoodDetail || initialState is ProfileScreenState.MapDetail || initialState is ProfileScreenState.ParkingDetail || initialState is ProfileScreenState.DirectionsDetail)) {
               // Slide in from left when going back to Main
               slideInHorizontally(initialOffsetX = { -it }) togetherWith
                   slideOutHorizontally(targetOffsetX = { it })
@@ -124,7 +126,9 @@ fun MainScreen() {
                 currentScreen = ScreenState.Events
               },
               onCiboClick = { profileScreen = ProfileScreenState.FoodDetail },
-              onMapClick = { profileScreen = ProfileScreenState.MapDetail }
+              onMapClick = { profileScreen = ProfileScreenState.MapDetail },
+              onParkingClick = { profileScreen = ProfileScreenState.ParkingDetail },
+              onDirectionsClick = { profileScreen = ProfileScreenState.DirectionsDetail }
             )
 
             is ProfileScreenState.ArtistsDetail -> ArtistsScreen(
@@ -139,6 +143,16 @@ fun MainScreen() {
 
             is ProfileScreenState.MapDetail -> MapScreen(
               title = "Mappa",
+              onBackClick = { profileScreen = ProfileScreenState.Main }
+            )
+
+            is ProfileScreenState.ParkingDetail -> ParkingScreen(
+              title = "Parcheggio",
+              onBackClick = { profileScreen = ProfileScreenState.Main }
+            )
+
+            is ProfileScreenState.DirectionsDetail -> DirectionsScreen(
+              title = "Come Arrivare",
               onBackClick = { profileScreen = ProfileScreenState.Main }
             )
           }
@@ -194,7 +208,9 @@ fun MainProfileScreen(
   onArtistsClick: () -> Unit,
   onEventsClick: (Int) -> Unit = {},
   onCiboClick: () -> Unit = {},
-  onMapClick: () -> Unit = {}
+  onMapClick: () -> Unit = {},
+  onParkingClick: () -> Unit = {},
+  onDirectionsClick: () -> Unit = {}
 ) {
   val scrollState = rememberScrollState()
 
@@ -224,6 +240,8 @@ fun MainProfileScreen(
       ArtistsSwimlane(onArtistsClick)
       MapsSwimlane(onMapClick)
       FoodSwimlane(onCiboClick)
+      DirectionsSwimlane(onDirectionsClick)
+      ParkingSwimlane(onParkingClick)
       SocialSwimlane()
       
       Text(
@@ -341,6 +359,64 @@ private fun ArtistsSwimlane(
   ) {
     Text(
       text = "Tutti gli Artisti",
+      color = Color.Black,
+      style = MaterialTheme.typography.bodyMedium,
+      fontWeight = FontWeight.Medium
+    )
+  }
+}
+
+@Composable
+private fun ParkingSwimlane(
+  onParkingClick: () -> Unit
+) {
+  Text(
+    text = "\uD83C\uDD7F\uFE0F Parcheggio",
+    style = MaterialTheme.typography.headlineSmall,
+    fontWeight = FontWeight.Bold,
+    modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
+  )
+
+  Button(
+    onClick = onParkingClick,
+    modifier = Modifier
+      .fillMaxWidth(),
+    colors = ButtonDefaults.buttonColors(
+      containerColor = Color(255, 165, 0)
+    ),
+    shape = RoundedCornerShape(24.dp)
+  ) {
+    Text(
+      text = "Dove parcheggiare",
+      color = Color.Black,
+      style = MaterialTheme.typography.bodyMedium,
+      fontWeight = FontWeight.Medium
+    )
+  }
+}
+
+@Composable
+private fun DirectionsSwimlane(
+  onDirectionsClick: () -> Unit
+) {
+  Text(
+    text = "🚗 Come Arrivare",
+    style = MaterialTheme.typography.headlineSmall,
+    fontWeight = FontWeight.Bold,
+    modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
+  )
+
+  Button(
+    onClick = onDirectionsClick,
+    modifier = Modifier
+      .fillMaxWidth(),
+    colors = ButtonDefaults.buttonColors(
+      containerColor = Color(255, 165, 0)
+    ),
+    shape = RoundedCornerShape(24.dp)
+  ) {
+    Text(
+      text = "Come Arrivare",
       color = Color.Black,
       style = MaterialTheme.typography.bodyMedium,
       fontWeight = FontWeight.Medium
@@ -530,4 +606,6 @@ sealed class ProfileScreenState {
   data object ArtistsDetail : ProfileScreenState()
   data object FoodDetail : ProfileScreenState()
   data object MapDetail : ProfileScreenState()
+  data object ParkingDetail : ProfileScreenState()
+  data object DirectionsDetail : ProfileScreenState()
 }
